@@ -1,7 +1,6 @@
 # minishell
- 頑張るぞ
 
-##dockerコマンド
+## dockerコマンド
 
 imageのビルド
 docker build -t my-42-dev -f docker/Dockerfile .
