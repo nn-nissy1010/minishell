@@ -53,6 +53,9 @@ alias cc='cc -Wall -Wextra -Werror'
 alias norm='norminette -R CheckForbiddenSourceHeader'
 EOT
 
+RUN apt-get update && \
+    apt-get install -y libreadline-dev
+
 RUN install -d -o vscode -g vscode /home/vscode/.vscode-server
 
 ENV LANG=ja_JP.UTF-8
