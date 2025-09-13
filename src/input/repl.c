@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/12 17:44:46 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:05:05 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,17 @@ int is_blank_line(const char *s) {
     return 1;
 }
 
+static char *read_line_repl(const char *prompt) {
+    char *line = readline(prompt);
+    if (line && *line && !is_blank_line(line)) 
+        add_history(line);
+    return line;
+}
+
 int repl(void){
     install_signal_handlers();
     while(1){
-        char *line = readline("myshell> ");
+        char *line = read_line_repl("myshell> ");
         if (!line) {
             printf("%s", "bye!");
             break;
