@@ -6,11 +6,15 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/12 17:44:46 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/13 13:49:22 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
 
 static volatile sig_atomic_t g_signal = 0;
 int g_exit_status = 0;
