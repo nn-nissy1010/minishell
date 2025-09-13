@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/12 17:30:23 by nnishiya         ###   ########.fr       */
+/*   Created: 2025/09/12 17:11:30 by nnishiya          #+#    #+#             */
+/*   Updated: 2025/09/12 17:17:17 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
-#include "lexer.h"
-#include "parser.h"
-#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <signal.h>
+#include <stdlib.h>
+
+int repl(void);
