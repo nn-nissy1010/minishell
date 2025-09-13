@@ -6,15 +6,11 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 13:49:22 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/13 13:51:56 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
 
 static volatile sig_atomic_t g_signal = 0;
 int g_exit_status = 0;
@@ -79,10 +75,17 @@ int is_blank_line(const char *s) {
     return 1;
 }
 
+static char *read_line_repl(const char *prompt) {
+    char *line = readline(prompt);
+    if (line && *line && !is_blank_line(line)) 
+        add_history(line);
+    return line;
+}
+
 int repl(void){
     install_signal_handlers();
     while(1){
-        char *line = readline("myshell> ");
+        char *line = read_line_repl("myshell> ");
         if (!line) {
             printf("%s", "bye!");
             break;
