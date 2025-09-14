@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/12 17:26:02 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/13 16:14:10 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,12 @@ NAME = minishell
 
 SRCS =src/main.c \
       src/input/repl.c \
+	  src/input/repl_utils/input.c \
+	  src/input/repl_utils/signal.c \
+	  src/input/repl_utils/syntax_check.c \
+	  src/input/repl_utils/syntax_check_utils.c \
+	  src/input/repl_utils/utils.c
+
 
 OBJS = $(SRCS:.c=.o)
 
