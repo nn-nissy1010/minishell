@@ -13,3 +13,4 @@ imageのビルド
 
 コンテナの削除
 - docker rm my-42-container          
+
