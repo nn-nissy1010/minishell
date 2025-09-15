@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/13 16:14:10 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/15 13:29:07 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,14 @@ SRCS =src/main.c \
 	  src/input/repl_utils/signal.c \
 	  src/input/repl_utils/syntax_check.c \
 	  src/input/repl_utils/syntax_check_utils.c \
-	  src/input/repl_utils/utils.c
+	  src/input/repl_utils/utils.c \
+	  src/input/env_table/env_table_init.c \
+	  src/input/env_table/env_table_load.c \
+      src/input/env_table/env_table_set.c \
+	  src/input/env_table/env_table_set_utils.c \
+	  src/input/env_table/env_table_builtin.c
+
+
 
 
 OBJS = $(SRCS:.c=.o)
