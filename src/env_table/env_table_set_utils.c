@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 13:25:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/15 13:32:05 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/15 15:38:17 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ unsigned long fnv1a(const char *s)
 int pair_set(t_env_pair *p, const char *k, const char *v){
     char *nk;
     char *nv;
+    
     nk = ft_strdup(k);
     if(!nk)
         return -1;
