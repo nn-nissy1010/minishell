@@ -1,50 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_table_builtin.c                                :+:      :+:    :+:   */
+/*   env_table_builtin2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/15 12:53:51 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/15 15:58:30 by nnishiya         ###   ########.fr       */
+/*   Created: 2025/09/15 14:36:29 by nnishiya          #+#    #+#             */
+/*   Updated: 2025/09/18 10:44:33 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int env_table_load_envp(t_env_table *t, char **envp)
+void free_entry(t_env_pair *p)
 {
-    size_t i;
-
-    i = 0;
-    while (envp && envp[i])
-    {
-        if (env_table_put_entry(t, envp[i]) == -1)
-            return (-1);
-        i++;
-    }
-    return (0);
+    free(p->key);
+    free(p->val);
+    p->key = NULL;
+    p->val = NULL;
 }
 
-int get_env_table(void)
+static int delete_entry(t_env_table *t, t_env_pair *p)
 {
-    env_table_foreach(&g_env, print_cb, NULL);
-    return 0;
+    free_entry(p);
+    p->tomb = 1;
+    t->size--;
+    return (1);
 }
 
-int update_env_table(const char *arg)
+int env_table_unset(t_env_table *t, const char *key)
 {
-    if (env_table_put_entry(&g_env, arg) == -1)
-        return (1);
-    return (0);
-}
+    t_env_pair *p;
+    size_t dummy;
 
-int unset_env_table(const char *arg)
-{
-    if (env_table_unset(&g_env, arg))
+    p = env_table_find(t, key, &dummy);
+    if (!p || !p->key || p->tomb)
         return (0);
-    else
-        return (1);
+
+    delete_entry(t, p);
+    return (1);
 }
 
 void destroy_env_table(t_env_table *t)

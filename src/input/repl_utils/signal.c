@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:52:18 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 16:09:00 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:17:42 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void signal_handler(int signo) {
 static int on_readline_event(void) {
     if (g_signal == SIGINT) {
         g_signal = 0;
-        g_exit_status = 130;
+        set_exit_status(130);
 
         write(STDOUT_FILENO, "\n", 1);
         rl_replace_line("", 0);

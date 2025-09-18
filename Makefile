@@ -6,26 +6,28 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/15 16:13:50 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/18 11:21:52 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS =src/main.c \
+      src/exit_status.c \
       src/input/repl.c \
 	  src/input/repl_utils/input.c \
 	  src/input/repl_utils/signal.c \
 	  src/input/repl_utils/syntax_check.c \
 	  src/input/repl_utils/syntax_check_utils.c \
 	  src/input/repl_utils/utils.c \
+	  src/env_table/env_table_core.c \
 	  src/env_table/env_table_init.c \
       src/env_table/env_table_set.c \
-	  src/env_table/env_table_set_utils.c \
-	  src/env_table/env_table_builtin/env_table_builtin.c \
-	  src/env_table/env_table_builtin/env_table_builtin_utils.c \
-	  src/env_table/env_table_builtin/env_table_builtin_utils2.c
-
+	  src/env_table/env_table_parse.c \
+	  src/env_table/env_table_find.c \
+	  src/env_table/env_table_builtin.c \
+	  src/env_table/env_table_builtin2.c \
+	  src/env_table/env_table_builtin_utils.c \
 
 OBJS = $(SRCS:.c=.o)
 
