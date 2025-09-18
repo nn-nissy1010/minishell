@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:36:29 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 10:44:33 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:03:23 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,4 @@ int env_table_unset(t_env_table *t, const char *key)
 
     delete_entry(t, p);
     return (1);
-}
-
-void destroy_env_table(t_env_table *t)
-{
-    size_t i;
-
-    if (!t || !t->pair)
-        return;
-    i = 0;
-    while (i < t->cap)
-    {
-        free_entry(&t->pair[i]);
-        i++;
-    }
-    free(t->pair);
-    t->pair = NULL;
-    t->cap = 0;
-    t->size = 0;
 }
