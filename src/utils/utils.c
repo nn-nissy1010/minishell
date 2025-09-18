@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:53:19 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 16:03:14 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 19:34:24 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,9 @@ void	print_syntax_error(const char *msg)
 	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	write(STDERR_FILENO, "\n", 1);
+}
+
+char *ft_strndup(const char *s, size_t n)
+{
+    return ft_substr(s, 0, n);
 }

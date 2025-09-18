@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:30 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 15:23:37 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 19:41:52 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,5 @@ int	handle_no_quote(char c, int *q, size_t *i, const char *s);
 int	handle_single_quote(char c, int *q);
 int	handle_double_quote(char c, int *q, size_t i, const char *s);
 t_more need_more_input(const char *s);
-
-int ft_isspace(unsigned char c);
-int is_blank_line(const char *s);
-char	*ft_strjoin_3word(char *s1, const char *s2, const char *s3);
-void	print_syntax_error(const char *msg);
 
 #endif
