@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 10:40:43 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 10:55:43 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:52:42 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,20 @@ const char *search_env_table(const char *key)
         return (NULL);
     return (p->val);
 }
-int update_env_table(const char *arg)
+int update_env_table(const char *key, const char *value)
 {
-    if (env_table_put_entry(&g_env, arg) == -1)
+    char *entry;
+    int ret;
+
+    if (!key || !value)
         return (1);
-    return (0);
+
+    entry = ft_strjoin_3word(ft_strdup(key), "=", value);
+    if (!entry)
+        return (1);
+    ret = env_table_put_entry(&g_env, entry);
+    free(entry);
+    return (ret == -1);
 }
 
 int unset_env_table(const char *arg)

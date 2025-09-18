@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 11:21:01 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:54:18 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	main(int argc, char **argv, char **envp)
     //     printf("NOT_EXIST が見つかりません\n");
 
 
-    // printf("\n=== export TEST=hello ===\n");
-    // update_env_table("TEST=hello");
-    // get_env_table();
+	printf("\n=== export TEST=hello ===\n");
+	update_env_table("TEST", "hello");
+	get_env_table();
 
-    // printf("\n=== export PATH=overwritten ===\n");
-    // update_env_table("PATH=overwritten");
-    // get_env_table();
+	printf("\n=== export PATH=overwritten ===\n");
+	update_env_table("PATH", "overwritten");
+	get_env_table();
 
     // printf("\n=== unset TEST ===\n");
     // unset_env_table("TEST");
