@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:55:33 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 15:57:25 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:18:30 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int handle_unexpected_eof(t_more need)
         print_syntax_error("unexpected EOF while looking for matching '\"'");
     else
         print_syntax_error("syntax error near unexpected token `newline'");
-    g_exit_status = 258;
+    set_exit_status(258);
     return -1;
 }
 
@@ -40,7 +40,7 @@ static char *append_line(char *acc, const char *next)
     char *new_acc = ft_strjoin_3word(acc, "\n", next);
     if (!new_acc) {
         print_syntax_error("allocation error");
-        g_exit_status = 1;
+        set_exit_status(1);
     }
     return new_acc;
 }

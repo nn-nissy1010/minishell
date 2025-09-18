@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 16:09:11 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:20:46 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int repl(void){
     while (1) {
         char *line = readline("myshell> ");
         if (!line) {
-            printf("bye!\n");
+            printf("bye! exitcode : %d\n", get_exit_status());
             break;
         }
         if (is_blank_line(line)) {
