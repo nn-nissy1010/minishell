@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 11:20:46 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:22:56 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,16 @@ int repl(void){
         if (!full) {
             continue;
         }
-        printf("入力: %s(ここで本来はコマンド処理する)\n", full);
+        t_token *ts = lexer(full);
+        for (t_token *p = ts; p; p = p->next)
+        {
+            if (p->type == TOK_ARG)
+                printf("ARG: raw=\"%s\"\n", p->u.arg.raw);
+            else if (p->type == TOK_EOF)
+                printf("EOF\n");
+            else
+                printf("SYM: type=%d\n", p->type);
+        }
         free(full);
     }
     return 0;

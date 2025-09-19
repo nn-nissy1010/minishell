@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/18 19:39:52 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/19 16:11:34 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS =src/main.c \
 	  src/input/utils/signal.c \
 	  src/input/utils/syntax_check.c \
 	  src/input/utils/syntax_check_utils.c \
+  	  src/env_table/env_table.c \
 	  src/env_table/env_table_init.c \
       src/env_table/env_table_set.c \
 	  src/env_table/env_table_destroy.c \
