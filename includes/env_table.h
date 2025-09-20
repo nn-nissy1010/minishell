@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:19:26 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 15:27:35 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:08:39 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct s_find_result {
     int found;
 }   t_find_result;
 
-extern t_env_table g_env;
-
 typedef void (*t_env_iter_cb)(const char *k, const char *v, void *ud);
+
+t_env_table *env_table(void);
 
 int env_table_init(t_env_table *t, size_t cap_hint);
 int env_table_load_envp(t_env_table *t, char **envp);
@@ -48,8 +48,6 @@ unsigned long fnv1a(const char *s);
 int env_table_set(t_env_table *t, const char *key, const char *val);
 int pair_set(t_env_pair *p, const char *k, const char *v);
 int ensure_grow(t_env_table *t);
-
-
 
 void print_cb(const char *k, const char *v, void *ud);
 void env_table_foreach(const t_env_table *t, t_env_iter_cb cb, void *ud);

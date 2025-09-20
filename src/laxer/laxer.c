@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 19:36:28 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 20:06:20 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:15:19 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,33 @@ void free_tokens(t_token *t)
         free(t);
         t = n;
     }
+}
+
+t_token *lexer(const char *input)
+{
+    const char *p;
+    const char *start;
+    t_token *head;
+    t_token *tail;
+    
+    p = input;
+    head = NULL;
+    tail = NULL;
+
+    while (*p)
+    {
+        while (*p && ft_isspace((unsigned char)*p))
+            p++;
+        if (!*p)
+            break;
+        start = p;
+        while (*p && !ft_isspace((unsigned char)*p))
+            p++;
+
+        size_t len = p - start;
+        t_token *tok = new_token_n(TOK_ARG, start, len);
+        tok_push(&head, &tail, tok);
+    }
+    tok_push(&head, &tail, new_token(TOK_EOF, NULL));
+    return head;
 }

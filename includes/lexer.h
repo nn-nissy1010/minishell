@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 19:47:50 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:23:51 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ t_token *new_token_n(t_tokentype type, const char *s, size_t n);
 t_token *new_token(t_tokentype type, const char *s);
 void tok_push(t_token **head, t_token **tail, t_token *node);
 void free_tokens(t_token *t);
+
+t_token *lexer(const char *input);
+
 
 
 
