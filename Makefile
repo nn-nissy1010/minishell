@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/19 16:11:34 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/20 16:17:31 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,14 @@ SRCS =src/main.c \
 	  src/env_table/builtin/env_table_builtin_utils.c \
   	  src/env_table/builtin/env_table_builtin_utils2.c \
 	  src/laxer/laxer.c \
+	  src/laxer/token.c \
+	  src/laxer/buffer.c \
+	  src/laxer/parts/parts_manage.c \
+	  src/laxer/parts/parts_join.c \
+	  src/laxer/scan/scan_quote.c \
+	  src/laxer/scan/scan_quote_utils.c \
+	  src/laxer/scan/scan_unquote.c \
+	  src/laxer/scan/scan_symbol_utils.c \
 
 
 

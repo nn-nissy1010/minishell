@@ -6,35 +6,56 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:57:45 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/13 16:01:19 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/20 10:08:18 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_more	check_unclosed_quote(const char *s)
+static t_more scan_single_quote(const char *s, size_t *i)
 {
-	int		q;
-	size_t	i;
+    (*i)++;
+    while (s[*i] && s[*i] != '\'')
+        (*i)++;
+    if (!s[*i])
+        return MORE_QUOTE_S;
+    return MORE_NONE;
+}
 
-	q = 0;
-	i = 0;
-	while (s[i])
+static t_more scan_double_quote(const char *s, size_t *i)
+{
+    (*i)++;
+    while (s[*i] && s[*i] != '"')
 	{
-		char c = s[i];
-		if (q == 0)
-			handle_no_quote(c, &q, &i, s);
-		else if (q == '\'')
-			handle_single_quote(c, &q);
-		else
-			handle_double_quote(c, &q, i, s);
-		i++;
-	}
-	if (q == '\'')
-		return (MORE_QUOTE_S);
-	if (q == '"')
-		return (MORE_QUOTE_D);
-	return (MORE_NONE);
+        if (s[*i] == '\\' && (s[*i+1] == '"' || s[*i+1] == '\\' || s[*i+1] == '$'))
+            (*i)++;
+        (*i)++;
+    }
+    if (!s[*i])
+        return MORE_QUOTE_D;
+    return MORE_NONE;
+}
+
+static t_more check_unclosed_quote(const char *s)
+{
+    size_t i;
+    t_more res;
+
+	i = 0;
+    while (s[i]) {
+        if (s[i] == '\'') {
+            res = scan_single_quote(s, &i);
+            if (res != MORE_NONE)
+                return res;
+        } else if (s[i] == '"') {
+            res = scan_double_quote(s, &i);
+            if (res != MORE_NONE)
+                return res;
+        } else if (s[i] == '\\' && !s[i+1])
+            return MORE_BSLASH;
+        i++;
+    }
+    return MORE_NONE;
 }
 
 static t_more	check_line_end_operator(const char *s)
