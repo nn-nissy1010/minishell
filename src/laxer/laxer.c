@@ -6,107 +6,85 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 19:36:28 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/19 16:15:19 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:50:16 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token *new_token_n(t_tokentype type, const char *s, size_t n)
+static t_token *scan_arg(const char **pp)
 {
+    const char *p;
+    t_arg_part *parts;
+    t_arg_part *part;
     t_token *t;
-
-    t = malloc(sizeof(*t));
-    if (!t)
-        return (perror("malloc_error"), NULL);
-    t->type = type;
-    t->next = NULL;
-    if (type == TOK_ARG)
+    
+    p = *pp;
+    parts = NULL;
+    while (*p && !ft_isspace((unsigned char)*p) && !ft_strchr("|&<>()", *p))
     {
-        if (s && n)
-            t->u.arg.raw = ft_strndup(s, n);
+        if (*p == '\'' || *p == '"')
+            part = scan_quoted_part(&p);
         else
-            t->u.arg.raw = ft_strdup("");
-        t->u.arg.items = NULL;
-        t->u.arg.n_items = 0;
-        t->u.arg.has_param = 0;
-        t->u.arg.saw_quote = 0;
-        t->u.arg.has_unq_glob = 0;
-        t->u.arg.expanded = 0;
-    }
-    else if (type == TOK_HEREDOC)
-        t->u.heredoc.heredoc_quoted = 0;
-    return (t);
-}
-
-t_token *new_token(t_tokentype type, const char *s)
-{
-    if (!s)
-        return new_token_n(type, NULL, 0);
-    return new_token_n(type, s, ft_strlen(s));
-}
-
-void tok_push(t_token **head, t_token **tail, t_token *node)
-{
-    if (!node)
-        return;
-    if (!*head)
-        *head = node;
-    else
-        (*tail)->next = node;
-    *tail = node;
-}
-
-void free_tokens(t_token *t)
-{
-    t_token *n;
-    size_t   i;
-
-    while (t)
-    {
-        n = t->next;
-        if (t->type == TOK_ARG)
-        {
-            free(t->u.arg.raw);
-            if (t->u.arg.items)
-            {
-                i = 0;
-                while (i < t->u.arg.n_items)
-                {
-                    free(t->u.arg.items[i]);
-                    i++;
-                }
-                free(t->u.arg.items);
-            }
+            part = scan_unquoted_part(&p);
+        if (!part) {
+            free_parts(parts);
+            return NULL;
         }
-        free(t);
-        t = n;
+        append_part(&parts, part);
     }
+
+    t = new_token(TOK_ARG, NULL);
+    t->u.arg.parts = parts;
+    finalize_arg(&t->u.arg);
+    *pp = p;
+    return t;
+}
+
+static t_token	*scan_symbol(const char **pp)
+{
+	const char	*p;
+	t_token		*t;
+
+	p = *pp;
+	t = NULL;
+	if (*p == '|')
+		p = scan_pipe(p, &t);
+	else if (*p == '&')
+		p = scan_and(p, &t);
+	else if (*p == '<')
+		p = scan_redir_in(p, &t);
+	else if (*p == '>')
+		p = scan_redir_out(p, &t);
+	else if (*p == '(' || *p == ')')
+		p = scan_paren(p, &t);
+	*pp = p;
+	return (t);
 }
 
 t_token *lexer(const char *input)
 {
     const char *p;
-    const char *start;
-    t_token *head;
-    t_token *tail;
-    
+    t_token    *head;
+    t_token    *tail;
+    t_token    *tok;
+
     p = input;
     head = NULL;
     tail = NULL;
-
+    
     while (*p)
     {
         while (*p && ft_isspace((unsigned char)*p))
             p++;
         if (!*p)
             break;
-        start = p;
-        while (*p && !ft_isspace((unsigned char)*p))
-            p++;
-
-        size_t len = p - start;
-        t_token *tok = new_token_n(TOK_ARG, start, len);
+        if (ft_strchr("|&<>()", *p))
+            tok = scan_symbol(&p);
+        else
+            tok = scan_arg(&p);
+        if (!tok)
+            return (free_tokens(head), NULL);
         tok_push(&head, &tail, tok);
     }
     tok_push(&head, &tail, new_token(TOK_EOF, NULL));
