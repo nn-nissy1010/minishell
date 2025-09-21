@@ -174,7 +174,9 @@ int	expand_vars_basic(const char *in, char **out)
 
 int	expand_token(const t_token *tok, char ***out_items, size_t *out_n)
 {
-	char *expanded, **v;
+	char	*expanded;
+	char	**v;
+
 	if (!tok || tok->type != TOK_ARG || !tok->u.arg.raw)
 	{
 		*out_items = NULL;
@@ -189,7 +191,7 @@ int	expand_token(const t_token *tok, char ***out_items, size_t *out_n)
 		free(expanded);
 		return (-1);
 	}
-	v[0] = expanded; // 所有権を移譲
+	v[0] = expanded;
 	v[1] = NULL;
 	*out_items = v;
 	*out_n = 1;
@@ -216,7 +218,7 @@ int	expand_redir_target(const t_token *tok, char **out_path)
 		}
 		return (-2); /* ambiguous */
 	}
-	*out_path = items[0]; /* 所有権移譲 */
+	*out_path = items[0];
 	free(items);
 	return (0);
 }
@@ -308,8 +310,9 @@ static int	ensure_nonnull(t_argvbuf *b)
 int	build_argv_from_tokens(const t_token *argv_toks, char ***out_argv)
 {
 	t_argvbuf		buf;
-	const t_token	*t = argv_toks;
+	const t_token	*t;
 
+	t = argv_toks;
 	memset(&buf, 0, sizeof buf);
 	*out_argv = NULL;
 	while (t != NULL)
