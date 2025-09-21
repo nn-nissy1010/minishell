@@ -6,14 +6,16 @@
 # include "env_table.h"
 # include "input.h"
 # include "lexer.h"
+# include <ctype.h>
 # include <stdbool.h>
 # include <stddef.h>
+# include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
 
 typedef struct s_exec_ctx
 {
-	t_env_table *env; /* ← これを追加 */
-	int last_status;  /* $? */
+	int last_status; /* $? */
 }							t_exec_ctx;
 
 struct s_ast;
@@ -47,10 +49,11 @@ typedef struct s_token t_token; /* TOK_ARG を想定（右辺の語/デリミタ
 
 typedef struct s_redir
 {
-	t_redir_kind kind;  /* <, >, >>, << */
-	int fd;             /* 省略時は -1（IN/HEREDOC→0, OUT/APPEND→1 を既定） */
-	t_token *word;      /* 右辺（ファイル名 or ヒアドキュメントの区切り語） */
-	int quoted_heredoc; /* <<'EOF' 等なら 1 */
+	t_redir_kind			kind;
+	int						fd;
+	t_token					*word;
+	int						quoted_heredoc;
+	char					*path;
 }							t_redir;
 
 /* ←ここが更新: cmd が redirs を持つ */
@@ -61,6 +64,15 @@ typedef struct s_cmd
 
 	t_redir					*redirs;
 	size_t					n_redirs;
+
+	/* --- 引数（展開前）--- */
+	t_token					*argv_tokens;
+	size_t					n_argv_tokens;
+
+	/* --- 展開後（exec直前に作る）--- */
+	char					**argv;
+	size_t					argc;
+
 }							t_cmd;
 
 typedef struct s_ast
@@ -80,6 +92,19 @@ typedef struct s_ast
 		} subshell;
 	} as;
 }							t_ast;
+
+typedef struct s_argvbuf
+{
+	char					**v;
+	size_t					n;
+}							t_argvbuf;
+
+typedef struct s_strbuf
+{
+	char					*p;
+	size_t					len;
+	size_t					cap;
+}							t_strbuf;
 
 /* ast_exec / ast_destroy */
 int							ast_exec(t_ast *node, t_exec_ctx *ctx);
@@ -109,5 +134,17 @@ t_ast						*make_pipe_node(t_ast *l, t_ast *r);
 t_ast						*make_and_node(t_ast *l, t_ast *r);
 t_ast						*make_or_node(t_ast *l, t_ast *r);
 t_ast						*make_subshell_node(t_ast *body);
+
+/* 1語のTK_ARGを0..N語へ展開（最小版：そのまま1語にする） */
+int							expand_token(const t_token *tok, char ***out_items,
+								size_t *out_n);
+
+/* リダイレクト右辺：展開後が1語ならOK、0語/2語以上はエラー */
+int							expand_redir_target(const t_token *tok,
+								char **out_path);
+int							build_argv_from_tokens(const t_token *argv_toks,
+								char ***out_argv);
+
+const char					*search_env_table(const char *key);
 
 #endif
