@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 20:23:51 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:16:56 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,27 @@ typedef enum e_tokentype {
     TOK_EOF
 } t_tokentype;
 
+typedef enum e_quote_type {
+    Q_NONE   = 0,
+    Q_SINGLE = 1,
+    Q_DOUBLE = 2
+}   t_quote_type;
+
+typedef struct s_arg_part {
+    char           *text;
+    t_quote_type    quote; 
+    int             has_param;
+    int             has_unq_glob;
+    struct s_arg_part *next;
+} t_arg_part;
+
 typedef struct s_arg {
-    char   *raw;
-    char  **items;
-    size_t  n_items;
-    int     has_param;
-    int     saw_quote;
-    int     has_unq_glob;
-    int     expanded;
-} t_arg;
+    char      *raw;
+    t_arg_part *parts;
+    char**  items; 
+    size_t     n_items;
+    int        expanded;
+}   t_arg;
 
 typedef struct s_heredoc {
     int heredoc_quoted;
@@ -51,13 +63,39 @@ typedef struct s_token {
     struct s_token *next;
 } t_token;
 
+typedef struct s_buf
+{
+	char	*data;
+	size_t	cap;
+	size_t	len;
+}	t_buf;
+
 t_token *new_token_n(t_tokentype type, const char *s, size_t n);
 t_token *new_token(t_tokentype type, const char *s);
 void tok_push(t_token **head, t_token **tail, t_token *node);
 void free_tokens(t_token *t);
 
-t_token *lexer(const char *input);
+void	init_proto(t_arg_part *proto, t_quote_type quote);
+void	init_scan(t_buf *b, t_arg_part *proto, t_quote_type quote);
 
+t_arg_part *new_part_copy(const char *s, size_t len, const t_arg_part *proto);
+t_arg_part	*scan_quoted_part(const char **pp);
+t_arg_part	*scan_unquoted_part(const char **pp);
+
+const char	*scan_pipe(const char *p, t_token **t);
+const char	*scan_and(const char *p, t_token **t);
+const char	*scan_redir_in(const char *p, t_token **t);
+const char	*scan_redir_out(const char *p, t_token **t);
+const char	*scan_paren(const char *p, t_token **t);
+
+
+int finalize_arg(t_arg *arg);
+void free_parts(t_arg_part *parts);
+void append_part(t_arg_part **head, t_arg_part *node);
+
+char *append_char(char *buf, size_t *cap, size_t *len, char ch);
+
+t_token *lexer(const char *input);
 
 
 

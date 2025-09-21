@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:30 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/19 15:35:35 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:07:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef enum e_more {
     MORE_NONE = 0,
     MORE_QUOTE_S,
     MORE_QUOTE_D,
+    MORE_BSLASH,
     MORE_OP
 } t_more;
 
@@ -30,5 +31,7 @@ int	handle_no_quote(char c, int *q, size_t *i, const char *s);
 int	handle_single_quote(char c, int *q);
 int	handle_double_quote(char c, int *q, size_t i, const char *s);
 t_more need_more_input(const char *s);
+
+
 
 #endif
