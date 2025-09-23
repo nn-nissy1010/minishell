@@ -1,22 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_ast.c                                         :+:      :+:    :+:   */
+/*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:39:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 22:21:28 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/09/23 22:09:26 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ast_exec(t_node *node, t_exec_ctx *ctx)
+t_func	*v_cmd(void)
 {
-	return (node->fn->exec(node, ctx));
+	static t_func	f = {exec_cmd, destroy_cmd_min};
+
+	return (&f);
 }
-void	ast_destroy(t_node *node)
+int	exec_cmd(t_node *node, t_exec_ctx *ctx)
 {
-	node->fn->destroy(node);
+	t_cmd	*c;
+	int		rc;
+
+	c = &node->as.cmd;
+	rc = expansion(c);
+	return (0);
+}
+
+void	destroy_cmd_min(t_node *node)
+{
+	if (!node)
+		return ;
+	free_token_list(node->as.cmd.argv_tokens);
 }

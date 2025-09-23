@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/09/23 22:20:43 by tkuwahat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
@@ -49,7 +59,7 @@ typedef struct s_cmd
 	t_redir					*redirs;
 	size_t					n_redirs;
 
-	/* --- 引数（展開前）--- */
+	/* 展開前~wordsplittingまで終え、itemsに格納 */
 	t_token					*argv_tokens;
 	size_t					n_argv_tokens;
 
@@ -80,13 +90,11 @@ typedef struct s_node
 /* ast_exec / ast_destroy */
 int							ast_exec(t_node *node, t_exec_ctx *ctx);
 void						ast_destroy(t_node *node);
+/* exec / destroy */
 int							exec_cmd(t_node *node, t_exec_ctx *ctx);
 void						destroy_cmd_min(t_node *node);
 
 /* 各ノード用の関数テーブル getter */
 t_func						*v_cmd(void);
-
-t_node						*make_single_cmd_node(const char *arg0, ...);
-void						free_token_list(t_token *t);
 
 #endif

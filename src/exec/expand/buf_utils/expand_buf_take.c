@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_ast.c                                         :+:      :+:    :+:   */
+/*   expand_buf_take.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:39:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 22:21:28 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/23 15:17:56 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/09/23 16:49:55 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ast_exec(t_node *node, t_exec_ctx *ctx)
+char	*buf_take(t_buf *b)
 {
-	return (node->fn->exec(node, ctx));
-}
-void	ast_destroy(t_node *node)
-{
-	node->fn->destroy(node);
+	char *p;
+
+	if (!b || !b->data)
+		return (NULL);
+	p = b->data;
+	b->data = NULL;
+	b->cap = 0;
+	b->len = 0;
+	return (p);
 }

@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_ast.c                                         :+:      :+:    :+:   */
+/*   expand_buf_emit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:39:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 22:21:28 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/23 15:13:23 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/09/23 16:50:09 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ast_exec(t_node *node, t_exec_ctx *ctx)
+static int	emit_int_itoa(t_buf *b, int v)
 {
-	return (node->fn->exec(node, ctx));
+	char	*s;
+	int		r;
+
+	s = ft_itoa(v);
+	if (!s)
+		return (-1);
+	r = buf_puts(b, s);
+	free(s);
+	return (r);
 }
-void	ast_destroy(t_node *node)
+
+int	emit_status(t_buf *b)
 {
-	node->fn->destroy(node);
+	return (emit_int_itoa(b, get_exit_status()));
+}
+
+int	emit_env(t_buf *b, const char *name)
+{
+	const char	*v;
+
+	v = search_env_table(name);
+	if (!v)
+		v = "";
+	return (buf_puts(b, v));
 }

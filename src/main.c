@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/22 18:55:14 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/23 22:07:54 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,38 @@
 
 int	main(void)
 {
-	t_exec_ctx	ctx;
-	t_node		*n;
-	int			rc;
+	t_env_table	*T;
 
-	ctx.xflag = XF_NONE;
-	printf("=== exec_cmd UNIT TEST ===\n");
-	n = make_single_cmd_node("echo", "hi", NULL);
-	rc = ast_exec(n, &ctx);
-	printf("[ret ] exec_cmd rc=%d \n", rc);
-	ast_destroy(n);
-	free(n);
-	printf("=== exec_cmd UNIT TEST ===\n");
-	n = make_single_cmd_node("echo", "a$HOME", "b'*c*'", "\"$PATH\"", NULL);
-	rc = ast_exec(n, &ctx);
-	printf("[ret ] exec_cmd rc=%d \n", rc);
-	ast_destroy(n);
-	free(n);
+	T = env_table();
+	if (env_table_init(T, 128) == -1)
+		return (1);
+	/* 環境テーブルに投入 */
+	env_table_set(T, "HOME", "/home/tester");
+	env_table_set(T, "FOO", "a b");
+	env_table_set(T, "EMPTY", "");
+	// テスト開始
+	printf("=== expand_redirs: minimal (join-only) tests ===\n");
+	//
+	/* 1)"$FOO"→ "a b" */
+	run_case("> \"$FOO\"", tok_from_parts(part_new("$FOO", Q_DOUBLE, 1)));
+	//
+	/* 2)$FOO → "a b" */
+	run_case("> $FOO", tok_from_parts(part_new("$FOO", Q_NONE, 1)));
+	//
+	/* 3) $EMPTY  */
+	run_case("> $EMPTY", tok_from_parts(part_new("$EMPTY", Q_NONE, 1)));
+	//
+	/* 4) ~/x.txt */
+	run_case("> ~/x.txt", tok_from_parts(part_new("~/x.txt", Q_NONE, 0)));
+	//
+	/* 5) x~  */
+	run_case("> x~", tok_from_parts(part_new("x~", Q_NONE, 0)));
+	//
+	/* 6) "$HOME/$FOO"  → "/home/tester/a b" */
+	run_case("> \"$HOME/$FOO\"", tok_from_parts(chain(part_new("$HOME/",
+					Q_DOUBLE, 1), part_new("$FOO", Q_DOUBLE, 1))));
+	//
+	printf("=== done ===\n");
 	return (0);
 }
 
