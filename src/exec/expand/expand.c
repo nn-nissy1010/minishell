@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 int	redir_expand_word_to_path(t_token *word, char **out_path)
 {
 	t_buf	w;
@@ -36,6 +37,7 @@ int	redir_expand_word_to_path(t_token *word, char **out_path)
 		return (2);
 	return (0);
 }
+
 
 int	expand_redirs(t_redir *rs, size_t n)
 {
@@ -62,6 +64,7 @@ int	expand_redirs(t_redir *rs, size_t n)
 	return (0);
 }
 
+
 int	expand_argv_cmd(t_cmd *c)
 {
 	int		rc;
@@ -85,6 +88,7 @@ int	expand_argv_cmd(t_cmd *c)
 	return (rc);
 }
 
+
 int	expansion(t_cmd *c)
 {
 	int	rc;
@@ -97,5 +101,6 @@ int	expansion(t_cmd *c)
 	rc = expand_argv_cmd(c);
 	if (rc != 0)
 		return (set_exit_status(1), -1);
+
 	return (0);
 }

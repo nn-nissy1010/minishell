@@ -60,6 +60,7 @@ typedef struct s_cmd
 	size_t					n_redirs;
 
 	/* 展開前~wordsplittingまで終え、itemsに格納 */
+
 	t_token					**argv_tokens;
 	size_t					n_argv_tokens;
 

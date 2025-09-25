@@ -92,5 +92,3 @@ int		argbuf_push(t_argbuf *b, const char *s);
 int		argbuf_grow(t_argbuf *b, size_t newcap);
 void	argbuf_free(t_argbuf *b);
 void	argbuf_init(t_argbuf *b);
-
-#endif
