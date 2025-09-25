@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 22:17:48 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 22:21:11 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:50:48 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*expand_params_part(const char *s)
 {
 	t_buf	b;
 	size_t	i;
+	char	*out;
 
 	if (!s)
 		return (NULL);
@@ -71,16 +72,17 @@ char	*expand_params_part(const char *s)
 	{
 		if (s[i] != '$')
 		{
-			if (buf_putc(&b, s[i++]) < 0)
-				return (free(b.data), NULL);
+			if (buf_putc(&b, s[i]) < 0)
+				return (buf_free(&b), NULL);
+			i++;
+			continue ;
 		}
-		else
-		{
-			if (expand_dollar(s, &i, &b) < 0)
-				return (free(b.data), NULL);
-		}
+		if (expand_dollar(s, &i, &b) < 0)
+			return (buf_free(&b), NULL);
 	}
 	if (!b.data)
 		return (ft_strdup(""));
-	return (b.data);
+	out = b.data;
+	b.data = NULL;
+	return (buf_free(&b), out);
 }

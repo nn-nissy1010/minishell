@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_buf_take.c                                  :+:      :+:    :+:   */
+/*   arg_buf_clean.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 15:17:56 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 16:49:55 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/25 16:32:51 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/09/25 20:14:02 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*buf_take(t_buf *b)
+void	argbuf_init(t_argbuf *b)
 {
-	char *p;
-
-	if (!b || !b->data)
-		return (NULL);
-	p = b->data;
-	b->data = NULL;
+	if (!b)
+		return ;
+	b->v = NULL;
+	b->n = 0;
 	b->cap = 0;
-	b->len = 0;
-	return (p);
+}
+
+void	argbuf_free(t_argbuf *b)
+{
+	size_t i;
+
+	if (!b || !b->v)
+		return ;
+	i = 0;
+	while (i < b->n)
+	{
+		free(b->v[i]);
+		i++;
+	}
+	free(b->v);
+	b->v = NULL;
+	b->n = 0;
+	b->cap = 0;
 }

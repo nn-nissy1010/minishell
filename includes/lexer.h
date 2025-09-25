@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/23 22:20:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:29:40 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,15 @@ typedef struct s_buf
 	char				*data;
 	size_t				cap;
 	size_t				len;
+	unsigned char		*qmask;
 }						t_buf;
+
+typedef struct s_argbuf
+{
+	char				**v;
+	size_t				n;
+	size_t				cap;
+}						t_argbuf;
 
 t_token					*new_token_n(t_tokentype type, const char *s, size_t n);
 t_token					*new_token(t_tokentype type, const char *s);
