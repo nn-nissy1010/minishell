@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/23 22:14:05 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/09/24 20:10:50 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS =src/main.c \
 	  src/laxer/scan/scan_quote_utils.c \
 	  src/laxer/scan/scan_unquote.c \
 	  src/laxer/scan/scan_symbol_utils.c \
+	  src/parser/parser.c \
 	  src/exec/exec_ast.c \
 	  src/exec/exec_test.c \
   	  src/exec/expand/expand_parts_tilde.c \

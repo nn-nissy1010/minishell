@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/19 18:27:48 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:45:55 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void dump_arg(const t_arg *arg)
     }
 }
 
-
-
 void dump_tokens(const t_token *toks)
 {
     for (const t_token *t = toks; t; t = t->next) {
@@ -59,6 +57,9 @@ void dump_tokens(const t_token *toks)
 }
 
 int repl(void){
+    t_token *tokens;
+    t_node *ast;
+    
     install_signal_handlers();
     while (1) {
         char *line = readline("myshell> ");
@@ -74,8 +75,15 @@ int repl(void){
         if (!full) {
             continue;
         }
-        t_token *ts = lexer(full);
-        dump_tokens(ts);
+        tokens = lexer(full);
+        ast = parse(tokens);
+        if (ast)
+        {
+            print_ast(ast, 0);
+            destroy(ast);
+            free_tokens(tokens);
+        }
+        // dump_tokens(tokens);
         free(full);
     }
     return 0;
