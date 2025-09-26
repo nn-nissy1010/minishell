@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 22:20:43 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:52:14 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ typedef struct s_cmd
 	size_t					n_redirs;
 
 	/* 展開前~wordsplittingまで終え、itemsに格納 */
-	t_token					*argv_tokens;
+
+	t_token					**argv_tokens;
 	size_t					n_argv_tokens;
 
 	/* --- 展開後（exec直前に作る）--- */
