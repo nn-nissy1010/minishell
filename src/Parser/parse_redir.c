@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:55:44 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 17:09:26 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/27 02:38:29 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static int append_redir_to_node(t_node *node, t_redir *r)
 
     m = node->as.cmd.n_redirs;
     tmp = ft_realloc(node->as.cmd.redirs,
-                 sizeof(t_redir) * (m + 1),
-                 sizeof(t_redir) * m);
+                 sizeof(t_redir) * m,
+                 sizeof(t_redir) * (m + 1));
     if (!tmp) {
         perror("realloc");
         return (-1);
