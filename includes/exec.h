@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/26 14:55:56 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:15:35 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_token		t_token;
 typedef struct s_redir
 {
 	int						fd;
+	t_tokentype 			kind;
 	t_token					*word;
 	int						quoted_heredoc;
 	char					*path;

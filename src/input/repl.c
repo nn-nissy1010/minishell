@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/24 20:45:55 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:24:48 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,78 @@ void dump_tokens(const t_token *toks)
     }
 }
 
+static const char *redir_kind_str(t_tokentype type)
+{
+    switch (type) {
+        case TOK_REDIR_IN:     return "<";
+        case TOK_REDIR_OUT:    return ">";
+        case TOK_REDIR_APPEND: return ">>";
+        case TOK_HEREDOC:      return "<<";
+        default:               return "?";
+    }
+}
+
+void print_ast(const t_node *n, int depth)
+{
+    if (!n) return;
+
+    for (int i = 0; i < depth; i++)
+        printf("  ");
+
+    switch (n->type)
+    {
+        case ND_COMMAND:
+            printf("CMD\n");
+            for (size_t i = 0; i < n->as.cmd.n_argv_tokens; i++) {
+                t_token *tok = n->as.cmd.argv_tokens[i];
+                if (tok && tok->u.arg.raw) {
+                    for (int j = 0; j < depth+1; j++) printf("  ");
+                    printf("arg[%zu] = %s\n", i, tok->u.arg.raw);
+                }
+            }
+            for (size_t i = 0; i < n->as.cmd.n_redirs; i++) {
+                t_redir *r = &n->as.cmd.redirs[i];
+                for (int j = 0; j < depth+1; j++) printf("  ");
+
+                printf("redir[%zu] %s (fd=%d) -> %s",
+                       i, redir_kind_str(r->kind), r->fd,
+                       (r->word && r->word->u.arg.raw) ? r->word->u.arg.raw : "(null)");
+
+                if (r->kind == TOK_HEREDOC && r->quoted_heredoc)
+                    printf(" (heredoc, quoted)");
+
+                printf("\n");
+            }
+            break;
+
+        case ND_PIPE:
+            printf("PIPE\n");
+            print_ast(n->as.bin.left, depth+1);
+            print_ast(n->as.bin.right, depth+1);
+            break;
+
+        case ND_AND_IF:
+            printf("AND_IF\n");
+            print_ast(n->as.bin.left, depth+1);
+            print_ast(n->as.bin.right, depth+1);
+            break;
+
+        case ND_OR_IF:
+            printf("OR_IF\n");
+            print_ast(n->as.bin.left, depth+1);
+            print_ast(n->as.bin.right, depth+1);
+            break;
+
+        case ND_SUBSHELL:
+            printf("SUBSHELL\n");
+            print_ast(n->as.subshell.body, depth+1);
+            break;
+    }
+
+    if (depth == 0)
+        printf("\n");
+}
+
 int repl(void){
     t_token *tokens;
     t_node *ast;
@@ -80,10 +152,9 @@ int repl(void){
         if (ast)
         {
             print_ast(ast, 0);
-            destroy(ast);
+            destroy_ast(ast);
             free_tokens(tokens);
         }
-        // dump_tokens(tokens);
         free(full);
     }
     return 0;

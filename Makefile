@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/26 14:58:43 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/26 17:12:46 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,10 @@ SRCS =src/main.c \
 	  src/laxer/scan/scan_unquote.c \
 	  src/laxer/scan/scan_symbol_utils.c \
 	  src/parser/parser.c \
+	  src/parser/parser_utils.c \
+	  src/parser/parse_x.c \
+	  src/parser/parse_redir.c \
+	  src/parser/operate_ast.c \
 	  src/exec/exec_ast.c \
 	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \

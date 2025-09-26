@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:53:19 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 19:34:24 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:15:24 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,19 @@ void	print_syntax_error(const char *msg)
 char *ft_strndup(const char *s, size_t n)
 {
     return ft_substr(s, 0, n);
+}
+
+void *ft_realloc(void *ptr, size_t old_size, size_t new_size)
+{
+    void *new_ptr;
+
+    new_ptr = malloc(new_size);
+    if (!new_ptr)
+        return NULL;
+    if (ptr) {
+        if (old_size > new_size)
+            old_size = new_size;
+        ft_memcpy(new_ptr, ptr, old_size);
+    }
+    return new_ptr;
 }
