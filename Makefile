@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/24 20:10:50 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/09/26 14:58:43 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,15 +41,24 @@ SRCS =src/main.c \
 	  src/laxer/scan/scan_symbol_utils.c \
 	  src/parser/parser.c \
 	  src/exec/exec_ast.c \
-	  src/exec/exec_test.c \
-  	  src/exec/expand/expand_parts_tilde.c \
-	  src/exec/expand/expand_parts_params.c \
-	  src/exec/expand/expand_parts.c \
 	  src/exec/expand/expand.c \
-	  src/exec/expand/buf_utils/expand_buf_clean.c \
-  	  src/exec/expand/buf_utils/expand_buf_put.c \
-	  src/exec/expand/buf_utils/expand_buf_take.c \
-	  src/exec/expand/buf_utils/expand_buf_emit.c \
+	  src/exec/expand/expand_arg.c \
+	  src/exec/expand/arg_buf_utils/arg_buf_build.c \
+	  src/exec/expand/arg_buf_utils/arg_buf_clean.c \
+  	  src/exec/expand/expand_part/expand_parts_tilde.c \
+	  src/exec/expand/expand_part/expand_parts_params.c  \
+	  src/exec/expand/expand_part/expand_parts.c  \
+	  src/exec/expand/part_buf_utils/expand_buf_clean.c \
+  	  src/exec/expand/part_buf_utils/expand_buf_emit.c \
+  	  src/exec/expand/part_buf_utils/expand_buf_put_q.c \
+  	  src/exec/expand/part_buf_utils/expand_buf_put.c \
+	  src/exec/expand/part_buf_utils/expand_buf_reserve.c\
+	  src/exec/expand/part_buf_utils/expand_buf_take.c \
+	  src/exec/expand/word_split/expand_word_split_utils.c \
+	  src/exec/expand/word_split/expand_word_split.c \
+
+	
+
 
 
 
