@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/25 20:16:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:03:30 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define MINI_SHELL
 
 # include "env_table.h"
-# include "exec.h"
 # include "input.h"
 # include "lexer.h"
+# include "exec.h"
 # include "libft.h"
 # include "parser.h"
 # include <ctype.h>
@@ -43,6 +43,7 @@ int		is_blank_line(const char *s);
 char	*ft_strjoin_3word(char *s1, const char *s2, const char *s3);
 void	print_syntax_error(const char *msg);
 char	*ft_strndup(const char *s, size_t n);
+void *ft_realloc(void *ptr, size_t size, size_t old_size);
 
 /* expand*/
 int		expansion(t_cmd *c);
@@ -92,3 +93,5 @@ int		argbuf_push(t_argbuf *b, const char *s);
 int		argbuf_grow(t_argbuf *b, size_t newcap);
 void	argbuf_free(t_argbuf *b);
 void	argbuf_init(t_argbuf *b);
+
+#endif
