@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:32:51 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 20:14:02 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:16:06 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	argbuf_init(t_argbuf *b)
 
 void	argbuf_free(t_argbuf *b)
 {
-	size_t i;
+	size_t	i;
 
 	if (!b || !b->v)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:37:46 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 20:12:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:15:46 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ int	argbuf_grow(t_argbuf *b, size_t newcap)
 	if (b->v && b->n > 0)
 	{
 		bytes = sizeof(char *) * b->n;
-		memcpy(nv, b->v, bytes);
+		ft_memcpy(nv, b->v, bytes);
 	}
 	free(b->v);
 	b->v = nv;
 	b->cap = newcap;
 	return (0);
 }
+
 int	argbuf_push(t_argbuf *b, const char *s)
 {
 	char	*dup;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/26 16:15:35 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/29 16:06:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXEC_H
 
 # include "stdlib.h"
+typedef enum e_tokentype	t_tokentype;
 
 typedef enum e_xflag
 {
@@ -49,7 +50,7 @@ typedef struct s_token		t_token;
 typedef struct s_redir
 {
 	int						fd;
-	t_tokentype 			kind;
+	t_tokentype				kind;
 	t_token					*word;
 	int						quoted_heredoc;
 	char					*path;

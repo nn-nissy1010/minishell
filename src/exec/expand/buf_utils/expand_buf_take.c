@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:17:56 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 16:49:55 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:17:51 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*buf_take(t_buf *b)
 {
-	char *p;
+	char	*p;
 
 	if (!b || !b->data)
 		return (NULL);

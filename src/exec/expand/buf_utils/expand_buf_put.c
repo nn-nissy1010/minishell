@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:49:57 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 16:50:00 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:19:23 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	buf_realloc_to(t_buf *b, size_t need)
 		ncap = 64;
 	while (ncap < need)
 	{
-		if (ncap > (size_t)-1 / 2)
+		if (ncap > ((size_t)1 / 2))
 			return (-1);
 		ncap *= 2;
 	}
@@ -39,6 +39,7 @@ int	buf_realloc_to(t_buf *b, size_t need)
 		b->data[0] = '\0';
 	return (0);
 }
+
 int	buf_reserve(t_buf *b, size_t add)
 {
 	size_t	need;

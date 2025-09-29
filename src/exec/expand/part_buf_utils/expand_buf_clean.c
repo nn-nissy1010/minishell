@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:16:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 12:53:22 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:19:58 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	buf_init(t_buf *b)
 	b->cap = 0;
 	b->len = 0;
 }
+
 void	buf_free(t_buf *b)
 {
 	if (!b)

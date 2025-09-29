@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 15:32:42 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/29 16:31:43 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,229 +15,310 @@
 #include <stdlib.h>
 #include <string.h>
 
-// /* --- 最小ヘルパ --- */
-// static t_token	*new_arg_token_simple(const char *s)
-// {
-// 	t_token		*t;
-// 	t_arg_part	*p;
-// 	size_t		len;
 
-// 	t = (t_token *)calloc(1, sizeof(*t));
-// 	if (!t)
-// 		return (NULL);
-// 	p = (t_arg_part *)calloc(1, sizeof(*p));
-// 	if (!p)
-// 	{
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	t->type = TOK_ARG;
-// 	t->u.arg.raw = strdup(s ? s : "");
-// 	if (!t->u.arg.raw)
-// 	{
-// 		free(p);
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	len = strlen(s ? s : "");
-// 	p->text = (char *)malloc(len + 1);
-// 	if (!p->text)
-// 	{
-// 		free(t->u.arg.raw);
-// 		free(p);
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	memcpy(p->text, s ? s : "", len + 1);
-// 	p->quote = Q_NONE;
-// 	p->has_param = (strchr(p->text, '$') != NULL);
-// 	p->has_unq_glob = 0;
-// 	p->next = NULL;
-// 	t->u.arg.parts = p;
-// 	return (t);
-// }
+/* ===== readline スタブ =====
+   ライブラリより前にこのオブジェクトをリンクして、確実にこちらを使わせる */
+static const char **g_lines = NULL;
+static size_t g_nlines = 0;
+static size_t g_idx = 0;
 
-// static void	free_token_deep(t_token *t)
-// {
-// 	size_t	i;
+char *readline(const char *prompt)
+{
+	size_t len;
+	char *s;
 
-// 	t_arg_part *p, *n;
-// 	if (!t)
-// 		return ;
-// 	if (t->type == TOK_ARG)
-// 	{
-// 		p = t->u.arg.parts;
-// 		while (p)
-// 		{
-// 			n = p->next;
-// 			free(p->text);
-// 			free(p);
-// 			p = n;
-// 		}
-// 		free(t->u.arg.raw);
-// 		if (t->u.arg.items)
-// 		{
-// 			i = 0;
-// 			while (t->u.arg.items[i])
-// 				free(t->u.arg.items[i++]);
-// 			free(t->u.arg.items);
-// 		}
-// 	}
-// 	free(t);
-// }
+	(void)prompt;
+	if (g_lines == NULL)
+		return NULL;
+	if (g_idx >= g_nlines)
+		return NULL;
+	len = strlen(g_lines[g_idx]);
+	s = (char *)malloc(len + 1);
+	if (s == NULL)
+		return NULL;
+	memcpy(s, g_lines[g_idx], len + 1);
+	g_idx++;
+	return s;
+}
 
-// static void	free_cmd_tokens(t_cmd *c)
-// {
-// 	size_t	i;
+/* ===== 最小限のトークン生成 ===== */
+static t_arg_part *new_part(const char *text, t_quote_type q)
+{
+	t_arg_part *p;
 
-// 	if (!c || !c->argv_tokens)
-// 		return ;
-// 	i = 0;
-// 	while (i < c->n_argv_tokens)
-// 	{
-// 		free_token_deep(c->argv_tokens[i]);
-// 		i++;
-// 	}
-// 	free(c->argv_tokens);
-// 	c->argv_tokens = NULL;
-// 	c->n_argv_tokens = 0;
-// }
+	p = (t_arg_part *)calloc(1, sizeof(*p));
+	if (p == NULL)
+		return NULL;
+	if (text != NULL)
+		p->text = strdup(text);
+	else
+		p->text = strdup("");
+	if (p->text == NULL)
+	{
+		free(p);
+		return NULL;
+	}
+	p->quote = q;
+	p->has_param = 0;
+	p->has_unq_glob = 0;
+	p->next = NULL;
+	return p;
+}
 
-// static void	free_argv(t_cmd *c)
-// {
-// 	size_t	i;
+static t_token *new_arg_token_one_part(const char *word, t_quote_type q)
+{
+	t_token *t;
 
-// 	if (!c || !c->argv)
-// 		return ;
-// 	i = 0;
-// 	while (c->argv[i])
-// 	{
-// 		free(c->argv[i]);
-// 		i++;
-// 	}
-// 	free(c->argv);
-// 	c->argv = NULL;
-// 	c->argc = 0;
-// }
+	t = (t_token *)calloc(1, sizeof(*t));
+	if (t == NULL)
+		return NULL;
+	t->type = TOK_ARG;
+	if (word != NULL)
+		t->u.arg.raw = strdup(word);
+	else
+		t->u.arg.raw = strdup("");
+	if (t->u.arg.raw == NULL)
+	{
+		free(t);
+		return NULL;
+	}
+	t->u.arg.parts = new_part(word, q);
+	if (t->u.arg.parts == NULL)
+	{
+		free(t->u.arg.raw);
+		free(t);
+		return NULL;
+	}
+	t->u.arg.items = NULL;
+	t->u.arg.n_items = 0;
+	t->u.arg.expanded = 0;
+	t->next = NULL;
+	return t;
+}
 
-// static void	dump_argv(const t_cmd *c)
-// {
-// 	size_t	i;
+static void free_arg_token(t_token *t)
+{
+	size_t i;
 
-// 	printf("argc=%zu\n", c->argc);
-// 	i = 0;
-// 	while (i < c->argc)
-// 	{
-// 		printf("argv[%zu]=\"%s\"\n", i, (c->argv
-// 				&& c->argv[i]) ? c->argv[i] : "(null)");
-// 		i++;
-// 	}
-// }
+	if (t == NULL)
+		return;
+	if (t->type == TOK_ARG)
+	{
+		free_parts(t->u.arg.parts); /* プロジェクト側の実装 */
+		if (t->u.arg.items != NULL)
+		{
+			i = 0;
+			while (t->u.arg.items[i] != NULL)
+			{
+				free(t->u.arg.items[i]);
+				i++;
+			}
+			free(t->u.arg.items);
+		}
+		free(t->u.arg.raw);
+	}
+	free(t);
+}
 
-// /* --- Case1: echo $HOME ~（正常系：3トークンのみ） --- */
-// static void	run_case1(void)
-// {
-// 	t_cmd	c;
-// 	int		rc;
+/* ===== redir / cmd 構築 ===== */
+static void redir_make_heredoc(t_redir *r, t_token *delim_tok, t_quote_type q)
+{
+	r->fd = -1;
+	r->kind = TOK_HEREDOC;
+	r->word = delim_tok;
+	if (q == Q_NONE)
+		r->quoted_heredoc = 0;
+	else
+		r->quoted_heredoc = 1;
+	r->path = NULL;
+}
 
-// 	memset(&c, 0, sizeof(c));
-// 	env_table_set(env_table(), "HOME", "/home/testuser");
-// 	c.n_argv_tokens = 3;
-// 	c.argv_tokens = (t_token **)calloc(c.n_argv_tokens, sizeof(*c.argv_tokens));
-// 	if (!c.argv_tokens)
-// 		return ;
-// 	c.argv_tokens[0] = new_arg_token_simple("echo");
-// 	c.argv_tokens[1] = new_arg_token_simple("$HOME");
-// 	c.argv_tokens[2] = new_arg_token_simple("~");
-// 	reset_exit_status();
-// 	printf("== Case1: echo $HOME ~ ==\n");
-// 	rc = expansion(&c);
-// 	printf("rc=%d\n", rc);
-// 	printf("exit_status=%d\n", get_exit_status());
-// 	dump_argv(&c);
-// 	printf("\n");
-// 	free_argv(&c);
-// 	free_cmd_tokens(&c);
-// }
+static void cmd_init_1_heredoc(t_cmd *c, t_token *delim_tok, t_quote_type q)
+{
+	c->redirs = (t_redir *)calloc(1, sizeof(t_redir));
+	c->n_redirs = 1;
+	redir_make_heredoc(&c->redirs[0], delim_tok, q);
+	c->argv_tokens = NULL;
+	c->n_argv_tokens = 0;
+	c->argv = NULL;
+	c->argc = 0;
+}
 
-// /* --- Case2: redir word に $FOO（"aaa bbb"）→ 分裂で失敗 --- */
-// static void	run_case2(void)
-// {
-// 	t_cmd	c;
-// 	t_redir	r;
-// 	t_token	*w;
-// 	int		rc;
+static void cmd_destroy(t_cmd *c)
+{
+	size_t i;
+	size_t k;
 
-// 	memset(&c, 0, sizeof(c));
-// 	memset(&r, 0, sizeof(r));
-// 	env_table_set(env_table(), "FOO", "aaa bbb");
-// 	w = new_arg_token_simple("$FOO"); /* これだけで分裂トリガに十分 */
-// 	r.word = w;
-// 	c.redirs = &r;
-// 	c.n_redirs = 1;
-// 	reset_exit_status();
-// 	printf("== Case2: redir word = $FOO (\"aaa bbb\") -> expect failure ==\n");
-// 	rc = expansion(&c);
-// 	printf("rc=%d\n", rc);
-// 	printf("exit_status=%d\n", get_exit_status());
-// 	printf("redir.path=\"%s\"\n", r.path ? r.path : "(null)");
-// 	printf("argc=%zu\n\n", c.argc);
-// 	if (r.path)
-// 		free(r.path);
-// 	free_token_deep(w);
-// 	free_argv(&c);
-// 	free_cmd_tokens(&c);
-// }
+	if (c == NULL)
+		return;
+	i = 0;
+	while (i < c->n_redirs)
+	{
+		if (c->redirs[i].fd >= 0)
+			close(c->redirs[i].fd);
+		free_arg_token(c->redirs[i].word);
+		free(c->redirs[i].path);
+		i++;
+	}
+	free(c->redirs);
+	if (c->argv != NULL)
+	{
+		k = 0;
+		while (c->argv[k] != NULL)
+		{
+			free(c->argv[k]);
+			k++;
+		}
+		free(c->argv);
+	}
+}
+
+/* ===== fd 全読み（パイプ/ファイル両対応） ===== */
+static char *read_all_from_fd(int fd)
+{
+	size_t cap;
+	size_t len;
+	char *buf;
+	size_t ncap;
+	char *nb;
+	ssize_t n;
+
+	cap = 1024;
+	len = 0;
+	buf = (char *)malloc(cap);
+	if (buf == NULL)
+		return NULL;
+	for (;;)
+	{
+		if (len + 512 > cap)
+		{
+			ncap = cap * 2;
+			nb = (char *)realloc(buf, ncap);
+			if (nb == NULL)
+			{
+				free(buf);
+				return NULL;
+			}
+			buf = nb;
+			cap = ncap;
+		}
+		n = read(fd, buf + len, 512);
+		if (n < 0)
+		{
+			free(buf);
+			return NULL;
+		}
+		if (n == 0)
+			break;
+		len += (size_t)n;
+	}
+	if (len + 1 > cap)
+	{
+		nb = (char *)realloc(buf, len + 1);
+		if (nb == NULL)
+		{
+			free(buf);
+			return NULL;
+		}
+		buf = nb;
+	}
+	buf[len] = '\0';
+	return buf;
+}
+
+/* ===== 1ケース実行 ===== */
+static void run_case(const char *title, const char *delim, t_quote_type q,
+                     const char **lines, size_t nlines)
+{
+	t_cmd c;
+	t_token *delim_tok;
+	int rc;
+	char *got;
+	int fd;
+
+	printf("== %s ==\n", title);
+
+	/* 入力（readlineスタブ用） */
+	g_lines = lines;
+	g_nlines = nlines;
+	g_idx = 0;
+
+	delim_tok = new_arg_token_one_part(delim, q);
+	if (delim_tok == NULL)
+	{
+		printf("alloc error\n\n");
+		return;
+	}
+	memset(&c, 0, sizeof(c));
+	cmd_init_1_heredoc(&c, delim_tok, q);
+
+	rc = collect_heredocs(&c);
+	printf("rc=%d\n", rc);
+	if (rc == 0)
+	{
+		fd = c.redirs[0].fd;
+		printf("fd=%d (>=0ならOK)\n", fd);
+		if (fd >= 0)
+		{
+			/* 一時ファイル実装に備えて先頭へ、パイプなら ESPIPE→無視 */
+			(void)lseek(fd, 0, SEEK_SET);
+
+			got = read_all_from_fd(fd);
+			if (got != NULL)
+			{
+				printf("content:\n---\n%s---\n", got);
+				free(got);
+			}
+			else
+			{
+				printf("content: (read error)\n");
+			}
+		}
+	}
+	else
+	{
+		printf("collect_heredocs failed\n");
+	}
+
+	cmd_destroy(&c);
+	printf("\n");
+}
+
+int main(void)
+{
+	/* Case1: 非引用: 展開あり実装なら展開対象 */
+	const char *lines1[] = { "hello", "world", "EOF" };
+
+	/* Case2: 単一引用: 展開しない実装が多い */
+	const char *lines2[] = { "$USER", "EOF" };
+
+
+	run_case("heredoc: unquoted delimiter (<< EOF)",
+	         "EOF", Q_NONE,
+	         lines1, sizeof(lines1) / sizeof(lines1[0]));
+
+	run_case("heredoc: single-quoted delimiter (<< 'EOF')",
+	         "EOF", Q_SINGLE,
+	         lines2, sizeof(lines2) / sizeof(lines2[0]));
+
+	return 0;
+}
+
+
 
 // int	main(int argc, char **argv, char **envp)
 // {
-// 	t_env_table	*T;
+// 	t_env_table	*table;
 
-// 	T = env_table();
-// 	if (env_table_init(T, 128) == -1)
-// 		return (1);
-// 	/* 環境テーブルに投入 */
-// 	env_table_set(T, "HOME", "/home/tester");
-// 	env_table_set(T, "FOO", "a b");
-// 	env_table_set(T, "EMPTY", "");
-// 	// テスト開始
-// 	printf("=== expand_redirs: minimal (join-only) tests ===\n");
-// 	//
-// 	/* 1)"$FOO"→ "a b" */
-// 	run_case("> \"$FOO\"", tok_from_parts(part_new("$FOO", Q_DOUBLE, 1)));
-// 	//
-// 	/* 2)$FOO → "a b" */
-// 	run_case("> $FOO", tok_from_parts(part_new("$FOO", Q_NONE, 1)));
-// 	//
-// 	/* 3) $EMPTY  */
-// 	run_case("> $EMPTY", tok_from_parts(part_new("$EMPTY", Q_NONE, 1)));
-// 	//
-// 	/* 4) ~/x.txt */
-// 	run_case("> ~/x.txt", tok_from_parts(part_new("~/x.txt", Q_NONE, 0)));
-// 	//
-// 	/* 5) x~  */
-// 	run_case("> x~", tok_from_parts(part_new("x~", Q_NONE, 0)));
-// 	//
-// 	/* 6) "$HOME/$FOO"  → "/home/tester/a b" */
-// 	run_case("> \"$HOME/$FOO\"", tok_from_parts(chain(part_new("$HOME/",
-// 					Q_DOUBLE, 1), part_new("$FOO", Q_DOUBLE, 1))));
-// 	//
-// 	printf("=== done ===\n");
+// 	(void)argc;
+// 	(void)argv;
+// 	table = env_table();
+// 	if (env_table_init(table, 128) == -1)
+// 		return (print_syntax_error("env alloc error"), 1);
+// 	if (env_table_load_envp(table, envp) == -1)
+// 		return (print_syntax_error("env load error"), destroy_env_table(table),
+// 			1);
+// 	repl();
+// 	destroy_env_table(table);
 // 	return (0);
 // }
-
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-    (void)argv;
-	t_env_table *table;
-	table = env_table();
-	if (env_table_init(table, 128) == -1)
-		return(print_syntax_error("env alloc error"), 1);
-	if (env_table_load_envp(table, envp) == -1)
-		return(print_syntax_error("env load error"), destroy_env_table(table),
-		1);
-	repl();
-	destroy_env_table(table);
-	return (0);
-}
