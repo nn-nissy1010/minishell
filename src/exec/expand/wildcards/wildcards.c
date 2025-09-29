@@ -6,21 +6,11 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:06:27 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 15:07:25 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 18:19:06 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	unmask_globs(char *s)
-{
-	while (s && *s)
-	{
-		if (*s == '\a')
-			*s = '*';
-		s++;
-	}
-}
 
 static int	push_literal_word(t_argbuf *out, const char *word)
 {
@@ -35,7 +25,6 @@ static int	push_literal_word(t_argbuf *out, const char *word)
 		free(lit);
 		return (-1);
 	}
-	free(lit);
 	return (0);
 }
 
@@ -72,22 +61,30 @@ static int	gea_fail(t_cmd *c, t_argbuf *out, size_t i)
 	return (-1);
 }
 
+static int	expand_argv_words(t_cmd *c, t_argbuf *out)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < (size_t)c->argc)
+	{
+		if (expand_one_word(c->argv[i], out) != 0)
+			return (gea_fail(c, out, i));
+		free(c->argv[i]);
+		i++;
+	}
+	return (0);
+}
+
 int	glob_expand_argv(t_cmd *c)
 {
 	t_argbuf	out;
-	size_t		i;
 
 	if (!c || c->argc <= 0 || !c->argv)
 		return (0);
 	argbuf_init(&out);
-	i = 0;
-	while (i < (size_t)c->argc)
-	{
-		if (expand_one_word(c->argv[i], &out) != 0)
-			return (gea_fail(c, &out, i));
-		free(c->argv[i]);
-		i++;
-	}
+	if (expand_argv_words(c, &out) != 0)
+		return (-1);
 	free(c->argv);
 	if (argbuf_terminate(&out) != 0)
 	{

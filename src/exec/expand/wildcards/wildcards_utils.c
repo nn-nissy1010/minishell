@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 00:33:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:11:24 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 18:19:05 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,25 @@ int	pat_match(const char *p, const char *s)
 	return (0);
 }
 
+static int	push_match_name(const char *name, t_argbuf *out, DIR *dir)
+{
+	char	*dup;
+
+	dup = ft_strdup(name);
+	if (!dup)
+	{
+		closedir(dir);
+		return (-1);
+	}
+	if (argbuf_push(out, dup) != 0)
+	{
+		free(dup);
+		closedir(dir);
+		return (-1);
+	}
+	return (0);
+}
+
 int	collect_matches_in_cwd(const char *pattern, t_argbuf *out)
 {
 	DIR				*dir;
@@ -90,8 +109,8 @@ int	collect_matches_in_cwd(const char *pattern, t_argbuf *out)
 			continue ;
 		if (pat_match(pattern, name))
 		{
-			if (argbuf_push(out, name) != 0)
-				return (closedir(dir), -1);
+			if (push_match_name(name, out, dir) != 0)
+				return (-1);
 		}
 	}
 	if (closedir(dir) != 0)

@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard_sort.c                                    :+:      :+:    :+:   */
+/*   wildcards_sort.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:26:50 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 12:29:50 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 18:19:02 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	unmask_globs(char *s)
+{
+	while (s && *s)
+	{
+		if (*s == '\a')
+			*s = '*';
+		s++;
+	}
+}
 
 static void	swap_strptr(char **a, char **b)
 {

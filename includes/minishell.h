@@ -6,13 +6,19 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/29 17:07:28 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 18:14:49 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_SHELL
 # define MINI_SHELL
 
+# include "env_table.h"
+# include "exec.h"
+# include "input.h"
+# include "lexer.h"
+# include "libft.h"
+# include "parser.h"
 # include <ctype.h>
 # include <dirent.h>
 # include <fcntl.h>
@@ -27,12 +33,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include "env_table.h"
-# include "input.h"
-# include "lexer.h"
-# include "exec.h"
-# include "libft.h"
-# include "parser.h"
 
 extern volatile sig_atomic_t	g_signal;
 
@@ -129,6 +129,7 @@ int								pat_match(const char *p, const char *s);
 int								should_glob_expand(const char *s);
 int								argbuf_move_append(t_argbuf *dst,
 									t_argbuf *src);
+void							unmask_globs(char *s);
 
 void							sort_strptrs(char **v, size_t n);
 
