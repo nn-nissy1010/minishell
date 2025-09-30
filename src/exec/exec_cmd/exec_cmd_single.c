@@ -6,71 +6,105 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 20:33:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 10:35:16 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 13:06:33 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-
-
-
-/* run_external_in_child.c */
-#include "minishell.h"
-#include <sys/stat.h>
-#include <errno.h>
-
-/* ---- small utils ---- */
-
-static int has_slash(const char *s)
+char *ft_strtok_r(char *s, const char *delim, char **saveptr)
 {
-    size_t i;
+    char *start;
+    char *end;
 
-    if (!s) return 0;
-    i = 0;
-    while (s[i]) { if (s[i] == '/') return 1; i++; }
-    return 0;
+    if (!s)
+        s = *saveptr;
+    if (!s)
+        return NULL;
+
+    while (*s && ft_strchr(delim, *s))
+        s++;
+    if (*s == '\0')
+        return NULL;
+
+    start = s;
+    while (*s && !ft_strchr(delim, *s))
+        s++;
+
+    if (*s) {
+        *s = '\0';
+        s++;
+    }
+    *saveptr = s;
+    return start;
 }
+
+
+
+/* ==== child-only error printing (single write) ==== */
+static void err3(const char *a, const char *b, const char *c)
+{
+    char   buf[512];
+    size_t n;
+
+    buf[0] = '\0';
+    n = 0;
+    n += ft_strlcpy(buf + n, a ? a : "", sizeof(buf) - n);
+    n += ft_strlcpy(buf + n, b ? b : "", sizeof(buf) - n);
+    n += ft_strlcpy(buf + n, c ? c : "", sizeof(buf) - n);
+    if (n > sizeof(buf)) n = sizeof(buf);
+    (void)write(STDERR_FILENO, buf, n);
+}
+
+static void err3(const char *prefix, const char *subject, const char *message)
+{
+    char   buf[512];
+    size_t n;
+
+    buf[0] = '\0';
+    n = 0;
+    if (prefix)
+        n += ft_strlcpy(buf + n, prefix, sizeof(buf) - n);
+    else
+        n += ft_strlcpy(buf + n, "", sizeof(buf) - n);
+    if (subject)
+        n += ft_strlcpy(buf + n, subject, sizeof(buf) - n);
+    else
+        n += ft_strlcpy(buf + n, "", sizeof(buf) - n);
+    if (message)
+        n += ft_strlcpy(buf + n, message, sizeof(buf) - n);
+    else
+        n += ft_strlcpy(buf + n, "", sizeof(buf) - n);
+    if (n > sizeof(buf))
+        n = sizeof(buf);
+    (void)write(STDERR_FILENO, buf, n);
+}
+
 
 static int is_directory(const char *path)
 {
     struct stat st;
-    if (!path) return 0;
-    if (stat(path, &st) < 0) return 0;
-    return S_ISDIR(st.st_mode) ? 1 : 0;
-}
 
-static void put_err3(const char *a, const char *b, const char *c)
-{
-    if (a) write(STDERR_FILENO, a, ft_strlen(a));
-    if (b) write(STDERR_FILENO, b, ft_strlen(b));
-    if (c) write(STDERR_FILENO, c, ft_strlen(c));
-}
-
-/* minishell: name: msg\n */
-static void print_err(const char *name, const char *msg)
-{
-    put_err3("minishell: ", name, ": ");
-    put_err3(msg, "\n", NULL);
-}
-
-static void print_errno(const char *name)
-{
-    put_err3("minishell: ", name, ": ", NULL);
-    put_err3(strerror(errno), "\n", NULL);
+    if (!path) 
+		return 0;
+    if (stat(path, &st) < 0) 
+		return 0;
+     if (S_ISDIR(st.st_mode))
+        return 1;
+	return  0;
 }
 
 static char *path_join(const char *dir, const char *cmd)
 {
-    size_t dl, cl;
-    char   *p;
+    size_t dl; 
+	size_t cl;
+    char  *p;
 
     dl = ft_strlen(dir);
     cl = ft_strlen(cmd);
     p = (char *)malloc(dl + 1 + cl + 1);
-    if (!p) return NULL;
+    if (!p) 
+		return NULL;
     ft_memcpy(p, dir, dl);
     p[dl] = '/';
     ft_memcpy(p + dl + 1, cmd, cl);
@@ -78,40 +112,30 @@ static char *path_join(const char *dir, const char *cmd)
     return p;
 }
 
-static const char *get_env(const char *const *envp, const char *key)
-{
-    size_t klen;
-    size_t i;
-
-    if (!envp || !key) return NULL;
-    klen = ft_strlen(key);
-    i = 0;
-    while (envp[i]) {
-        if (!ft_strncmp(envp[i], key, klen) && envp[i][klen] == '=')
-            return envp[i] + klen + 1;
-        i++;
-    }
-    return NULL;
-}
-
-/* ---- PATH search & exec ---- */
-
+/* ==== 子側：絶対/相対パスをそのまま実行 ==== */
 static void exec_direct(char **av, char **envp)
 {
-    if (is_directory(av[0])) {
-        print_err(av[0], "is a directory");
-        _exit(126);
+    if (is_directory(av[0])) 
+	{
+        err3("minishell: ", av[0], ": is a directory\n");
+        exit(126);
     }
     execve(av[0], av, envp);
-    if (errno == ENOENT) {
-        print_err(av[0], "No such file or directory");
-        _exit(127);
+    if (errno == ENOENT) 
+	{
+        err3("minishell: ", av[0], ": No such file or directory\n");
+        exit(127);
     }
-    if (errno == EACCES) { print_errno(av[0]); _exit(126); }
-    print_errno(av[0]);
-    _exit(126);
+    if (errno == EACCES) 
+	{
+        err3("minishell: ", av[0], ": Permission denied\n");
+        exit(126);
+    }
+    err3("minishell: ", av[0], ": exec error\n");
+    exit(126);
 }
 
+/* ==== 子側：PATH を探索して実行 ==== */
 static void search_and_exec(char **av, char **envp)
 {
     const char *path;
@@ -120,28 +144,35 @@ static void search_and_exec(char **av, char **envp)
     char       *dir;
     char       *full;
 
-    path = get_env((const char *const *)envp, "PATH");
-    if (!path || *path == '\0') {
-        print_err(av[0], "command not found");
-        _exit(127);
+    path = search_env_table("PATH");
+    if (!path || *path == '\0') 
+	{
+        err3("minishell: ", av[0], ": command not found\n");
+        exit(127);
     }
     dup = ft_strdup(path);
-    if (!dup) { print_errno("malloc"); _exit(126); }
+    if (!dup) 
+	{
+        err3("minishell: ", "malloc", ": failed\n");
+        exit(126);
+    }
     save = dup;
-    while ((dir = ft_strtok_r(dup, ":", &dup))) {
+    while ((dir = ft_strtok_r(dup, ":", &dup))) 
+	{
         if (*dir == '\0') dir = ".";
         full = path_join(dir, av[0]);
-        if (full && access(full, X_OK) == 0) {
-            if (is_directory(full)) { free(full); print_err(av[0], "is a directory"); _exit(126); }
-            execve(full, av, envp);
-            /* ここに来たら exec 失敗: fallthrough で次へ */
+        if (full) 
+		{
+            if (access(full, X_OK) == 0 && !is_directory(full))
+                execve(full, av, envp); 
+            free(full);
         }
-        if (full) free(full);
     }
     free(save);
-    print_err(av[0], "command not found");
-    _exit(127);
+    err3("minishell: ", av[0], ": command not found\n");
+    exit(127);
 }
+
 
 
 static void set_child_signals_default(void)
@@ -151,16 +182,15 @@ static void set_child_signals_default(void)
     ft_memset(&sa, 0, sizeof(sa));
     sigemptyset(&sa.sa_mask);
     sa.sa_handler = SIG_DFL;
-    sigaction(SIGINT,  &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
+    x_sigaction(SIGINT,  &sa);
+    x_sigaction(SIGQUIT, &sa);
 }
-
-
 
 void run_external_in_child(t_cmd *c, char **envp)
 {
-    if (!c || !c->argv || !c->argv[0]) 
-		exit(0);
+    if (!c || !c->argv || !c->argv[0])
+        exit(0);
+
     set_child_signals_default();
 
     if (has_slash(c->argv[0]))
@@ -168,10 +198,8 @@ void run_external_in_child(t_cmd *c, char **envp)
     else
         search_and_exec(c->argv, envp);
 
-		exit(127);
+    exit(127);
 }
-
-
 
 
 

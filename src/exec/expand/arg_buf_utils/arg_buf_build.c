@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:37:46 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:15:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:24:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,18 @@ int	argbuf_terminate(t_argbuf *b)
 			return (2);
 	}
 	b->v[b->n] = NULL;
+	return (0);
+}
+
+int	argbuf_move_append(t_argbuf *dst, t_argbuf *src)
+{
+	if (argbuf_grow(dst, dst->n + src->n) != 0)
+		return (-1);
+	ft_memcpy(dst->v + dst->n, src->v, sizeof(char *) * src->n);
+	dst->n += src->n;
+	free(src->v);
+	src->v = NULL;
+	src->n = 0;
+	src->cap = 0;
 	return (0);
 }

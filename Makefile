@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/09/29 17:06:45 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/09/30 20:35:56 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ SRCS =src/main.c \
 	  src/exec/expand/wildcards/wildcards_sort.c \
   	  src/exec/expand/wildcards/wildcards_utils.c \
 	  src/exec/expand/wildcards/wildcards.c \
+	  src/exec/expand/wildcards/wildcards_dir.c \
 
 	
 
