@@ -82,7 +82,6 @@ static char **dup_argv_heap(const char *const *src, int argc)
 	return v;
 }
 
-
 static void cmd_init(t_cmd *c, char **argv, int argc)
 {
 	c->argv = argv;
@@ -90,7 +89,6 @@ static void cmd_init(t_cmd *c, char **argv, int argc)
 	c->redirs = NULL;
 	c->n_redirs = 0;
 }
-
 
 static void run_case(const char *title, const char *const *argv_lit, int argc_in)
 {
@@ -109,7 +107,6 @@ static void run_case(const char *title, const char *const *argv_lit, int argc_in
 	rc = glob_expand_argv(&c);
 	printf("rc=%d\n", rc);
 	print_argv(&c);
-
 }
 
 int main(void)
