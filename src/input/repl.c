@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 17:24:48 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:13:44 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,42 @@ static const char *redir_kind_str(t_tokentype type)
     }
 }
 
+/* indent helper */
+static void append_indent(int depth)
+{
+    for (int i = 0; i < depth; i++)
+        printf("  ");
+}
+
+/* quote type → string */
+static const char *quote_type_str(t_quote_type q)
+{
+    if (q == Q_SINGLE) return "SINGLE";
+    if (q == Q_DOUBLE) return "DOUBLE";
+    return "NONE";
+}
+
+/* arg.parts 出力 */
+static void print_arg_parts(const t_arg_part *p, int depth)
+{
+    while (p)
+    {
+        append_indent(depth);
+        printf("part: text=\"%s\", quote=%s, has_param=%d, has_unq_glob=%d\n",
+               p->text ? p->text : "(null)",
+               quote_type_str(p->quote),
+               p->has_param,
+               p->has_unq_glob);
+        p = p->next;
+    }
+}
+
+/* AST 出力 */
 void print_ast(const t_node *n, int depth)
 {
     if (!n) return;
 
-    for (int i = 0; i < depth; i++)
-        printf("  ");
+    append_indent(depth);
 
     switch (n->type)
     {
@@ -80,15 +110,18 @@ void print_ast(const t_node *n, int depth)
             printf("CMD\n");
             for (size_t i = 0; i < n->as.cmd.n_argv_tokens; i++) {
                 t_token *tok = n->as.cmd.argv_tokens[i];
-                if (tok && tok->u.arg.raw) {
-                    for (int j = 0; j < depth+1; j++) printf("  ");
-                    printf("arg[%zu] = %s\n", i, tok->u.arg.raw);
+                if (tok) {
+                    append_indent(depth+1);
+                    printf("arg[%zu] raw = %s\n",
+                           i, tok->u.arg.raw ? tok->u.arg.raw : "(null)");
+
+                    if (tok->u.arg.parts)
+                        print_arg_parts(tok->u.arg.parts, depth+2);
                 }
             }
             for (size_t i = 0; i < n->as.cmd.n_redirs; i++) {
                 t_redir *r = &n->as.cmd.redirs[i];
-                for (int j = 0; j < depth+1; j++) printf("  ");
-
+                append_indent(depth+1);
                 printf("redir[%zu] %s (fd=%d) -> %s",
                        i, redir_kind_str(r->kind), r->fd,
                        (r->word && r->word->u.arg.raw) ? r->word->u.arg.raw : "(null)");

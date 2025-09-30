@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:43:33 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 16:06:39 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:25:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ t_arg_part	*scan_unquoted_part(const char **pp)
 
 	p = *pp;
 	init_scan(&b, &proto, Q_NONE);
-	while (*p && !ft_isspace((unsigned char)*p) && !ft_strchr("|&<>()'\"", *p))
+	while (*p
+		&& !ft_isspace((unsigned char)*p)
+		&& !ft_strchr("|&<>()'\"", *p)
+		&& *p != '$')
 		handle_unquoted_char(&p, &b, &proto);
 	b.data = append_char(b.data, &b.cap, &b.len, '\0');
 	*pp = p;

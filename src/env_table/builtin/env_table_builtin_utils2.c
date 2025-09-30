@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_table_builtin2.c                               :+:      :+:    :+:   */
+/*   env_table_builtin_utils2.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:36:29 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 15:03:23 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:49:24 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,21 @@ int env_table_unset(t_env_table *t, const char *key)
         return (0);
 
     delete_entry(t, p);
+    return (1);
+}
+
+int is_valid_env_key(const char *key)
+{
+    if (!key || !*key)
+        return (0);
+    if (!(ft_isalpha((unsigned char)*key) || *key == '_'))
+        return (0);
+    key++;
+    while (*key)
+    {
+        if (!(ft_isalnum((unsigned char)*key) || *key == '_'))
+            return (0);
+        key++;
+    }
     return (1);
 }
