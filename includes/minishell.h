@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/29 18:24:50 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:38:16 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
 # include "env_table.h"
 # include "input.h"
 # include "lexer.h"
@@ -99,6 +101,7 @@ int								buf_putn_q(t_buf *b, const void *p, size_t n,
 int								buf_putc_q(t_buf *b, char c, unsigned char q);
 
 /*arg_buf*/
+int								argbuf_move_append(t_argbuf *dst, t_argbuf *src);
 int								argbuf_terminate(t_argbuf *b);
 int								argbuf_push(t_argbuf *b, const char *s);
 int								argbuf_grow(t_argbuf *b, size_t newcap);
@@ -123,13 +126,13 @@ int								collect_heredocs(t_cmd *c);
 
 /*glob*/
 int								glob_expand_argv(t_cmd *c);
-int								collect_matches_in_cwd(const char *pattern,
-									t_argbuf *out);
+int								collect_matches_in_cwd(const char *pattern, t_argbuf *out);
 int								pat_match(const char *p, const char *s);
 int								should_glob_expand(const char *s);
 int								argbuf_move_append(t_argbuf *dst,
 									t_argbuf *src);
 void							unmask_globs(char *s);
+int 							expand_glob_pattern(const char *pattern, t_argbuf *out);
 
 void							sort_strptrs(char **v, size_t n);
 

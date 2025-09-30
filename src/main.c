@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/29 19:30:42 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:38:09 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static char **dup_argv_heap(const char *const *src, int argc)
 	return v;
 }
 
-
 static void cmd_init(t_cmd *c, char **argv, int argc)
 {
 	c->argv = argv;
@@ -90,7 +89,6 @@ static void cmd_init(t_cmd *c, char **argv, int argc)
 	c->redirs = NULL;
 	c->n_redirs = 0;
 }
-
 
 static void run_case(const char *title, const char *const *argv_lit, int argc_in)
 {
@@ -109,7 +107,6 @@ static void run_case(const char *title, const char *const *argv_lit, int argc_in
 	rc = glob_expand_argv(&c);
 	printf("rc=%d\n", rc);
 	print_argv(&c);
-
 }
 
 int main(void)
@@ -148,6 +145,10 @@ int main(void)
 	/* Case 5: 複数スター（a*.*） */
 	const char *case5[] = { "echo", "a*.*", NULL };
 	run_case("multi-star pattern", case5, 2);
+
+	/* Case 6: /入り（./a*.*） */
+	const char *case6[] = { "echo", "./a*.*", NULL };
+	run_case("multi-star pattern", case6, 2);
 
 	/* 戻す（_globtest はそのまま残す） */
 	(void)chdir(cwd);

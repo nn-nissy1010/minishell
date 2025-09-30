@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:06:27 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 18:19:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:54:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	expand_one_word(const char *word, t_argbuf *out)
 	if (!should_glob_expand(word))
 		return (push_literal_word(out, word));
 	argbuf_init(&m);
-	rc = collect_matches_in_cwd(word, &m);
+	rc = expand_glob_pattern(word, &m);
 	if (rc < 0)
 		return (argbuf_free(&m), -1);
 	if (m.n == 0)
@@ -57,6 +57,8 @@ static int	gea_fail(t_cmd *c, t_argbuf *out, size_t i)
 		i++;
 	}
 	free(c->argv);
+	c->argv = NULL;
+	c->argc = 0;
 	argbuf_free(out);
 	return (-1);
 }
@@ -89,6 +91,8 @@ int	glob_expand_argv(t_cmd *c)
 	if (argbuf_terminate(&out) != 0)
 	{
 		argbuf_free(&out);
+		c->argv = NULL;
+		c->argc = 0;
 		return (-1);
 	}
 	c->argv = out.v;

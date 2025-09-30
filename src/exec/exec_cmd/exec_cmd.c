@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 15:37:41 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 20:32:42 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,11 @@ int	prepare_cmd_for_exec(t_cmd *c)
 	return (0);
 }
 
-int	exec_cmd(t_node *node, t_exec_ctx *ctx)
+int exec_cmd(t_node *node, t_exec_ctx *ctx)
 {
-	(void)ctx;
-	if (prepare_cmd_for_exec(&node->as.cmd) != 0)
-		return (-1);
-	return (0);
+    if (prepare_cmd_for_exec(&node->as.cmd) != 0)
+        return (-1);
+    return exec_single(&node->as.cmd, ctx);
 }
 
 void	destroy_cmd_min(t_node *node)

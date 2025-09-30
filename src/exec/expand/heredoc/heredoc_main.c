@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 17:49:05 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 17:31:41 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:58:18 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	handle_one_heredoc(t_redir *r)
 
 	if (heredoc_build_delim_inplace(r) < 0)
 		return (-1);
-	rc = read_one_heredoc(r->path, r->quoted_heredoc, &r->fd);
+	rc = read_one_heredoc(r->path, r->quoted_heredoc, &r->hdoc_fd);
 	free(r->path);
 	r->path = NULL;
 	return (rc);
