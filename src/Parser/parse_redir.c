@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:55:44 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/27 02:38:29 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:47:26 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int validate_redir_target(t_node *node, t_parser *p)
 {
+    (void)node;
     if (!p->cur || p->cur->type != TOK_ARG) {
         write(2, "syntax error: expected filename/delimiter after redir\n", 54);
-        destroy_ast(node);
         return (-1);
     }
     return (0);

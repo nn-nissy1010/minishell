@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 16:13:44 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:06:23 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,12 @@ int repl(void){
         }
         tokens = lexer(full);
         ast = parse(tokens);
+        if (!ast)
+        {
+            free_tokens(tokens);
+            free(full); 
+            continue;
+        }
         if (ast)
         {
             print_ast(ast, 0);
