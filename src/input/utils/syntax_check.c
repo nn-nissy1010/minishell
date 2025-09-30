@@ -3,59 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:57:45 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 10:08:18 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:33:24 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_more scan_single_quote(const char *s, size_t *i)
+static t_more	scan_single_quote(const char *s, size_t *i)
 {
-    (*i)++;
-    while (s[*i] && s[*i] != '\'')
-        (*i)++;
-    if (!s[*i])
-        return MORE_QUOTE_S;
-    return MORE_NONE;
+	(*i)++;
+	while (s[*i] && s[*i] != '\'')
+		(*i)++;
+	if (!s[*i])
+		return (MORE_QUOTE_S);
+	return (MORE_NONE);
 }
 
-static t_more scan_double_quote(const char *s, size_t *i)
+static t_more	scan_double_quote(const char *s, size_t *i)
 {
-    (*i)++;
-    while (s[*i] && s[*i] != '"')
+	(*i)++;
+	while (s[*i] && s[*i] != '"')
 	{
-        if (s[*i] == '\\' && (s[*i+1] == '"' || s[*i+1] == '\\' || s[*i+1] == '$'))
-            (*i)++;
-        (*i)++;
-    }
-    if (!s[*i])
-        return MORE_QUOTE_D;
-    return MORE_NONE;
+		if (s[*i] == '\\' && (s[*i + 1] == '"' || s[*i + 1] == '\\' || s[*i
+				+ 1] == '$'))
+			(*i)++;
+		(*i)++;
+	}
+	if (!s[*i])
+		return (MORE_QUOTE_D);
+	return (MORE_NONE);
 }
 
-static t_more check_unclosed_quote(const char *s)
+static t_more	check_unclosed_quote(const char *s)
 {
-    size_t i;
-    t_more res;
+	size_t	i;
+	t_more	res;
 
 	i = 0;
-    while (s[i]) {
-        if (s[i] == '\'') {
-            res = scan_single_quote(s, &i);
-            if (res != MORE_NONE)
-                return res;
-        } else if (s[i] == '"') {
-            res = scan_double_quote(s, &i);
-            if (res != MORE_NONE)
-                return res;
-        } else if (s[i] == '\\' && !s[i+1])
-            return MORE_BSLASH;
-        i++;
-    }
-    return MORE_NONE;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+		{
+			res = scan_single_quote(s, &i);
+			if (res != MORE_NONE)
+				return (res);
+		}
+		else if (s[i] == '"')
+		{
+			res = scan_double_quote(s, &i);
+			if (res != MORE_NONE)
+				return (res);
+		}
+		else if (s[i] == '\\' && !s[i + 1])
+			return (MORE_BSLASH);
+		i++;
+	}
+	return (MORE_NONE);
 }
 
 static t_more	check_line_end_operator(const char *s)
@@ -74,12 +80,12 @@ static t_more	check_line_end_operator(const char *s)
 	return (MORE_NONE);
 }
 
-t_more need_more_input(const char *s)
+t_more	need_more_input(const char *s)
 {
-    t_more res;
+	t_more	res;
 
-    res = check_unclosed_quote(s);
-    if (res != MORE_NONE)
-        return res;
-    return check_line_end_operator(s);
+	res = check_unclosed_quote(s);
+	if (res != MORE_NONE)
+		return (res);
+	return (check_line_end_operator(s));
 }

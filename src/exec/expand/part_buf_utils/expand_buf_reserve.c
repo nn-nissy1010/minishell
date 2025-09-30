@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:56:19 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 12:56:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:29:26 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	buf_calc_newcap(size_t cur, size_t need, size_t *out_cap)
 		ncap = 64;
 	while (ncap < need)
 	{
-		if (ncap > (size_t)-1 / 2)
+		if (ncap > (size_t)(-1) / 2)
 			return (-1);
 		ncap *= 2;
 	}
@@ -87,7 +87,7 @@ static int	buf_qrealloc_to(t_buf *b, size_t need)
 
 int	buf_qreserve(t_buf *b, size_t add)
 {
-	size_t need;
+	size_t	need;
 
 	if (!b)
 		return (-1);

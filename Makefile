@@ -3,10 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2025/09/30 16:46:07 by nnishiya         ###   ########.fr        #
+=======
+#    Updated: 2025/09/30 20:35:56 by tkuwahat         ###   ########.fr        #
+>>>>>>> develop
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +65,14 @@ SRCS =src/main.c \
 	  src/exec/expand/part_buf_utils/expand_buf_take.c \
 	  src/exec/expand/word_split/expand_word_split_utils.c \
 	  src/exec/expand/word_split/expand_word_split.c \
+	  src/exec/expand/heredoc/heredoc_main.c \
+	  src/exec/expand/heredoc/heredoc_build_delim.c \
+	  src/exec/expand/heredoc/heredoc_rl_expand.c \
+	  src/exec/expand/heredoc/heredoc_signal.c \
+	  src/exec/expand/wildcards/wildcards_sort.c \
+  	  src/exec/expand/wildcards/wildcards_utils.c \
+	  src/exec/expand/wildcards/wildcards.c \
+	  src/exec/expand/wildcards/wildcards_dir.c \
 
 	
 
