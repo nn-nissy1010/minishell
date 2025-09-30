@@ -3,241 +3,173 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 15:32:42 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:38:09 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-// /* --- 最小ヘルパ --- */
-// static t_token	*new_arg_token_simple(const char *s)
-// {
-// 	t_token		*t;
-// 	t_arg_part	*p;
-// 	size_t		len;
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
 
-// 	t = (t_token *)calloc(1, sizeof(*t));
-// 	if (!t)
-// 		return (NULL);
-// 	p = (t_arg_part *)calloc(1, sizeof(*p));
-// 	if (!p)
-// 	{
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	t->type = TOK_ARG;
-// 	t->u.arg.raw = strdup(s ? s : "");
-// 	if (!t->u.arg.raw)
-// 	{
-// 		free(p);
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	len = strlen(s ? s : "");
-// 	p->text = (char *)malloc(len + 1);
-// 	if (!p->text)
-// 	{
-// 		free(t->u.arg.raw);
-// 		free(p);
-// 		free(t);
-// 		return (NULL);
-// 	}
-// 	memcpy(p->text, s ? s : "", len + 1);
-// 	p->quote = Q_NONE;
-// 	p->has_param = (strchr(p->text, '$') != NULL);
-// 	p->has_unq_glob = 0;
-// 	p->next = NULL;
-// 	t->u.arg.parts = p;
-// 	return (t);
-// }
+/* ---- テスト用ファイル/ディレクトリ作成 ---- */
+static void touch(const char *path)
+{
+	int fd = open(path, O_CREAT | O_WRONLY, 0644);
+	if (fd >= 0)
+		close(fd);
+}
 
-// static void	free_token_deep(t_token *t)
-// {
-// 	size_t	i;
+static int setup_fs(void)
+{
+	if (mkdir("_globtest", 0755) < 0 && access("_globtest", F_OK) != 0)
+		return -1;
 
-// 	t_arg_part *p, *n;
-// 	if (!t)
-// 		return ;
-// 	if (t->type == TOK_ARG)
-// 	{
-// 		p = t->u.arg.parts;
-// 		while (p)
-// 		{
-// 			n = p->next;
-// 			free(p->text);
-// 			free(p);
-// 			p = n;
-// 		}
-// 		free(t->u.arg.raw);
-// 		if (t->u.arg.items)
-// 		{
-// 			i = 0;
-// 			while (t->u.arg.items[i])
-// 				free(t->u.arg.items[i++]);
-// 			free(t->u.arg.items);
-// 		}
-// 	}
-// 	free(t);
-// }
+	touch("_globtest/a.c");
+	touch("_globtest/ab.c");
+	touch("_globtest/aaa.txt");
+	touch("_globtest/abc.txt");
+	touch("_globtest/b.txt");
+	touch("_globtest/note.md");
+	touch("_globtest/Makefile");
+	(void)mkdir("_globtest/dir", 0755);
+	touch("_globtest/dir/x.c");
+	return 0;
+}
 
-// static void	free_cmd_tokens(t_cmd *c)
-// {
-// 	size_t	i;
 
-// 	if (!c || !c->argv_tokens)
-// 		return ;
-// 	i = 0;
-// 	while (i < c->n_argv_tokens)
-// 	{
-// 		free_token_deep(c->argv_tokens[i]);
-// 		i++;
-// 	}
-// 	free(c->argv_tokens);
-// 	c->argv_tokens = NULL;
-// 	c->n_argv_tokens = 0;
-// }
+static void print_argv(const t_cmd *c)
+{
+	size_t i = 0;
+	printf("argc=%zu\n", c->argc);
+	while (i < (size_t)c->argc && c->argv && c->argv[i])
+	{
+		printf("argv[%zu]=\"%s\"\n", i, c->argv[i]);
+		i++;
+	}
+}
 
-// static void	free_argv(t_cmd *c)
-// {
-// 	size_t	i;
+static char **dup_argv_heap(const char *const *src, int argc)
+{
+	int i = 0;
+	char **v = (char **)malloc(sizeof(char *) * (argc + 1));
+	if (!v)
+		return NULL;
+	while (i < argc)
+	{
+		size_t len = strlen(src[i]);
+		v[i] = (char *)malloc(len + 1);
+		if (!v[i])
+		{
+			int k = 0;
+			while (k < i)
+			{
+				free(v[k]);
+				k++;
+			}
+			free(v);
+			return NULL;
+		}
+		memcpy(v[i], src[i], len + 1);
+		i++;
+	}
+	v[argc] = NULL;
+	return v;
+}
 
-// 	if (!c || !c->argv)
-// 		return ;
-// 	i = 0;
-// 	while (c->argv[i])
-// 	{
-// 		free(c->argv[i]);
-// 		i++;
-// 	}
-// 	free(c->argv);
-// 	c->argv = NULL;
-// 	c->argc = 0;
-// }
+static void cmd_init(t_cmd *c, char **argv, int argc)
+{
+	c->argv = argv;
+	c->argc = argc;
+	c->redirs = NULL;
+	c->n_redirs = 0;
+}
 
-// static void	dump_argv(const t_cmd *c)
-// {
-// 	size_t	i;
+static void run_case(const char *title, const char *const *argv_lit, int argc_in)
+{
+	t_cmd c;
+	int rc;
+	char **argv_heap = dup_argv_heap(argv_lit, argc_in);
 
-// 	printf("argc=%zu\n", c->argc);
-// 	i = 0;
-// 	while (i < c->argc)
-// 	{
-// 		printf("argv[%zu]=\"%s\"\n", i, (c->argv
-// 				&& c->argv[i]) ? c->argv[i] : "(null)");
-// 		i++;
-// 	}
-// }
+	printf("\n== %s ==\n", title);
+	if (!argv_heap)
+	{
+		perror("dup_argv_heap");
+		return;
+	}
+	cmd_init(&c, argv_heap, argc_in);
 
-// /* --- Case1: echo $HOME ~（正常系：3トークンのみ） --- */
-// static void	run_case1(void)
-// {
-// 	t_cmd	c;
-// 	int		rc;
+	rc = glob_expand_argv(&c);
+	printf("rc=%d\n", rc);
+	print_argv(&c);
+}
 
-// 	memset(&c, 0, sizeof(c));
-// 	env_table_set(env_table(), "HOME", "/home/testuser");
-// 	c.n_argv_tokens = 3;
-// 	c.argv_tokens = (t_token **)calloc(c.n_argv_tokens, sizeof(*c.argv_tokens));
-// 	if (!c.argv_tokens)
-// 		return ;
-// 	c.argv_tokens[0] = new_arg_token_simple("echo");
-// 	c.argv_tokens[1] = new_arg_token_simple("$HOME");
-// 	c.argv_tokens[2] = new_arg_token_simple("~");
-// 	reset_exit_status();
-// 	printf("== Case1: echo $HOME ~ ==\n");
-// 	rc = expansion(&c);
-// 	printf("rc=%d\n", rc);
-// 	printf("exit_status=%d\n", get_exit_status());
-// 	dump_argv(&c);
-// 	printf("\n");
-// 	free_argv(&c);
-// 	free_cmd_tokens(&c);
-// }
+int main(void)
+{
+	char cwd[1024];
 
-// /* --- Case2: redir word に $FOO（"aaa bbb"）→ 分裂で失敗 --- */
-// static void	run_case2(void)
-// {
-// 	t_cmd	c;
-// 	t_redir	r;
-// 	t_token	*w;
-// 	int		rc;
+	if (setup_fs() != 0)
+	{
+		perror("setup_fs");
+		return 1;
+	}
+	if (!getcwd(cwd, sizeof(cwd)))
+		return 1;
+	if (chdir("_globtest") != 0)
+	{
+		perror("chdir");
+		return 1;
+	}
 
-// 	memset(&c, 0, sizeof(c));
-// 	memset(&r, 0, sizeof(r));
-// 	env_table_set(env_table(), "FOO", "aaa bbb");
-// 	w = new_arg_token_simple("$FOO"); /* これだけで分裂トリガに十分 */
-// 	r.word = w;
-// 	c.redirs = &r;
-// 	c.n_redirs = 1;
-// 	reset_exit_status();
-// 	printf("== Case2: redir word = $FOO (\"aaa bbb\") -> expect failure ==\n");
-// 	rc = expansion(&c);
-// 	printf("rc=%d\n", rc);
-// 	printf("exit_status=%d\n", get_exit_status());
-// 	printf("redir.path=\"%s\"\n", r.path ? r.path : "(null)");
-// 	printf("argc=%zu\n\n", c.argc);
-// 	if (r.path)
-// 		free(r.path);
-// 	free_token_deep(w);
-// 	free_argv(&c);
-// 	free_cmd_tokens(&c);
-// }
+	/* Case 1: 基本（*.txt が複数に展開） */
+	const char *case1[] = { "echo", "*.txt", NULL };
+	run_case("basic: *.txt expands to multiple", case1, 2);
+
+	/* Case 2: 混在（リテラル + グロブ + リテラル） */
+	const char *case2[] = { "cat", "a*.c", "Makefile", NULL };
+	run_case("mixed: a*.c expands, others stay", case2, 3);
+
+	/* Case 3: マッチ0件（そのまま残す想定） */
+	const char *case3[] = { "echo", "zzz*.dat", NULL };
+	run_case("no match: keep literal", case3, 2);
+
+	/* Case 4: スラッシュ含み → 展開しない（should_glob_expand が弾く想定） */
+	const char *case4[] = { "echo", "dir/*", NULL };
+	run_case("has slash: do not expand", case4, 2);
+
+	/* Case 5: 複数スター（a*.*） */
+	const char *case5[] = { "echo", "a*.*", NULL };
+	run_case("multi-star pattern", case5, 2);
+
+	/* Case 6: /入り（./a*.*） */
+	const char *case6[] = { "echo", "./a*.*", NULL };
+	run_case("multi-star pattern", case6, 2);
+
+	/* 戻す（_globtest はそのまま残す） */
+	(void)chdir(cwd);
+	return 0;
+}
+
+
 
 // int	main(int argc, char **argv, char **envp)
 // {
-// 	t_env_table	*T;
+// 	t_env_table	*table;
 
-// 	T = env_table();
-// 	if (env_table_init(T, 128) == -1)
-// 		return (1);
-// 	/* 環境テーブルに投入 */
-// 	env_table_set(T, "HOME", "/home/tester");
-// 	env_table_set(T, "FOO", "a b");
-// 	env_table_set(T, "EMPTY", "");
-// 	// テスト開始
-// 	printf("=== expand_redirs: minimal (join-only) tests ===\n");
-// 	//
-// 	/* 1)"$FOO"→ "a b" */
-// 	run_case("> \"$FOO\"", tok_from_parts(part_new("$FOO", Q_DOUBLE, 1)));
-// 	//
-// 	/* 2)$FOO → "a b" */
-// 	run_case("> $FOO", tok_from_parts(part_new("$FOO", Q_NONE, 1)));
-// 	//
-// 	/* 3) $EMPTY  */
-// 	run_case("> $EMPTY", tok_from_parts(part_new("$EMPTY", Q_NONE, 1)));
-// 	//
-// 	/* 4) ~/x.txt */
-// 	run_case("> ~/x.txt", tok_from_parts(part_new("~/x.txt", Q_NONE, 0)));
-// 	//
-// 	/* 5) x~  */
-// 	run_case("> x~", tok_from_parts(part_new("x~", Q_NONE, 0)));
-// 	//
-// 	/* 6) "$HOME/$FOO"  → "/home/tester/a b" */
-// 	run_case("> \"$HOME/$FOO\"", tok_from_parts(chain(part_new("$HOME/",
-// 					Q_DOUBLE, 1), part_new("$FOO", Q_DOUBLE, 1))));
-// 	//
-// 	printf("=== done ===\n");
+// 	(void)argc;
+// 	(void)argv;
+// 	table = env_table();
+// 	if (env_table_init(table, 128) == -1)
+// 		return (print_syntax_error("env alloc error"), 1);
+// 	if (env_table_load_envp(table, envp) == -1)
+// 		return (print_syntax_error("env load error"), destroy_env_table(table),
+// 			1);
+// 	repl();
+// 	destroy_env_table(table);
 // 	return (0);
 // }
-
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-    (void)argv;
-	t_env_table *table;
-	table = env_table();
-	if (env_table_init(table, 128) == -1)
-		return(print_syntax_error("env alloc error"), 1);
-	if (env_table_load_envp(table, envp) == -1)
-		return(print_syntax_error("env load error"), destroy_env_table(table),
-		1);
-	repl();
-	destroy_env_table(table);
-	return (0);
-}

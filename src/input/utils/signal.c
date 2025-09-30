@@ -3,56 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:52:18 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 11:17:42 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/28 20:05:43 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static volatile sig_atomic_t g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 
-static void signal_handler(int signo) {
-    g_signal = signo;
-}
-
-static int on_readline_event(void) {
-    if (g_signal == SIGINT) {
-        g_signal = 0;
-        set_exit_status(130);
-
-        write(STDOUT_FILENO, "\n", 1);
-        rl_replace_line("", 0);
-        rl_on_new_line();
-        rl_redisplay();
-    }
-    return 0;
-}
-
-static void x_sigaction(int signo, struct sigaction *sa)
+void	signal_handler(int signo)
 {
-    if (sigaction(signo, sa, NULL) == -1) {
-        perror("sigaction");
-        exit(1);
-    }
+	g_signal = signo;
 }
 
-void install_signal_handlers(void)
+static int	on_readline_event(void)
 {
-    struct sigaction sa;
+	if (g_signal == SIGINT)
+	{
+		g_signal = 0;
+		set_exit_status(130);
+		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	return (0);
+}
 
-    rl_catch_signals = 0;
+void	x_sigaction(int signo, struct sigaction *sa)
+{
+	if (sigaction(signo, sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(1);
+	}
+}
 
-    ft_memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = signal_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    x_sigaction(SIGINT, &sa);
+void	install_signal_handlers(void)
+{
+	struct sigaction	sa;
 
-    sa.sa_handler = SIG_IGN;
-    x_sigaction(SIGQUIT, &sa);
-
-    rl_event_hook = on_readline_event;
+	rl_catch_signals = 0;
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	x_sigaction(SIGINT, &sa);
+	sa.sa_handler = SIG_IGN;
+	x_sigaction(SIGQUIT, &sa);
+	rl_event_hook = on_readline_event;
 }

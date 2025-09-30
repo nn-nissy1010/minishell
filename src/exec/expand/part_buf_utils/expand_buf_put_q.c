@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:54:33 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 12:55:49 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:20:18 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	buf_putn_q(t_buf *b, const void *p, size_t n, unsigned char q)
 	b->data[b->len] = '\0';
 	return (0);
 }
+
 int	buf_puts_q(t_buf *b, const char *s, unsigned char q)
 {
 	size_t	n;

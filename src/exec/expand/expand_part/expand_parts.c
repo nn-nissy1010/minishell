@@ -6,19 +6,33 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 21:46:13 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/25 16:11:21 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:06:22 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static unsigned char	quote_to_mask(t_quote_type q)
+unsigned char	quote_to_mask(t_quote_type q)
 {
 	if (q == Q_SINGLE)
 		return (Q_SINGLE);
 	if (q == Q_DOUBLE)
 		return (Q_DOUBLE);
 	return (Q_NONE);
+}
+
+unsigned char	quote_to_mask_and_mask_globs(char *s, t_quote_type q)
+{
+	if (q != Q_NONE && s)
+	{
+		while (*s)
+		{
+			if (*s == '*')
+				*s = '\a';
+			s++;
+		}
+	}
+	return (quote_to_mask(q));
 }
 
 int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
@@ -44,7 +58,7 @@ int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
 	buf_free(&tmp);
 	if (!u)
 		return (-1);
-	q = quote_to_mask(p->quote);
+	q = quote_to_mask_and_mask_globs(u, p->quote);
 	if (buf_puts_q(b, u, q) < 0)
 		return (free(u), -1);
 	return (free(u), 0);
