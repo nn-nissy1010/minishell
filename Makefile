@@ -6,7 +6,11 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
+<<<<<<< HEAD
+#    Updated: 2025/09/30 16:46:07 by nnishiya         ###   ########.fr        #
+=======
 #    Updated: 2025/09/30 20:35:56 by tkuwahat         ###   ########.fr        #
+>>>>>>> develop
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +43,7 @@ SRCS =src/main.c \
 	  src/laxer/scan/scan_quote_utils.c \
 	  src/laxer/scan/scan_unquote.c \
 	  src/laxer/scan/scan_symbol_utils.c \
+	  src/laxer/scan/scan_param.c \
 	  src/parser/parser.c \
 	  src/parser/parser_utils.c \
 	  src/parser/parse_x.c \

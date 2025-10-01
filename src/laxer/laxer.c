@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 19:36:28 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 15:50:16 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:43:58 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,24 @@ static t_token *scan_arg(const char **pp)
     t_arg_part *parts;
     t_arg_part *part;
     t_token *t;
-    
+
     p = *pp;
     parts = NULL;
     while (*p && !ft_isspace((unsigned char)*p) && !ft_strchr("|&<>()", *p))
     {
         if (*p == '\'' || *p == '"')
             part = scan_quoted_part(&p);
+        else if (*p == '$')
+            part = scan_param_part(&p);
         else
             part = scan_unquoted_part(&p);
-        if (!part) {
-            free_parts(parts);
-            return NULL;
-        }
+        if (!part)
+            return (free_parts(parts), NULL);
         append_part(&parts, part);
     }
-
     t = new_token(TOK_ARG, NULL);
+    if (!t)
+        return (free_parts(parts), NULL);
     t->u.arg.parts = parts;
     finalize_arg(&t->u.arg);
     *pp = p;

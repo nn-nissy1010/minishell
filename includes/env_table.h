@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_table.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:19:26 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 21:34:45 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:49:43 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int				env_table_put_entry(t_env_table *t, const char *entry);
 t_env_pair		*env_table_find(t_env_table *t, const char *key,
 					size_t *first_tomb);
 int				parse_entry(const char *entry, t_env_pair *out);
+int 			is_valid_env_key(const char *key);
+
 
 int				get_env_table(void);
 int				update_env_table(const char *key, const char *value);

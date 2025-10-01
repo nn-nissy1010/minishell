@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   read_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:55:33 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 11:18:30 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:03:09 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static char *append_line(char *acc, const char *next)
 
 char *read_full_command_line(char *first_line)
 {
-    char *acc = first_line;
+    char *acc = ft_strdup(first_line);
+    free(first_line);
 
     while (1) {
         t_more need = need_more_input(acc);
@@ -63,11 +64,14 @@ char *read_full_command_line(char *first_line)
             free(acc);
             if (handle_unexpected_eof(need) == -1)
                 return NULL;
+            return NULL;
         }
 
-        acc = append_line(acc, next);
+        char *tmp = append_line(acc, next);
+        free(acc);
         free(next);
-        if (!acc)
+        if (!tmp)
             return NULL;
+        acc = tmp;
     }
 }

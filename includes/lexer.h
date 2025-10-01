@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/28 22:25:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:23:13 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ t_arg_part				*new_part_copy(const char *s, size_t len,
 							const t_arg_part *proto);
 t_arg_part				*scan_quoted_part(const char **pp);
 t_arg_part				*scan_unquoted_part(const char **pp);
+t_arg_part				*scan_param_part(const char **pp);
 
 const char				*scan_pipe(const char *p, t_token **t);
 const char				*scan_and(const char *p, t_token **t);

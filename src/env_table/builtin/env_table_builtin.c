@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 10:40:43 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/19 16:12:22 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:50:34 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@ int update_env_table(const char *key, const char *value)
 {
     char *entry;
     int ret;
-
     t_env_table *table;
-	table = env_table();
 
+	table = env_table();
     if (!key || !value)
         return (1);
-
+    if (!is_valid_env_key(key))
+    {
+        write(STDERR_FILENO, "minishell: not a valid identifier\n", 34);
+        return (1);
+    }
     entry = ft_strjoin_3word(ft_strdup(key), "=", value);
     if (!entry)
         return (1);
