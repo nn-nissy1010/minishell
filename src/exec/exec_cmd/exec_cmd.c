@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 01:58:34 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:09:37 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ static void	close_heredoc_fds(t_cmd *c)
 		i++;
 	}
 }
-
-
 
 static int	end_with_error(t_cmd *c, int status_set)
 {
@@ -90,7 +88,7 @@ static void	free_strarray(char **v)
 
 void	destroy_cmd_min(t_node *node)
 {
-	int	i;
+	size_t	i;
 
 	if (!node)
 		return;

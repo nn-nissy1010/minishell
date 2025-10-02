@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 22:01:48 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:57:53 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,39 @@ int	run_builtin_parent(t_cmd *c)
 	return (-1);
 }
 
-static int	parent_finalize(pid_t pid, int saved_in, int saved_out)
+int	wait_and_status(pid_t pid)
 {
-	int	status;
+	int   st;
+	int   rc;
 
-	restore_stdio(saved_in, saved_out);
-	status = wait_and_status(pid);
-	set_exit_status(status);
-	return (0);
+	while ((rc = waitpid(pid, &st, 0)) < 0)
+	{
+		if (errno == EINTR)
+			continue;
+		return 1;
+	}
+	if (WIFEXITED(st))
+		return WEXITSTATUS(st);
+	if (WIFSIGNALED(st))
+	{
+		int sig;sig = WTERMSIG(st);
+	
+		if (sig == SIGINT)    
+		  write(1, "\n", 1);
+		else if (sig == SIGQUIT)
+		 write(1, "Quit: 3\n", 8);
+		return 128 + sig;
+	}
+	return 1; 
+}
+
+int parent_finalize_simple(pid_t pid)
+{
+    int status;
+
+    status = wait_and_status(pid);
+    set_exit_status(status);
+    return 0;
 }
 
 int	run_parent_builtin_flow(t_cmd *c)

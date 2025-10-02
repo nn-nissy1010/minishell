@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 10:28:34 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:24:37 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,10 @@ void							destroy_cmd_min(t_node *node);
 
 /*exec_cmd_parent*/
 int								run_parent_builtin_flow(t_cmd *c);
+int								wait_and_status(pid_t pid);
+int 							parent_finalize_simple(pid_t pid);
 
+void							buf_cat(char *buf, size_t *pn, size_t cap, const char *s);
 
 /*exec_cmd_redirect*/
 int								redirect_only_flow(t_cmd *c);
@@ -175,5 +178,16 @@ void							exec_direct(char **av);
 void							free_env_array(char **envp);
 const char						*exec_errmsg(int err);
 void							fail_exec(const char *path, int err);
+
+
+/*exec_cmd_builtin*/
+int								bi_cd(char **av);
+int								bi_echo(char **av);
+int								bi_env(char **av);
+int								bi_exit(char **av);
+int								bi_export(char **av);
+int								bi_pwd(char **av);
+int								bi_unset(char **av);
+int								is_valid_ident(const char *s);
 
 #endif

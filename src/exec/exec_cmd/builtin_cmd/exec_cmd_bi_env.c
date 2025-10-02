@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 01:44:26 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 00:30:11 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:19:37 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	bi_env(char **av)
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		return (127);
 	}
-	envp = get_env_table_as_array();
+	envp = env_table_to_envp();
 	if (!envp)
 	{
 		write(STDERR_FILENO, "minishell: env: malloc failed\n", 30);

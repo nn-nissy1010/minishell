@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:28:56 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:30:24 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:47:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	search_and_exec(char **av)
 
 	if (!av || !av[0])
 		exit(0);
-	envp = get_env_table_as_array();
+	envp = env_table_to_envp();
 	if (!envp)
 	{
 		err3("minishell: ", "malloc", ": failed\n");

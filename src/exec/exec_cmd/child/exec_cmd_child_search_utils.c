@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd_child_search_utilis.c                     :+:      :+:    :+:   */
+/*   exec_cmd_child_search_utils.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:17:42 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:29:10 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:24:01 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	buf_cat(char *buf, size_t *pn, size_t cap, const char *s)
+void	buf_cat(char *buf, size_t *pn, size_t cap, const char *s)
 {
 	size_t	avail;
 	size_t	w;

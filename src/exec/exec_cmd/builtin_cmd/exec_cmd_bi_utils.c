@@ -6,13 +6,13 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 21:04:00 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 21:55:18 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:53:18 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_valid_ident(const char *s)
+int	is_valid_ident(const char *s)
 {
 	unsigned char	c;
 

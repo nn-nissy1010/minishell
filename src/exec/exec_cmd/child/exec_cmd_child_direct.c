@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:05:20 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:24:16 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:53:55 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ const char	*exec_errmsg(int err)
 	return (": exec error\n");
 }
 
-static void	fail_exec(const char *path, int err)
+void	fail_exec(const char *path, int err)
 {
 	err3("minishell: ", path, exec_errmsg(err));
 	if (err == ENOENT)
@@ -74,7 +74,7 @@ void	exec_direct(char **av)
 		err3("minishell: ", av[0], ": is a directory\n");
 		exit(126);
 	}
-	envp = get_env_table_as_array();
+	envp =env_table_to_envp();
 	if (!envp)
 	{
 		err3("minishell: ", "malloc", ": failed\n");
