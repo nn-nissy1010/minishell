@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 17:50:47 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:28:52 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,4 +202,5 @@ int								waitpid_retry(pid_t pid, int *st);
 void							parent_unmask_sigint(const struct sigaction *old);
 void							reset_child_signals(void);
 int								status_to_exitcode(int st);
+
 #endif

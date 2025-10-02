@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 16:29:53 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:29:16 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_probe_flags
 	int found_noexec; 
 	
 }	t_probe_flags;
+
 
 typedef enum e_pipe_role
 {

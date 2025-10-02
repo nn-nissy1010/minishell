@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 14:08:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:32:33 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,23 @@ int	exec_cmd(t_node *node, t_exec_ctx *ctx)
 		return (-1);
 	return (exec_single(&node->as.cmd, ctx));
 }
+
+
+static void	free_strarray(char **v)
+{
+	size_t	i;
+
+	if (!v)
+		return;
+	i = 0;
+	while (v[i])
+	{
+		free(v[i]);
+		i++;
+	}
+	free(v);
+}
+
 
 t_func	*v_cmd(void)
 {

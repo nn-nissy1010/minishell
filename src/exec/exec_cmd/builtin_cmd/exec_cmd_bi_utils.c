@@ -6,12 +6,17 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 21:04:00 by tkuwahat          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/10/02 14:05:06 by tkuwahat         ###   ########.fr       */
+=======
+/*   Updated: 2025/10/02 10:53:18 by tkuwahat         ###   ########.fr       */
+>>>>>>> develop
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD
 int	print_line(int fd, const char *s)
 {
 	size_t	len;
@@ -26,6 +31,8 @@ int	print_line(int fd, const char *s)
 	return (0);
 }
 
+=======
+>>>>>>> develop
 int	is_valid_ident(const char *s)
 {
 	unsigned char	c;
