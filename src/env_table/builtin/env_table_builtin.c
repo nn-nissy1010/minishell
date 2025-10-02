@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 10:40:43 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 16:50:34 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:12:51 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,25 @@ int unset_env_table(const char *arg)
         return (0);
     else
         return (1);
+}
+
+char **env_table_to_envp(void)
+{
+    t_env_table *t;
+    size_t count;
+    t_envp_builder b;
+
+    t = env_table();
+    count = 0;
+    if (!t)
+        return (NULL);
+    env_table_foreach(t, count_cb, &count);
+    b.envp = malloc(sizeof(char *) * (count + 1));
+    if (!b.envp)
+        return (NULL);
+    b.n = 0;
+    b.cap = count;
+    env_table_foreach(t, fill_cb, &b);
+    b.envp[b.n] = NULL;
+    return (b.envp);
 }
