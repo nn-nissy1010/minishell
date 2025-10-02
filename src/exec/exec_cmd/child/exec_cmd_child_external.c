@@ -1,41 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_buf_emit.c                                  :+:      :+:    :+:   */
+/*   exec_cmd_child_external.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 15:13:23 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/23 16:50:09 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/30 22:56:31 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/10/02 10:10:42 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	emit_int_itoa(t_buf *b, int v)
+int	has_slash(const char *s)
 {
-	char	*s;
-	int		r;
-
-	s = ft_itoa(v);
 	if (!s)
-		return (-1);
-	r = buf_puts(b, s);
-	free(s);
-	return (r);
+		return (0);
+	if (ft_strchr(s, '/'))
+		return (1);
+	return (0);
 }
 
-int	emit_status(t_buf *b)
+void	run_external_in_child(t_cmd *c)
 {
-	return (emit_int_itoa(b, get_exit_status()));
-}
-
-int	emit_env(t_buf *b, const char *name)
-{
-	const char	*v;
-
-	v = search_env_table(name);
-	if (!v)
-		v = "";
-	return (buf_puts(b, v));
+	if (!c || !c->argv || !c->argv[0])
+		exit(0);
+	if (has_slash(c->argv[0]))
+		exec_direct(c->argv);
+	else
+		search_and_exec(c->argv);
+	exit(127);
 }

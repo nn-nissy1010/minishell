@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 22:48:58 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:51:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_token		t_token;
 typedef struct s_redir
 {
 	int						fd;
-	int          			hdoc_fd;
+	int						hdoc_fd;
 	t_tokentype				kind;
 	t_token					*word;
 	int						quoted_heredoc;
@@ -89,6 +89,14 @@ typedef struct s_node
 		} subshell;
 	} as;
 }							t_node;
+
+typedef struct s_probe_flags
+{
+	int found_dir;     
+	int found_noexec; 
+	
+}	t_probe_flags;
+
 
 /* ast_exec / ast_destroy */
 int							ast_exec(t_node *node, t_exec_ctx *ctx);

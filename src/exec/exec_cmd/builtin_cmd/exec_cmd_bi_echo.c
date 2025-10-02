@@ -1,33 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_builtin.c                                     :+:      :+:    :+:   */
+/*   exec_cmd_bi_echo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 01:44:26 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 10:18:24 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 00:26:21 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
-
-int run_builtin_parent(t_cmd *c)
+static int	skip_n_flags(char **av, int *pi)
 {
-    char **av;
+	int	i;
+	int	nflag;
+	int	j;
 
-    if (!c || !c->argv || !c->argv[0])
-        return 0;
-    av = c->argv;
-    if (ft_strcmp(av[0], "cd") == 0)
-        return bi_cd(av);          
-    if (ft_strcmp(av[0], "export") == 0)
-        return bi_export(av);     
-    if (ft_strcmp(av[0], "unset") == 0)
-        return bi_unset(av);       
-    if (ft_strcmp(av[0], "exit") == 0)
-        return bi_exit(av);        
-    return -1;
+	i = 1;
+	nflag = 0;
+	while (av[i] && av[i][0] == '-' && av[i][1] == 'n')
+	{
+		j = 1;
+		while (av[i][j] == 'n')
+			j++;
+		if (av[i][j] != '\0')
+			break ;
+		nflag = 1;
+		i++;
+	}
+	*pi = i;
+	return (nflag);
 }
 
+int	bi_echo(char **av)
+{
+	int	i;
+	int	nflag;
+
+	if (!av)
+		return (0);
+	nflag = skip_n_flags(av, &i);
+	while (av[i])
+	{
+		write(STDOUT_FILENO, av[i], ft_strlen(av[i]));
+		if (av[i + 1])
+			write(STDOUT_FILENO, " ", 1);
+		i++;
+	}
+	if (!nflag)
+		write(STDOUT_FILENO, "\n", 1);
+	return (0);
+}

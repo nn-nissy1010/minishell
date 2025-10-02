@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 20:38:16 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:24:37 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,59 @@ void							unmask_globs(char *s);
 int 							expand_glob_pattern(const char *pattern, t_argbuf *out);
 
 void							sort_strptrs(char **v, size_t n);
+
+/*exec_cmd_call*/
+int								prepare_cmd_for_exec(t_cmd *c);
+int								exec_single(t_cmd *c, t_exec_ctx *ctx);
+
+int								exec_cmd(t_node *node, t_exec_ctx *ctx);
+void							destroy_cmd_min(t_node *node);
+
+/*exec_cmd_parent*/
+int								run_parent_builtin_flow(t_cmd *c);
+int								wait_and_status(pid_t pid);
+int 							parent_finalize_simple(pid_t pid);
+
+void							buf_cat(char *buf, size_t *pn, size_t cap, const char *s);
+
+/*exec_cmd_redirect*/
+int								redirect_only_flow(t_cmd *c);
+int								apply_redirs(t_redir *r, size_t n, int *saved_in, int *saved_out);
+int								apply_one_redir(t_redir *r);
+int								target_fd(const t_redir *r);
+void							rollback_and_invalidate(int *saved_in, int *saved_out);
+void							pre_backup_cleanup(int *saved_in, int *saved_out);
+void							restore_stdio(int saved_in, int saved_out);
+int								pre_backup(const t_redir *r, size_t n, int *saved_in, int *saved_out);
+
+/*exec_cmd_child*/
+pid_t							spawn_child(t_cmd *c);
+void							child_main_after_fork(t_cmd *c);
+void							set_child_signals_default(void);
+int								is_builtin_any(const t_cmd *c);
+int								run_builtin_child(t_cmd *c);
+void							run_external_in_child(t_cmd *c);
+int								has_slash(const char *s);
+void							search_and_exec(char **av);
+void							probe_dir_entry(const char *dir, char **av, char **envp,t_probe_flags *f);
+int								is_directory(const char *path);
+void							err3(const char *prefix, const char *subject, const char *message);
+void							exit_enoexec(const char *cmd);
+void							finalize_path_search(const char *cmd, const t_probe_flags *f);
+void							exec_direct(char **av);
+void							free_env_array(char **envp);
+const char						*exec_errmsg(int err);
+void							fail_exec(const char *path, int err);
+
+
+/*exec_cmd_builtin*/
+int								bi_cd(char **av);
+int								bi_echo(char **av);
+int								bi_env(char **av);
+int								bi_exit(char **av);
+int								bi_export(char **av);
+int								bi_pwd(char **av);
+int								bi_unset(char **av);
+int								is_valid_ident(const char *s);
 
 #endif

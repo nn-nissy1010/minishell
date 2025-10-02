@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/02 11:02:08 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/10/02 13:05:36 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,29 @@ SRCS =src/main.c \
 	  src/parser/parse_redir.c \
 	  src/parser/operate_ast.c \
 	  src/exec/exec_ast.c \
-	  src/exec/expand/expand.c \
+	  src/exec/exec_cmd/exec_cmd_check_fd.c \
+	  src/exec/exec_cmd/exec_cmd_single.c \
+	  src/exec/exec_cmd/exec_cmd.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_cd.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_echo.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_env.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_exit.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_export.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_pwd.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_unset.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_utils.c \
+	  src/exec/exec_cmd/child/exec_cmd_child_direct.c \
+	  src/exec/exec_cmd/child/exec_cmd_child_external.c \
+	  src/exec/exec_cmd/child/exec_cmd_child_main.c \
+	  src/exec/exec_cmd/child/exec_cmd_child_search_utils.c \
+	  src/exec/exec_cmd/child/exec_cmd_child_search.c \
+	  src/exec/exec_cmd/child/exec_cmd_child.c \
+	  src/exec/exec_cmd/child/exec_error.c \
+	  src/exec/exec_cmd/parent/exec_cmd_parent_main.c \
+	  src/exec/exec_cmd/redirect/exec_cmd_backup_fd.c \
+	  src/exec/exec_cmd/redirect/exec_cmd_redir_main.c \
+	  src/exec/exec_cmd/redirect/exec_cmd_redir_one.c \
+ 	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_build.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_clean.c \

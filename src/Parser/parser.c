@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 20:04:48 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 11:24:40 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:05:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ t_node *parse_simple_command(t_parser *p)
 
     node = new_node(ND_COMMAND);
     if (!node)
-        return (NULL);
-
+        return NULL;
+    node->fn = v_cmd(); 
     init_simple_command_node(node);
 
     if (parse_command_body(node, p) < 0)
