@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:28:56 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 00:03:40 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:30:24 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*dup_path_or_exit(const char *cmd)
 	return (dup);
 }
 
-static void	finalize_path_search(const char *cmd, const t_probe_flags *f)
+void	finalize_path_search(const char *cmd, const t_probe_flags *f)
 {
 	if (f->found_dir)
 	{
@@ -76,7 +76,7 @@ static void	scan_path_and_try(char *dup, char **av, char **envp,
 	}
 }
 
-static void	search_and_exec(char **av)
+void	search_and_exec(char **av)
 {
 	char			*dup;
 	char			*orig;

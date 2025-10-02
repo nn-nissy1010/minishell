@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:17:42 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 00:04:58 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:29:10 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*path_join(const char *dir, const char *cmd)
 	return (p);
 }
 
-static void	probe_dir_entry(const char *dir, char **av, char **envp,
+void	probe_dir_entry(const char *dir, char **av, char **envp,
 		t_probe_flags *f)
 {
 	char	*full;

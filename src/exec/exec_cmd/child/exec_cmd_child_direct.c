@@ -6,13 +6,13 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:05:20 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 23:53:04 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:24:16 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_directory(const char *path)
+int	is_directory(const char *path)
 {
 	struct stat	st;
 
@@ -25,7 +25,7 @@ static int	is_directory(const char *path)
 	return (0);
 }
 
-static const char	*exec_errmsg(int err)
+const char	*exec_errmsg(int err)
 {
 	if (err == ENOENT)
 		return (": No such file or directory\n");

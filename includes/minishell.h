@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 10:09:17 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:28:34 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,16 @@ void							set_child_signals_default(void);
 int								is_builtin_any(const t_cmd *c);
 int								run_builtin_child(t_cmd *c);
 void							run_external_in_child(t_cmd *c);
+int								has_slash(const char *s);
+void							search_and_exec(char **av);
+void							probe_dir_entry(const char *dir, char **av, char **envp,t_probe_flags *f);
+int								is_directory(const char *path);
+void							err3(const char *prefix, const char *subject, const char *message);
+void							exit_enoexec(const char *cmd);
+void							finalize_path_search(const char *cmd, const t_probe_flags *f);
+void							exec_direct(char **av);
+void							free_env_array(char **envp);
+const char						*exec_errmsg(int err);
+void							fail_exec(const char *path, int err);
 
 #endif
