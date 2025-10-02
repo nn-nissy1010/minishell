@@ -3,14 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2025/09/30 16:46:07 by nnishiya         ###   ########.fr        #
-=======
-#    Updated: 2025/09/30 20:35:56 by tkuwahat         ###   ########.fr        #
->>>>>>> develop
+#    Updated: 2025/10/02 10:21:38 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +30,7 @@ SRCS =src/main.c \
 	  src/env_table/builtin/env_table_builtin.c \
 	  src/env_table/builtin/env_table_builtin_utils.c \
   	  src/env_table/builtin/env_table_builtin_utils2.c \
+	  src/env_table/builtin/env_table_builtin_utils3.c \
 	  src/laxer/laxer.c \
 	  src/laxer/token.c \
 	  src/laxer/buffer.c \
@@ -74,42 +71,43 @@ SRCS =src/main.c \
 	  src/exec/expand/wildcards/wildcards.c \
 	  src/exec/expand/wildcards/wildcards_dir.c \
 
-	
+OBJS        = $(SRCS:.c=.o)
 
+# --- libft ---
+LIBFT_DIR   = libft
+LIBFT_LIB   = $(LIBFT_DIR)/libft.a
 
+# --- compiler ---
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror
+CPPFLAGS    = -I includes -I . -I $(LIBFT_DIR)
+LDFLAGS     = -lreadline -lhistory
 
+RM          = rm -f
 
-OBJS = $(SRCS:.c=.o)
+all: $(NAME)
 
-LIBFT_DIR =libft
-LIBFT_LIB =$(LIBFT_DIR)/libft.a
-
-CC = cc
-CFLAGS = -Wall -Werror -Wextra
-CPPFLAGS = -I includes -I . -I $(LIBFT_DIR)
-LDFLAGS = -lreadline -lhistory
-
-RM = rm -f
-
-all : $(NAME)
-
+# build libft first
 $(LIBFT_LIB):
-		$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME):$(OBJS) $(LIBFT_LIB)
-		$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LIB)
+# build minishell
+$(NAME): $(LIBFT_LIB) $(OBJS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LIB) $(LDFLAGS)
 
-%.o:%.c
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+# compile .c -> .o
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
+# clean
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJS)
 
-fclean:clean
+fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 
-re:fclean all
+re: fclean all
 
 .PHONY: all clean fclean re

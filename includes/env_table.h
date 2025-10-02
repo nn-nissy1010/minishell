@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:19:26 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 16:49:43 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:18:03 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef struct s_find_result
 	int			found;
 }				t_find_result;
 
+typedef struct s_envp_builder
+{
+    char  **envp;
+    size_t  n;
+    size_t  cap;
+}   t_envp_builder;
+
 typedef void	(*t_env_iter_cb)(const char *k, const char *v, void *ud);
 
 t_env_table		*env_table(void);
@@ -63,6 +70,8 @@ t_env_pair		*env_table_find(t_env_table *t, const char *key,
 					size_t *first_tomb);
 int				parse_entry(const char *entry, t_env_pair *out);
 int 			is_valid_env_key(const char *key);
+void 			count_cb(const char *k, const char *v, void *ud);
+void 			fill_cb(const char *k, const char *v, void *ud);
 
 
 int				get_env_table(void);
@@ -70,5 +79,6 @@ int				update_env_table(const char *key, const char *value);
 int				unset_env_table(const char *arg);
 void			destroy_env_table(t_env_table *t);
 const char		*search_env_table(const char *key);
+char **env_table_to_envp(void);
 
 #endif
