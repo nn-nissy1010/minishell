@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:48:15 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 16:49:07 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:25:21 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_token *consume(t_parser *p)
     tok = p->cur;
     if (p->cur)
         p->cur = p->cur->next;
-    return tok;
+    return (tok);
 }
 
 t_node *new_node(t_ntype type)
@@ -32,9 +32,9 @@ t_node *new_node(t_ntype type)
 
     n = malloc(sizeof(*n));
     if (!n)
-        return NULL;
+        return (NULL);
     n->type = type;
     n->fn = NULL; // TODO: 後で exec/destroy テーブルを差し込む
     ft_memset(&n->as, 0, sizeof(n->as));
-    return n;
+    return (n);
 }

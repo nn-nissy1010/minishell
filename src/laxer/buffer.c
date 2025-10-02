@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:40:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 16:13:47 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:26:53 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ char *append_char(char *buf, size_t *cap, size_t *len, char ch)
         *cap = newcap;
     }
     buf[(*len)++] = ch;
-    return buf;
+    return (buf);
 }

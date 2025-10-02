@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:50:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 17:38:00 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:26:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,18 @@ t_node *parse_and_or(t_parser *p)
         consume(p);
         right = parse_pipeline(p);
         if (!right) 
-        {
-            destroy_ast(left);
-            return NULL;
-        }
-        node = new_node(op == TOK_AND_IF ? ND_AND_IF : ND_OR_IF);
-        if (!node) {
-            perror("malloc");
-            destroy_ast(left);
-            destroy_ast(right);
-            return NULL;
-        }
+            return (destroy_ast(left), NULL);
+        if (op == TOK_AND_IF)
+            node = new_node(ND_AND_IF);
+        else
+            node = new_node(ND_OR_IF);
+        if (!node)
+            return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
         node->as.bin.left = left;
         node->as.bin.right = right;
         left = node;
     }
-    return left;
+    return (left);
 }
 
 t_node *parse_pipeline(t_parser *p)
@@ -57,28 +53,24 @@ t_node *parse_pipeline(t_parser *p)
 
     left = parse_command(p);
     if (!left)
-        return NULL;
+        return (NULL);
     while (match(p, TOK_PIPE))
     {
         consume(p);
         right = parse_command(p);
-        if (!right) {
-            fprintf(stderr, "syntax error near unexpected token '|'\n");
-            destroy_ast(left);
-            return NULL;
+        if (!right)
+        {
+            write(STDERR_FILENO, "syntax error near unexpected token '|'\n", 39);
+            return (destroy_ast(left), NULL);
         }
         node = new_node(ND_PIPE);
-        if (!node) {
-            perror("malloc");
-            destroy_ast(left);
-            destroy_ast(right);
-            return NULL;
-        }
+        if (!node)
+            return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
         node->as.bin.left = left;
         node->as.bin.right = right;
         left = node;
     }
-    return left;
+    return (left);
 }
 
 t_node *parse_command(t_parser *p)
@@ -90,7 +82,7 @@ t_node *parse_command(t_parser *p)
         || match(p, TOK_REDIR_OUT) || match(p, TOK_REDIR_APPEND)
         || match(p, TOK_HEREDOC))
         return parse_simple_command(p);
-    return NULL;
+    return (NULL);
 }
 
 t_node *parse_subshell(t_parser *p)
@@ -102,22 +94,22 @@ t_node *parse_subshell(t_parser *p)
     body = parse_expr(p);
     if (!body)
     {
-        fprintf(stderr, "syntax error: invalid subshell body\n");
-        return NULL;
+        write(STDERR_FILENO, "syntax error: invalid subshell body\n", 36);
+        return (NULL);
     }
     if (!match(p, TOK_RPAR))
     {
-        fprintf(stderr, "syntax error: expected ')'\n");
+        write(STDERR_FILENO, "syntax error: expected ')'\n", 27);
         destroy_ast(body);
-        return NULL;
+        return (NULL);
     }
     consume(p);
     node = new_node(ND_SUBSHELL);
-    if (!node) {
+    if (!node) 
+    {
         perror("malloc");
-        destroy_ast(body);
-        return NULL;
+        return (destroy_ast(body), NULL);
     }
     node->as.subshell.body = body;
-    return node;
+    return (node);
 }

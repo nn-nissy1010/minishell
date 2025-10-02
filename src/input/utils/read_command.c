@@ -6,72 +6,59 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:55:33 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 18:03:09 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:00:56 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static const char *get_ps2_prompt(t_more need)
+static void try_add_history(const char *line)
 {
-    if (need == MORE_OP)
-        return "> ";
-    if (need == MORE_QUOTE_S)
-        return "quote> ";
-    if (need == MORE_QUOTE_D)
-        return "dquote> ";
-    return "";
+    if (*line && !is_blank_line(line))
+        add_history(line);
 }
 
-static int handle_unexpected_eof(t_more need)
+static char *handle_eof_case(char *acc, t_more need)
 {
-    if (need == MORE_QUOTE_S)
-        print_syntax_error("unexpected EOF while looking for matching '\''");
-    else if (need == MORE_QUOTE_D)
-        print_syntax_error("unexpected EOF while looking for matching '\"'");
-    else
-        print_syntax_error("syntax error near unexpected token `newline'");
-    set_exit_status(258);
-    return -1;
+    free(acc);
+    if (handle_unexpected_eof(need) == -1)
+        return NULL;
+    return NULL;
 }
 
-static char *append_line(char *acc, const char *next)
+static char *read_and_append_line(char *acc, t_more need)
 {
-    char *new_acc = ft_strjoin_3word(acc, "\n", next);
-    if (!new_acc) {
-        print_syntax_error("allocation error");
-        set_exit_status(1);
-    }
-    return new_acc;
+    const char *ps2;
+    char *next;
+    char *tmp;
+    
+    ps2= get_ps2_prompt(need);
+    next = readline(ps2);
+    if (!next)
+        return handle_eof_case(acc, need);
+    tmp = append_line(acc, next);
+    free(acc);
+    free(next);
+    return tmp;
 }
 
 char *read_full_command_line(char *first_line)
 {
-    char *acc = ft_strdup(first_line);
+    t_more need;
+    char *acc;
+    
+    acc = ft_strdup(first_line);
     free(first_line);
-
-    while (1) {
-        t_more need = need_more_input(acc);
-        if (need == MORE_NONE) {
-            if (*acc && !is_blank_line(acc))
-                add_history(acc);
+    while (1)
+    {
+        need = need_more_input(acc);
+        if (need == MORE_NONE)
+        {
+            try_add_history(acc);
             return acc;
         }
-
-        const char *ps2 = get_ps2_prompt(need);
-        char *next = readline(ps2);
-        if (!next) {
-            free(acc);
-            if (handle_unexpected_eof(need) == -1)
-                return NULL;
+        acc = read_and_append_line(acc, need);
+        if (!acc)
             return NULL;
-        }
-
-        char *tmp = append_line(acc, next);
-        free(acc);
-        free(next);
-        if (!tmp)
-            return NULL;
-        acc = tmp;
     }
 }

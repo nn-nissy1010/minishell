@@ -6,13 +6,14 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 13:21:15 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 11:07:52 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:27 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int pair_set(t_env_pair *p, const char *k, const char *v){
+int pair_set(t_env_pair *p, const char *k, const char *v)
+{
     char *nk;
     char *nv;
     
@@ -20,7 +21,8 @@ int pair_set(t_env_pair *p, const char *k, const char *v){
     if(!nk)
         return -1;
     nv = NULL;
-    if(v){ 
+    if(v)
+    { 
         nv=ft_strdup(v);
         if(!nv)
             return (free(nk), -1);
@@ -30,7 +32,7 @@ int pair_set(t_env_pair *p, const char *k, const char *v){
     p->key=nk;
     p->val=nv;
     p->tomb=0;
-    return 0;
+    return (0);
 }
 
 int env_table_set(t_env_table *t, const char *key, const char *val)

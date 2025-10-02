@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:58:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 16:14:14 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:27:06 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ t_arg_part *new_part_copy(const char *s, size_t len, const t_arg_part *proto)
 
     p = malloc(sizeof(*p));
     if (!p)
-        return NULL;
+        return (NULL);
     p->text = ft_strndup(s, len);
     if (!p->text) {
         free(p);
-        return NULL;
+        return (NULL);
     }
     p->quote = proto->quote;
     p->has_param = proto->has_param;
     p->has_unq_glob = proto->has_unq_glob;
     p->next = NULL;
-    return p;
+    return (p);
 }
 
 void append_part(t_arg_part **head, t_arg_part *node)
