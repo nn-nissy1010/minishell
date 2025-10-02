@@ -6,7 +6,7 @@
 #    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/02 10:21:38 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/10/02 11:02:08 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS =src/main.c \
 	  src/utils/utils.c \
       src/input/repl.c \
 	  src/input/utils/read_command.c \
+	  src/input/utils/read_command_utils.c \
 	  src/input/utils/signal.c \
 	  src/input/utils/syntax_check.c \
 	  src/input/utils/syntax_check_utils.c \

@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 10:36:06 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/18 10:59:27 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:51 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ unsigned long fnv1a(const char *s)
         hash *= 1099511628211ULL;
         s++;
     }
-    return (unsigned long)hash;
+    return ((unsigned long)hash);
 }
 
 static int move_entry(t_env_table *t, t_env_pair *p)
