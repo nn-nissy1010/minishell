@@ -6,12 +6,11 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:15:50 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:12:23 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:16:20 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	run_builtin_child(t_cmd *c)
 {
@@ -40,16 +39,18 @@ int	run_builtin_child(t_cmd *c)
 int	is_builtin_any(const t_cmd *c)
 {
 	char	*b;
-	size_t	i;
 
-	char *const names[] = {"cd", "export", "unset", "exit", "echo", "pwd",
-		"env", NULL};
 	if (!c || !c->argv || !c->argv[0])
 		return (0);
 	b = c->argv[0];
-	for (i = 0; names[i]; i++)
-		if (ft_strcmp(b, names[i]) == 0)
-			return (1);
+	if (ft_strcmp(b, "cd") == 0
+		|| ft_strcmp(b, "export") == 0
+		|| ft_strcmp(b, "unset") == 0
+		|| ft_strcmp(b, "exit") == 0
+		|| ft_strcmp(b, "echo") == 0
+		|| ft_strcmp(b, "pwd") == 0
+		|| ft_strcmp(b, "env") == 0)
+		return (1);
 	return (0);
 }
 

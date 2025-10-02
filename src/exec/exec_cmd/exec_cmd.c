@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 11:09:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:08:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,61 +68,6 @@ int	exec_cmd(t_node *node, t_exec_ctx *ctx)
 	if (prepare_cmd_for_exec(&node->as.cmd) != 0)
 		return (-1);
 	return (exec_single(&node->as.cmd, ctx));
-}
-
-
-static void	free_strarray(char **v)
-{
-	size_t	i;
-
-	if (!v)
-		return;
-	i = 0;
-	while (v[i])
-	{
-		free(v[i]);
-		i++;
-	}
-	free(v);
-}
-
-void	destroy_cmd_min(t_node *node)
-{
-	size_t	i;
-
-	if (!node)
-		return;
-
-	// argv の解放
-	if (node->as.cmd.argv)
-	{
-		free_strarray(node->as.cmd.argv);
-		node->as.cmd.argv = NULL;
-		node->as.cmd.argc = 0;
-	}
-
-	// argv_tokens の解放（トークン自体は lexer 側でまとめて解放）
-	if (node->as.cmd.argv_tokens)
-	{
-		free(node->as.cmd.argv_tokens);
-		node->as.cmd.argv_tokens = NULL;
-		node->as.cmd.n_argv_tokens = 0;
-	}
-
-	// redirs の解放
-	if (node->as.cmd.redirs)
-	{
-		i = 0;
-		while (i < node->as.cmd.n_redirs)
-		{
-			if (node->as.cmd.redirs[i].path)
-				free(node->as.cmd.redirs[i].path);
-			i++;
-		}
-		free(node->as.cmd.redirs);
-		node->as.cmd.redirs = NULL;
-		node->as.cmd.n_redirs = 0;
-	}
 }
 
 t_func	*v_cmd(void)

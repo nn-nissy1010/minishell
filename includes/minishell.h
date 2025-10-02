@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 11:24:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:50:47 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ void							fail_exec(const char *path, int err);
 
 /*exec_cmd_builtin*/
 int								bi_cd(char **av);
+int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
 int								bi_exit(char **av);
@@ -190,4 +191,15 @@ int								bi_pwd(char **av);
 int								bi_unset(char **av);
 int								is_valid_ident(const char *s);
 
+/*exec_pipe*/
+int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
+int 							call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2], int *st_right);
+pid_t							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], int is_left);
+void							parent_mask_sigint(struct sigaction *old);
+void 							destroy_pipe_min(t_node *node);
+void							safe_close(int fd);
+int								waitpid_retry(pid_t pid, int *st);
+void							parent_unmask_sigint(const struct sigaction *old);
+void							reset_child_signals(void);
+int								status_to_exitcode(int st);
 #endif

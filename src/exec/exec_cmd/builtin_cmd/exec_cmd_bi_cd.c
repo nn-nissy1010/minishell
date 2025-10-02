@@ -6,52 +6,37 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:51:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 11:18:15 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:05:50 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	print_line(int fd, const char *s)
+int	resolve_cd_target(char *const *av, const char **dst, int *print_after)
 {
-	size_t	len;
+	const char	*val;
 
-	if (!s)
+	*print_after = 0;
+	if (!av || !av[0] || !av[1] || ft_strcmp(av[1], "~") == 0)
+	{
+		val = search_env_table("HOME");
+		if (!val)
+			return (err3("minishell: cd: ", "HOME", " not set\n"), 1);
+		*dst = val;
 		return (0);
-	len = ft_strlen(s);
-	if (write(fd, s, len) < 0)
-		return (-1);
-	if (write(fd, "\n", 1) < 0)
-		return (-1);
+	}
+	if (ft_strcmp(av[1], "-") == 0)
+	{
+		val = search_env_table("OLDPWD");
+		if (!val)
+			return (err3("minishell: cd: ", "OLDPWD", " not set\n"), 1);
+		*print_after = 1;
+		*dst = val;
+		return (0);
+	}
+	*dst = av[1];
 	return (0);
 }
-
-int resolve_cd_target(char *const *av, const char **dst, int *print_after)
-{
-    const char *val;
-
-    *print_after = 0;
-    if (!av || !av[0] || !av[1] || ft_strcmp(av[1], "~") == 0)
-    {
-        val = search_env_table("HOME");
-        if (!val)
-            return (err3("minishell: cd: ", "HOME", " not set\n"), 1);
-        *dst = val;
-        return 0;
-    }
-    if (ft_strcmp(av[1], "-") == 0)
-    {
-        val = search_env_table("OLDPWD");
-        if (!val)
-            return (err3("minishell: cd: ", "OLDPWD", " not set\n"), 1);
-        *print_after = 1;
-        *dst = val;
-        return 0;
-    }
-    *dst = av[1];
-    return 0;
-}
-
 
 static void	update_oldpwd_if_has(const char *cwd)
 {
@@ -75,7 +60,7 @@ static int	has_too_many_args(char **av)
 int	bi_cd(char **av)
 {
 	char		cwd[PATH_MAX];
-	const char	*dst;         
+	const char	*dst;
 	int			print_after;
 
 	if (has_too_many_args(av))
@@ -85,7 +70,6 @@ int	bi_cd(char **av)
 		return (1);
 	if (!getcwd(cwd, sizeof(cwd)))
 		cwd[0] = '\0';
-
 	if (chdir(dst) < 0)
 		return (perror("minishell: cd"), 1);
 	update_oldpwd_if_has(cwd);

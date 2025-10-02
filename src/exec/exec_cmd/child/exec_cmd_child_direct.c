@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:05:20 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 12:53:55 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:58:12 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	exec_direct(char **av)
 		err3("minishell: ", av[0], ": is a directory\n");
 		exit(126);
 	}
-	envp =env_table_to_envp();
+	envp = env_table_to_envp();
 	if (!envp)
 	{
 		err3("minishell: ", "malloc", ": failed\n");

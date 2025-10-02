@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:44:47 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:04:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:59:17 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	rollback_and_invalidate(int *saved_in, int *saved_out)
 		*saved_out = -1;
 	}
 }
+
 void	pre_backup_cleanup(int *saved_in, int *saved_out)
 {
 	if (*saved_in != -1)
@@ -40,6 +41,7 @@ void	pre_backup_cleanup(int *saved_in, int *saved_out)
 		*saved_out = -1;
 	}
 }
+
 int	backup_for_target(int tgt, int *saved_in, int *saved_out)
 {
 	if ((tgt == STDIN_FILENO) && (*saved_in == -1))
@@ -56,6 +58,7 @@ int	backup_for_target(int tgt, int *saved_in, int *saved_out)
 	}
 	return (0);
 }
+
 int	target_fd(const t_redir *r)
 {
 	if (r->kind == TOK_REDIR_IN || r->kind == TOK_HEREDOC)
