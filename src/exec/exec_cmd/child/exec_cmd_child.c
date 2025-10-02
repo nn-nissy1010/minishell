@@ -6,24 +6,14 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:15:50 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 22:23:30 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:12:23 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	run_external_in_child(t_cmd *c)
-{
-	if (!c || !c->argv || !c->argv[0])
-		exit(0);
-	if (has_slash(c->argv[0]))
-		exec_direct(c->argv);
-	else
-		search_and_exec(c->argv, get_env_table());
-	exit(127);
-}
 
-static int	run_builtin_child(t_cmd *c)
+int	run_builtin_child(t_cmd *c)
 {
 	char	**av;
 
@@ -47,7 +37,7 @@ static int	run_builtin_child(t_cmd *c)
 	return (127);
 }
 
-static int	is_builtin_any(const t_cmd *c)
+int	is_builtin_any(const t_cmd *c)
 {
 	char	*b;
 	size_t	i;

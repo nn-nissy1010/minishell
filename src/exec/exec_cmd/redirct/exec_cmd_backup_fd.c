@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd_apply_redir.c                             :+:      :+:    :+:   */
+/*   exec_cmd_backup_fd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:44:47 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 20:24:07 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:04:37 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	rollback_and_invalidate(int *saved_in, int *saved_out)
+void	rollback_and_invalidate(int *saved_in, int *saved_out)
 {
 	if (*saved_in != -1)
 	{
@@ -40,7 +40,7 @@ void	pre_backup_cleanup(int *saved_in, int *saved_out)
 		*saved_out = -1;
 	}
 }
-static int	backup_for_target(int tgt, int *saved_in, int *saved_out)
+int	backup_for_target(int tgt, int *saved_in, int *saved_out)
 {
 	if ((tgt == STDIN_FILENO) && (*saved_in == -1))
 	{
@@ -56,7 +56,7 @@ static int	backup_for_target(int tgt, int *saved_in, int *saved_out)
 	}
 	return (0);
 }
-static int	target_fd(const t_redir *r)
+int	target_fd(const t_redir *r)
 {
 	if (r->kind == TOK_REDIR_IN || r->kind == TOK_HEREDOC)
 		return (STDIN_FILENO);

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:56:31 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 23:32:29 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:10:42 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	has_slash(const char *s)
 	return (0);
 }
 
-static void	run_external_in_child(t_cmd *c)
+void	run_external_in_child(t_cmd *c)
 {
 	if (!c || !c->argv || !c->argv[0])
 		exit(0);

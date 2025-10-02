@@ -6,13 +6,13 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:04:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 22:45:25 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:07:03 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child_main_after_fork(t_cmd *c)
+void	child_main_after_fork(t_cmd *c)
 {
 	int	saved_in;
 	int	saved_out;
@@ -36,7 +36,7 @@ static void	child_main_after_fork(t_cmd *c)
 	exit(127);
 }
 
-static pid_t	spawn_child(t_cmd *c)
+pid_t	spawn_child(t_cmd *c)
 {
 	pid_t pid;
 

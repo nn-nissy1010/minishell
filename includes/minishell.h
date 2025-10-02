@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 20:38:16 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:09:17 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,34 @@ void							unmask_globs(char *s);
 int 							expand_glob_pattern(const char *pattern, t_argbuf *out);
 
 void							sort_strptrs(char **v, size_t n);
+
+/*exec_cmd_call*/
+int								prepare_cmd_for_exec(t_cmd *c);
+int								exec_single(t_cmd *c, t_exec_ctx *ctx);
+
+int								exec_cmd(t_node *node, t_exec_ctx *ctx);
+void							destroy_cmd_min(t_node *node);
+
+/*exec_cmd_parent*/
+int								run_parent_builtin_flow(t_cmd *c);
+
+
+/*exec_cmd_redirect*/
+int								redirect_only_flow(t_cmd *c);
+int								apply_redirs(t_redir *r, size_t n, int *saved_in, int *saved_out);
+int								apply_one_redir(t_redir *r);
+int								target_fd(const t_redir *r);
+void							rollback_and_invalidate(int *saved_in, int *saved_out);
+void							pre_backup_cleanup(int *saved_in, int *saved_out);
+void							restore_stdio(int saved_in, int saved_out);
+int								pre_backup(const t_redir *r, size_t n, int *saved_in, int *saved_out);
+
+/*exec_cmd_child*/
+pid_t							spawn_child(t_cmd *c);
+void							child_main_after_fork(t_cmd *c);
+void							set_child_signals_default(void);
+int								is_builtin_any(const t_cmd *c);
+int								run_builtin_child(t_cmd *c);
+void							run_external_in_child(t_cmd *c);
 
 #endif
