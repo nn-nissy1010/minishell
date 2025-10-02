@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:55:44 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 17:47:26 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:26:22 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int validate_redir_target(t_node *node, t_parser *p)
 {
     (void)node;
-    if (!p->cur || p->cur->type != TOK_ARG) {
+    if (!p->cur || p->cur->type != TOK_ARG)
+    {
         write(2, "syntax error: expected filename/delimiter after redir\n", 54);
         return (-1);
     }
@@ -32,7 +33,8 @@ static void init_redir_struct(t_redir *r, t_tokentype redir_type, t_token *word_
     else
         r->fd = 1;
     r->path = NULL;
-    if (redir_type == TOK_HEREDOC) {
+    if (redir_type == TOK_HEREDOC)
+    {
         if (word_tok->u.arg.parts &&
             word_tok->u.arg.parts->quote != Q_NONE)
         {
@@ -50,7 +52,8 @@ static int append_redir_to_node(t_node *node, t_redir *r)
     tmp = ft_realloc(node->as.cmd.redirs,
                  sizeof(t_redir) * m,
                  sizeof(t_redir) * (m + 1));
-    if (!tmp) {
+    if (!tmp)
+    {
         perror("realloc");
         return (-1);
     }
@@ -68,13 +71,14 @@ int parse_redir_token(t_node *node, t_parser *p)
     redir_type = p->cur->type;
     consume(p);
     if (validate_redir_target(node, p) < 0)
-        return -1;
+        return (-1);
     init_redir_struct(&r, redir_type, p->cur);
 
-    if (append_redir_to_node(node, &r) < 0) {
+    if (append_redir_to_node(node, &r) < 0)
+    {
         destroy_ast(node);
-        return -1;
+        return (-1);
     }
     consume(p);
-    return 0;
+    return (0);
 }

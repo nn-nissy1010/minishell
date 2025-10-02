@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:30 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/29 16:12:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:01:44 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ typedef enum e_more
 int		repl(void);
 
 void	install_signal_handlers(void);
+
+const char *get_ps2_prompt(t_more need);
+int handle_unexpected_eof(t_more need);
+char *append_line(char *acc, const char *next);
 
 char	*read_full_command_line(char *first_line);
 

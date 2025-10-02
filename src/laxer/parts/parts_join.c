@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:59:07 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 16:07:39 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:27:17 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static char *join_parts(t_arg_part *parts)
     total = parts_total_len(parts);
     res = malloc(total + 1);
     if (!res)
-        return NULL;
+        return (NULL);
     copy_parts_to_buf(res, parts);
-    return res;
+    return (res);
 }
 
 int finalize_arg(t_arg *arg)

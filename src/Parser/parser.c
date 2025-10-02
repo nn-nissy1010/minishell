@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 20:04:48 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 01:55:39 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:05:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int parse_arg_token(t_node *node, t_parser *p)
     tmp = ft_realloc(node->as.cmd.argv_tokens,
                     sizeof(t_token*) * n,
                     sizeof(t_token*) * (n + 1));
-    if (!tmp) {
+    if (!tmp)
+    {
         perror("realloc");
         destroy_ast(node);
         return -1;
@@ -30,7 +31,7 @@ static int parse_arg_token(t_node *node, t_parser *p)
     node->as.cmd.argv_tokens[n] = p->cur;
     node->as.cmd.n_argv_tokens++;
     consume(p);
-    return 0;
+    return (0);
 }
 
 static void init_simple_command_node(t_node *node)
@@ -81,9 +82,10 @@ t_node *parse_simple_command(t_parser *p)
     node->fn = v_cmd(); 
     init_simple_command_node(node);
 
-    if (parse_command_body(node, p) < 0) {
+    if (parse_command_body(node, p) < 0)
+    {
         destroy_ast(node);
-        return NULL;
+        return (NULL);
     }
     return node;
 }
@@ -101,7 +103,7 @@ t_node *parse(t_token *toklist)
     {
         write(2, "syntax error near unexpected token\n", 35);
         destroy_ast(root);
-        return NULL;
+        return (NULL);
     }
     return root;
 }
