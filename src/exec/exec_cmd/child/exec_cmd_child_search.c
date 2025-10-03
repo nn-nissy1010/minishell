@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 23:28:56 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:47:44 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:33:24 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	search_and_exec(char **av)
 		err3("minishell: ", "malloc", ": failed\n");
 		exit(126);
 	}
+	ft_memset(&f, 0, sizeof(f));
 	dup = dup_path_or_exit(av[0]);
 	orig = dup;
 	f.found_dir = 0;

@@ -6,11 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/10/02 14:03:12 by tkuwahat         ###   ########.fr       */
-=======
-/*   Updated: 2025/10/02 12:57:53 by tkuwahat         ###   ########.fr       */
->>>>>>> develop
+/*   Updated: 2025/10/02 19:41:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,42 +32,6 @@ int	run_builtin_parent(t_cmd *c)
 
 int	wait_and_status(pid_t pid)
 {
-<<<<<<< HEAD
-	int	st;
-	int	rc;
-	int	sig;
-
-	while (1)
-	{
-		rc = waitpid(pid, &st, 0);
-		if (rc >= 0)
-			break ;
-		if (errno == EINTR)
-			continue ;
-		return (1);
-	}
-	if (WIFEXITED(st))
-		return (WEXITSTATUS(st));
-	if (WIFSIGNALED(st))
-	{
-		sig = WTERMSIG(st);
-		if (sig == SIGINT)
-			write(1, "\n", 1);
-		else if (sig == SIGQUIT)
-			write(1, "Quit: 3\n", 8);
-		return (128 + sig);
-	}
-	return (1);
-}
-
-int	parent_finalize_simple(pid_t pid)
-{
-	int	status;
-
-	status = wait_and_status(pid);
-	set_exit_status(status);
-	return (0);
-=======
 	int   st;
 	int   rc;
 
@@ -103,7 +63,6 @@ int parent_finalize_simple(pid_t pid)
     status = wait_and_status(pid);
     set_exit_status(status);
     return 0;
->>>>>>> develop
 }
 
 int	run_parent_builtin_flow(t_cmd *c)

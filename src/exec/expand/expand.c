@@ -6,36 +6,84 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:16:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:48:11 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	redir_expand_word_to_path(t_token *word, char **out_path)
+int expand_word_to_single_field(t_token *word, char **out)
 {
-	t_buf	w;
+    t_buf    w;
+    t_argbuf ab;
+    size_t   i;
 
-	if (!word || !out_path || word->type != TOK_ARG)
-		return (2);
-	buf_init(&w);
-	if (parts_to_buf(word->u.arg.parts, &w) < 0)
-		return (buf_free(&w), 2);
-	if (split_fields_from_buf(&w, &word->u.arg) < 0)
-		return (buf_free(&w), 2);
-	buf_free(&w);
-	if (word->u.arg.n_items != 1 || !word->u.arg.items || !word->u.arg.items[0]
-		|| word->u.arg.items[0][0] == '\0')
+    if (!word || !out || word->type != TOK_ARG)
+        return 2;
+
+    *out = NULL;
+    buf_init(&w);
+    argbuf_init(&ab);
+
+    if (parts_to_buf(word->u.arg.parts, &w) < 0)
 	{
-		arg_clear_items(&word->u.arg);
-		return (1);
-	}
-	*out_path = ft_strdup(word->u.arg.items[0]);
-	arg_clear_items(&word->u.arg);
-	if (!*out_path)
-		return (2);
-	return (0);
+        buf_free(&w);
+        return 2;
+    }
+    if (split_fields_into_argbuf(&w, &ab) < 0) 
+	{
+        buf_free(&w);
+
+        i = 0;
+        while (i < ab.n) 
+		{ 
+			if (ab.v[i]) 
+				free(ab.v[i]); 
+			i++; 
+		}
+        free(ab.v);
+        return 2;
+    }
+    buf_free(&w);
+
+    if (ab.n != 1 || !ab.v || !ab.v[0] || ab.v[0][0] == '\0') 
+	{
+        i = 0;
+        while (i < ab.n) 
+		{ 
+			if (ab.v[i]) 
+				free(ab.v[i]); 
+			i++; 
+		}
+        free(ab.v);
+        return 1; 
+    }
+    *out = ft_strdup(ab.v[0]);
+    i = 0;
+    while (i < ab.n)
+	 { 
+		if (ab.v[i]) 
+			free(ab.v[i]); 
+		i++;
+	 }
+    free(ab.v);
+    if (!*out) 
+		return 2;
+    return 0;
 }
+
+int redir_expand_word_to_path(t_token *word, char **out_path)
+{
+    int rc;
+
+    rc = expand_word_to_single_field(word, out_path);
+    if (rc == 0) 
+		return 0;
+    if (rc == 1) 
+		return 1; 
+    return 2;              
+}
+
 
 int	expand_redirs(t_redir *rs, size_t n)
 {

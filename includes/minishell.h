@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 19:28:52 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:55:56 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ int								apply_tilde_if_head_buf(t_buf *b, const char *s,
 /* word_split*/
 int								is_unquoted_ifs_at(const t_buf *b, size_t i);
 size_t							skip_unquoted_ifs(const t_buf *b, size_t i);
-size_t							count_fields_from_buf(const t_buf *b);
 size_t							field_span(const t_buf *b, size_t i);
-int								split_fields_from_buf(const t_buf *b,
-									t_arg *arg);
-void							arg_clear_items(t_arg *arg);
+int 							split_fields_into_argbuf(const t_buf *b, t_argbuf *out);
+
 
 /* expand_buf_utils*/
 int								buf_putc(t_buf *b, char c);
@@ -103,8 +101,8 @@ int								buf_putc_q(t_buf *b, char c, unsigned char q);
 /*arg_buf*/
 int								argbuf_move_append(t_argbuf *dst, t_argbuf *src);
 int								argbuf_terminate(t_argbuf *b);
-int								argbuf_push(t_argbuf *b, const char *s);
-int								argbuf_grow(t_argbuf *b, size_t newcap);
+int 							argbuf_push(t_argbuf *b, const char *s);
+int 							argbuf_grow(t_argbuf *b, size_t need_count);
 void							argbuf_free(t_argbuf *b);
 void							argbuf_init(t_argbuf *b);
 
