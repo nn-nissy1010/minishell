@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:58:46 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/03 01:02:43 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:55:54 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ size_t	field_span(const t_buf *b, size_t i)
 		i++;
 	return (i - start);
 }
-

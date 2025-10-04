@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:44:47 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 20:04:23 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:57:57 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	rollback_and_invalidate(int *saved_in, int *saved_out)
 	}
 }
 
-
 void	pre_backup_cleanup(int *saved_in, int *saved_out)
 {
 	if (*saved_in != -1)
@@ -42,7 +41,6 @@ void	pre_backup_cleanup(int *saved_in, int *saved_out)
 		*saved_out = -1;
 	}
 }
-
 
 int	backup_for_target(int tgt, int *saved_in, int *saved_out)
 {

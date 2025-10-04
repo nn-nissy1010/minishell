@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/03 00:55:56 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 23:23:59 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int								expand_argv(t_token **argv_tokens,
 									size_t *out_argc);
 
 /* expand_redirect */
+int								expand_word_to_single_field(t_token *word, char **out);
 int								expand_redirs(t_redir *rs, size_t n);
 
 /* expand_part */
@@ -102,7 +103,7 @@ int								buf_putc_q(t_buf *b, char c, unsigned char q);
 int								argbuf_move_append(t_argbuf *dst, t_argbuf *src);
 int								argbuf_terminate(t_argbuf *b);
 int 							argbuf_push(t_argbuf *b, const char *s);
-int 							argbuf_grow(t_argbuf *b, size_t need_count);
+int								argbuf_grow(t_argbuf *b, size_t need_count);
 void							argbuf_free(t_argbuf *b);
 void							argbuf_init(t_argbuf *b);
 
@@ -145,7 +146,7 @@ void							destroy_cmd_min(t_node *node);
 int								run_parent_builtin_flow(t_cmd *c);
 int								wait_and_status(pid_t pid);
 int 							parent_finalize_simple(pid_t pid);
-
+int								waitpid_retry(pid_t pid, int *st);
 void							buf_cat(char *buf, size_t *pn, size_t cap, const char *s);
 
 /*exec_cmd_redirect*/
@@ -196,7 +197,6 @@ pid_t							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], int 
 void							parent_mask_sigint(struct sigaction *old);
 void 							destroy_pipe_min(t_node *node);
 void							safe_close(int fd);
-int								waitpid_retry(pid_t pid, int *st);
 void							parent_unmask_sigint(const struct sigaction *old);
 void							reset_child_signals(void);
 int								status_to_exitcode(int st);

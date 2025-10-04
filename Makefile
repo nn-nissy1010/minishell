@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/02 19:33:13 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/04 23:14:24 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,9 @@ SRCS =src/main.c \
 	  src/exec/exec_pipe/exec_pipe_signal_manage.c \
  	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \
+	  src/exec/expand/expand_redir_frow.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_build.c \
+	  src/exec/expand/arg_buf_utils/arg_buf_grow_buf.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_clean.c \
   	  src/exec/expand/expand_part/expand_parts_tilde.c \
 	  src/exec/expand/expand_part/expand_parts_params.c  \

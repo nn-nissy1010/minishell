@@ -6,18 +6,18 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 23:48:45 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:57:26 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void free_strarray_n(char **v, size_t n)
+static void	free_strarray_n(char **v, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	if (!v)
-		return;
+		return ;
 	i = 0;
 	while (i < n)
 	{
@@ -28,13 +28,12 @@ static void free_strarray_n(char **v, size_t n)
 	free(v);
 }
 
-
-void destroy_cmd_argv(t_cmd *cmd)
+void	destroy_cmd_argv(t_cmd *cmd)
 {
 	if (!cmd)
-		return;
+		return ;
 	if (cmd->argv)
-	{	
+	{
 		free_strarray_n(cmd->argv, cmd->argc);
 		cmd->argv = NULL;
 		cmd->argc = 0;
@@ -76,8 +75,7 @@ void	destroy_cmd_redirs(t_cmd *cmd)
 void	destroy_cmd_min(t_node *node)
 {
 	t_cmd	*c;
-	
-	
+
 	if (!node)
 		return ;
 	c = &node->as.cmd;

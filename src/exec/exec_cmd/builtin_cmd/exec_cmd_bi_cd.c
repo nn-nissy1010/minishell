@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:51:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 19:27:13 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:58:26 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ static int	has_too_many_args(char **av)
 int	bi_cd(char **av)
 {
 	char		cwd[PATH_MAX];
-	const char	*dst;         
-
+	const char	*dst;
 	int			print_after;
 
 	if (has_too_many_args(av))
