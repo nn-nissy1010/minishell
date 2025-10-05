@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:28 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/26 16:56:15 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/04 23:34:54 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,9 @@ t_node *parse_simple_command(struct s_parser *p);
 t_node *parse(t_token *toklist);
 
 void destroy_ast(t_node *n);
+
+t_node **ast_ref(void);
+void set_ast(t_node *new_ast);
+t_node *get_ast(void);
 
 #endif

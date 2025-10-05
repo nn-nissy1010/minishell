@@ -1,40 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_table_destroy.c                                :+:      :+:    :+:   */
+/*   operate_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/18 15:03:25 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/04 23:15:21 by nnishiya         ###   ########.fr       */
+/*   Created: 2025/10/05 21:45:14 by nnishiya          #+#    #+#             */
+/*   Updated: 2025/10/05 21:45:33 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	destroy_env_table_impl(t_env_table *t)
+t_token **tokens_ref(void)
 {
-    size_t i;
-
-    if (!t || !t->pair)
-        return;
-    i = 0;
-    while (i < t->cap)
-    {
-        free_entry(&t->pair[i]);
-        i++;
-    }
-    free(t->pair);
-    t->pair = NULL;
-    t->cap = 0;
-    t->size = 0;
-    *t = (t_env_table){0};
+	static t_token *tokens = NULL;
+	return (&tokens);
 }
 
-void	destroy_env_table(void)
+void set_tokens(t_token *new_tokens)
 {
-	t_env_table	*t;
+	*tokens_ref() = new_tokens;
+}
 
-	t = env_table();
-	destroy_env_table_impl(t);
+t_token *get_tokens(void)
+{
+	return (*tokens_ref());
 }
