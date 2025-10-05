@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:19:26 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 10:18:03 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:54:21 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void 			fill_cb(const char *k, const char *v, void *ud);
 int				get_env_table(void);
 int				update_env_table(const char *key, const char *value);
 int				unset_env_table(const char *arg);
-void			destroy_env_table(t_env_table *t);
+void			destroy_env_table(void);
 const char		*search_env_table(const char *key);
 char **env_table_to_envp(void);
 

@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 22:23:13 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/04 23:34:49 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,9 @@ char					*append_char(char *buf, size_t *cap, size_t *len,
 							char ch);
 
 t_token					*lexer(const char *input);
+
+t_token **tokens_ref(void);
+void set_tokens(t_token *new_tokens);
+t_token *get_tokens(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:36:39 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 15:37:11 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:06:36 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_token *new_token_n(t_tokentype type, const char *s, size_t n)
 {
     t_token *t;
 
-    t = malloc(sizeof(*t));
+    t = ft_calloc(1, sizeof(t_token));
     if (!t)
         return (perror("malloc_error"), NULL);
     t->type = type;
