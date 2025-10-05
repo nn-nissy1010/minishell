@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 12:53:11 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:47:47 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,6 @@ int	main(int argc, char **argv, char **envp)
 		update_shlvl();
 	else
 		update_env_table("TEST", "test");
-	
-	// char **new_envp = env_table_to_envp();
-    // if (!new_envp)
-    // {
-    //     printf("env_table_to_envp returned NULL\n");
-    //     return (1);
-    // }
-
-    // // 3. 出力確認
-    // int i = 0;
-    // while (new_envp[i] != NULL)
-    // {
-    //     printf("[%d] %s\n", i, new_envp[i]);
-    //     i++;
-    // }
-
-    // // 4. free
-    // i = 0;
-    // while (new_envp[i] != NULL)
-    // {
-    //     free(new_envp[i]);
-    //     i++;
-    // }
-    // free(new_envp);
-
 	repl();
 	destroy_env_table(table);
 	return (0);

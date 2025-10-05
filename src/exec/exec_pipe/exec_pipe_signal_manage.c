@@ -6,12 +6,11 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 23:25:18 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 09:28:00 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	safe_close(int fd)
 {
@@ -53,17 +52,12 @@ void	reset_child_signals(void)
 	x_sigaction(SIGQUIT, &dfl);
 }
 
-void	parent_mask_sigint(struct sigaction *old)
+int	parent_mask_sigint(struct sigaction *old)
 {
 	struct sigaction	ign;
 
-	ft_memset(&ign, 0, sizeof(ign));
-	ign.sa_handler = SIG_IGN;
 	sigemptyset(&ign.sa_mask);
 	ign.sa_flags = 0;
-	if (sigaction(SIGINT, &ign, old) == -1)
-	{
-		perror("sigaction");
-		set_exit_status(1);
-	}
+	ign.sa_handler = SIG_IGN;
+	return (sigaction(SIGINT, &ign, old));
 }

@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/04 23:14:24 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/05 10:29:22 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/exec_cmd_single.c \
 	  src/exec/exec_cmd/exec_cmd.c \
 	  src/exec/exec_cmd/exec_cmd_destroy.c \
+	  src/exec/exec_cmd/exec_cmd_destroy_main.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_cd.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_echo.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_env.c \

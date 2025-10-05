@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 20:33:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 11:00:28 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:30:48 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int	exec_single(t_cmd *c, t_exec_ctx *ctx)
 		perror("fork");
 		return (set_exit_status(1), -1);
 	}
+	destroy_cmd_min_cmd(c);
 	return (parent_finalize_simple(pid));
 }

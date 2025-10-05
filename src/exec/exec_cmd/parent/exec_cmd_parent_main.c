@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 23:26:40 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:20:53 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	run_parent_builtin_flow(t_cmd *c)
 		return (set_exit_status(1), -1);
 	status = run_builtin_parent(c);
 	restore_stdio(saved_in, saved_out);
+	destroy_cmd_min_cmd(c);
 	set_exit_status(status & 0xFF);
 	return (0);
 }

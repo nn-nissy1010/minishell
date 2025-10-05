@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_x.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:50:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 11:26:01 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/05 09:34:39 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_node *parse_pipeline(t_parser *p)
         node = new_node(ND_PIPE);
         if (!node)
             return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
+        node->fn = v_pipe();      
         node->as.bin.left = left;
         node->as.bin.right = right;
         left = node;

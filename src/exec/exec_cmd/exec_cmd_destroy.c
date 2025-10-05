@@ -6,26 +6,22 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 22:57:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 11:03:31 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_strarray_n(char **v, size_t n)
+void free_strarray_nullterm(char **v)
 {
-	size_t	i;
-
-	if (!v)
-		return ;
-	i = 0;
-	while (i < n)
+    size_t i = 0;
+    if (!v) return;
+    while (v[i]) 
 	{
-		if (v[i])
-			free(v[i]);
-		i++;
-	}
-	free(v);
+        free(v[i]);
+        i++;
+    }
+    free(v);
 }
 
 void	destroy_cmd_argv(t_cmd *cmd)
@@ -34,7 +30,7 @@ void	destroy_cmd_argv(t_cmd *cmd)
 		return ;
 	if (cmd->argv)
 	{
-		free_strarray_n(cmd->argv, cmd->argc);
+		free_strarray_nullterm(cmd->argv);
 		cmd->argv = NULL;
 		cmd->argc = 0;
 	}
@@ -72,14 +68,12 @@ void	destroy_cmd_redirs(t_cmd *cmd)
 	cmd->n_redirs = 0;
 }
 
-void	destroy_cmd_min(t_node *node)
+void	destroy_cmd_min_cmd(t_cmd *cmd)
 {
-	t_cmd	*c;
-
-	if (!node)
+	if (!cmd)
 		return ;
-	c = &node->as.cmd;
-	destroy_cmd_argv(c);
-	destroy_cmd_tokens(c);
-	destroy_cmd_redirs(c);
+	destroy_cmd_argv(cmd);
+	destroy_cmd_tokens(cmd);
+	destroy_cmd_redirs(cmd);
 }
+

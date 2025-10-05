@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/04 23:23:59 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 11:04:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int								prepare_cmd_for_exec(t_cmd *c);
 int								exec_single(t_cmd *c, t_exec_ctx *ctx);
 
 int								exec_cmd(t_node *node, t_exec_ctx *ctx);
-void							destroy_cmd_min(t_node *node);
+
 
 /*exec_cmd_parent*/
 int								run_parent_builtin_flow(t_cmd *c);
@@ -193,12 +193,13 @@ int								is_valid_ident(const char *s);
 /*exec_pipe*/
 int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
 int 							call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2], int *st_right);
-pid_t							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], int is_left);
-void							parent_mask_sigint(struct sigaction *old);
+pid_t spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], t_pipe_role role);
+int								parent_mask_sigint(struct sigaction *old);
 void 							destroy_pipe_min(t_node *node);
 void							safe_close(int fd);
 void							parent_unmask_sigint(const struct sigaction *old);
 void							reset_child_signals(void);
 int								status_to_exitcode(int st);
 
+void							free_strarray_nullterm(char **v);
 #endif

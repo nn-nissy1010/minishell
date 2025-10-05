@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operate_ast.c                                      :+:      :+:    :+:   */
+/*   exec_cmd_destroy_main.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 16:46:09 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 10:35:55 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/10/05 10:29:55 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void destroy_ast(t_node *n)
+void	destroy_cmd_min(t_node *node)
 {
-    if (!n)
-        return;
-    if (n->type == ND_COMMAND)
-        destroy_cmd_min_cmd(&n->as.cmd);  
-    else if (n->type == ND_PIPE || n->type == ND_AND_IF || n->type == ND_OR_IF)
-    {
-        destroy_ast(n->as.bin.left);
-        destroy_ast(n->as.bin.right);
-    }
-    else if (n->type == ND_SUBSHELL)
-        destroy_ast(n->as.subshell.body);
-    free(n);
+	if (!node)
+		return ;
+	destroy_cmd_min_cmd(&node->as.cmd);
 }

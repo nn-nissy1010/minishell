@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 13:05:40 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 11:06:14 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int	repl(void)
 			continue ;
 		}
 		full = read_full_command_line(line);
+		free(line); 
 		if (!full)
 		{
 			continue ;
@@ -159,6 +160,8 @@ int	repl(void)
         ctx=NULL;
 		rc = ast_exec(ast, ctx);
         printf("rc=%d\n",rc);
+		destroy_ast(ast);
+		free_tokens(tokens);
 		free(full);
 	}
 	return (0);
