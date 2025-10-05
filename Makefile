@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/02 13:05:36 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/04 23:14:24 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/exec_cmd_check_fd.c \
 	  src/exec/exec_cmd/exec_cmd_single.c \
 	  src/exec/exec_cmd/exec_cmd.c \
+	  src/exec/exec_cmd/exec_cmd_destroy.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_cd.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_echo.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_env.c \
@@ -70,9 +71,16 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_backup_fd.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_one.c \
+	  src/exec/exec_pipe/exec_pipe_call_child.c \
+	  src/exec/exec_pipe/exec_pipe_destroy.c \
+	  src/exec/exec_pipe/exec_pipe_flow_child.c \
+	  src/exec/exec_pipe/exec_pipe_main.c \
+	  src/exec/exec_pipe/exec_pipe_signal_manage.c \
  	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \
+	  src/exec/expand/expand_redir_frow.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_build.c \
+	  src/exec/expand/arg_buf_utils/arg_buf_grow_buf.c \
 	  src/exec/expand/arg_buf_utils/arg_buf_clean.c \
   	  src/exec/expand/expand_part/expand_parts_tilde.c \
 	  src/exec/expand/expand_part/expand_parts_params.c  \

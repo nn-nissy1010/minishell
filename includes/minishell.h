@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 11:24:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 23:23:59 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int								expand_argv(t_token **argv_tokens,
 									size_t *out_argc);
 
 /* expand_redirect */
+int								expand_word_to_single_field(t_token *word, char **out);
 int								expand_redirs(t_redir *rs, size_t n);
 
 /* expand_part */
@@ -75,11 +76,9 @@ int								apply_tilde_if_head_buf(t_buf *b, const char *s,
 /* word_split*/
 int								is_unquoted_ifs_at(const t_buf *b, size_t i);
 size_t							skip_unquoted_ifs(const t_buf *b, size_t i);
-size_t							count_fields_from_buf(const t_buf *b);
 size_t							field_span(const t_buf *b, size_t i);
-int								split_fields_from_buf(const t_buf *b,
-									t_arg *arg);
-void							arg_clear_items(t_arg *arg);
+int 							split_fields_into_argbuf(const t_buf *b, t_argbuf *out);
+
 
 /* expand_buf_utils*/
 int								buf_putc(t_buf *b, char c);
@@ -103,8 +102,8 @@ int								buf_putc_q(t_buf *b, char c, unsigned char q);
 /*arg_buf*/
 int								argbuf_move_append(t_argbuf *dst, t_argbuf *src);
 int								argbuf_terminate(t_argbuf *b);
-int								argbuf_push(t_argbuf *b, const char *s);
-int								argbuf_grow(t_argbuf *b, size_t newcap);
+int 							argbuf_push(t_argbuf *b, const char *s);
+int								argbuf_grow(t_argbuf *b, size_t need_count);
 void							argbuf_free(t_argbuf *b);
 void							argbuf_init(t_argbuf *b);
 
@@ -147,7 +146,7 @@ void							destroy_cmd_min(t_node *node);
 int								run_parent_builtin_flow(t_cmd *c);
 int								wait_and_status(pid_t pid);
 int 							parent_finalize_simple(pid_t pid);
-
+int								waitpid_retry(pid_t pid, int *st);
 void							buf_cat(char *buf, size_t *pn, size_t cap, const char *s);
 
 /*exec_cmd_redirect*/
@@ -182,6 +181,7 @@ void							fail_exec(const char *path, int err);
 
 /*exec_cmd_builtin*/
 int								bi_cd(char **av);
+int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
 int								bi_exit(char **av);
@@ -189,5 +189,16 @@ int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);
 int								is_valid_ident(const char *s);
+
+/*exec_pipe*/
+int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
+int 							call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2], int *st_right);
+pid_t							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], int is_left);
+void							parent_mask_sigint(struct sigaction *old);
+void 							destroy_pipe_min(t_node *node);
+void							safe_close(int fd);
+void							parent_unmask_sigint(const struct sigaction *old);
+void							reset_child_signals(void);
+int								status_to_exitcode(int st);
 
 #endif
