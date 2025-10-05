@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:04:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 10:07:03 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:28:11 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	child_main_after_fork(t_cmd *c)
 
 pid_t	spawn_child(t_cmd *c)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)

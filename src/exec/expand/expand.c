@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:16:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 22:30:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,14 @@
 
 int	redir_expand_word_to_path(t_token *word, char **out_path)
 {
-	t_buf	w;
+	int	rc;
 
-	if (!word || !out_path || word->type != TOK_ARG)
-		return (2);
-	buf_init(&w);
-	if (parts_to_buf(word->u.arg.parts, &w) < 0)
-		return (buf_free(&w), 2);
-	if (split_fields_from_buf(&w, &word->u.arg) < 0)
-		return (buf_free(&w), 2);
-	buf_free(&w);
-	if (word->u.arg.n_items != 1 || !word->u.arg.items || !word->u.arg.items[0]
-		|| word->u.arg.items[0][0] == '\0')
-	{
-		arg_clear_items(&word->u.arg);
+	rc = expand_word_to_single_field(word, out_path);
+	if (rc == 0)
+		return (0);
+	if (rc == 1)
 		return (1);
-	}
-	*out_path = ft_strdup(word->u.arg.items[0]);
-	arg_clear_items(&word->u.arg);
-	if (!*out_path)
-		return (2);
-	return (0);
+	return (2);
 }
 
 int	expand_redirs(t_redir *rs, size_t n)

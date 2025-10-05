@@ -6,49 +6,73 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:18:17 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 19:34:25 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/04 23:12:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	token_parts_to_items(t_token *tok)
+int	process_token_to_argbuf(t_token *t, t_argbuf *b)
 {
 	t_buf	w;
 
-	if (!tok || tok->type != TOK_ARG)
+	if (!t || t->type != TOK_ARG)
 		return (2);
 	buf_init(&w);
-	if (parts_to_buf(tok->u.arg.parts, &w) < 0)
-		return (buf_free(&w), 2);
-	if (split_fields_from_buf(&w, &tok->u.arg) < 0)
+	if (parts_to_buf(t->u.arg.parts, &w) < 0)
 	{
 		buf_free(&w);
-		arg_clear_items(&tok->u.arg);
+		return (2);
+	}
+	if (split_fields_into_argbuf(&w, b) < 0)
+	{
+		buf_free(&w);
 		return (2);
 	}
 	buf_free(&w);
 	return (0);
 }
 
-static int	process_token_to_argbuf(t_token *t, t_argbuf *b)
+static int	argv_alloc_and_move(t_argbuf *ab, char ***out_argv,
+		size_t *out_argc)
 {
-	size_t	j;
+	size_t	i;
+	char	**v;
 
-	if (token_parts_to_items(t) != 0)
-		return (2);
-	j = 0;
-	while (j < t->u.arg.n_items)
+	if (!ab || !out_argv)
+		return (-1);
+	if (ab->n + 1 > SIZE_MAX / sizeof(char *))
+		return (-1);
+	v = (char **)malloc(sizeof(char *) * (ab->n + 1));
+	if (!v)
+		return (-1);
+	i = 0;
+	while (i < ab->n)
 	{
-		if (argbuf_push(b, t->u.arg.items[j]) != 0)
-		{
-			arg_clear_items(&t->u.arg);
-			return (2);
-		}
-		j++;
+		v[i] = ab->v[i];
+		ab->v[i] = NULL;
+		i++;
 	}
-	arg_clear_items(&t->u.arg);
+	v[i] = NULL;
+	*out_argv = v;
+	if (out_argc)
+		*out_argc = ab->n;
 	return (0);
+}
+
+int	argbuf_to_argv_move(t_argbuf *ab, char ***out_argv, size_t *out_argc)
+{
+	int	rc;
+
+	rc = argv_alloc_and_move(ab, out_argv, out_argc);
+	if (rc == 0)
+	{
+		free(ab->v);
+		ab->v = NULL;
+		ab->n = 0;
+		ab->cap = 0;
+	}
+	return (rc);
 }
 
 int	expand_argv(t_token **argv_tokens, size_t n_tokens, char ***out_argv,
@@ -76,7 +100,7 @@ int	expand_argv(t_token **argv_tokens, size_t n_tokens, char ***out_argv,
 	}
 	if (argbuf_terminate(&b) != 0)
 		return (argbuf_free(&b), 2);
-	*out_argv = b.v;
-	*out_argc = b.n;
+	if (argbuf_to_argv_move(&b, out_argv, out_argc) != 0)
+		return (argbuf_free(&b), 2);
 	return (0);
 }
