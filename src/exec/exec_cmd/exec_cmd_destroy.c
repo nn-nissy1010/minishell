@@ -6,11 +6,12 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/05 11:03:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 22:21:30 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void free_strarray_nullterm(char **v)
 {

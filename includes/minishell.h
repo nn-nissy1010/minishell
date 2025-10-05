@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 11:04:44 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 22:18:08 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,7 @@ int								is_valid_ident(const char *s);
 /*exec_pipe*/
 int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
 int 							call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2], int *st_right);
+
 pid_t spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], t_pipe_role role);
 int								parent_mask_sigint(struct sigaction *old);
 void 							destroy_pipe_min(t_node *node);
@@ -202,4 +203,5 @@ void							reset_child_signals(void);
 int								status_to_exitcode(int st);
 
 void							free_strarray_nullterm(char **v);
+
 #endif

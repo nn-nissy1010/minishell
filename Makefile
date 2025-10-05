@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/05 10:29:22 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/05 22:25:51 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS =src/main.c \
 	  src/env_table/builtin/env_table_builtin_utils3.c \
 	  src/laxer/laxer.c \
 	  src/laxer/token.c \
+	  src/laxer/operate_token.c \
 	  src/laxer/buffer.c \
 	  src/laxer/parts/parts_manage.c \
 	  src/laxer/parts/parts_join.c \
