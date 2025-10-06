@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/05 22:19:28 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:48:54 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,7 @@ void						destroy_cmd_min_cmd(t_cmd *cmd);
 /* 各ノード用の関数テーブル getter */
 t_func						*v_cmd(void);
 t_func						*v_pipe(void);
+t_func 						*v_or_if(void);
+t_func 						*v_and_if(void);
 
 #endif

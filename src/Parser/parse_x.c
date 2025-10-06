@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:50:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 09:34:39 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:55:49 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@ t_node *parse_and_or(t_parser *p)
         if (!right) 
             return (destroy_ast(left), NULL);
         if (op == TOK_AND_IF)
+        {
             node = new_node(ND_AND_IF);
+            node->fn = (t_func *)v_and_if();
+        }
         else
+        {
             node = new_node(ND_OR_IF);
+            node->fn = (t_func *)v_and_if();
+        }
         if (!node)
             return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
         node->as.bin.left = left;

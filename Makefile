@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/06 22:55:14 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/07 00:57:27 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,8 @@ SRCS =src/main.c \
 	  src/parser/parse_redir.c \
 	  src/parser/operate_ast.c \
 	  src/exec/exec_ast.c \
+	  src/exec/exec_and_or/exec_and_or_main.c \
+	  src/exec/exec_and_or/exec_and_or_destroy.c \
 	  src/exec/exec_cmd/exec_cmd_check_fd.c \
 	  src/exec/exec_cmd/exec_cmd_single.c \
 	  src/exec/exec_cmd/exec_cmd.c \
