@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 17:49:05 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 22:58:18 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:36:40 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,15 @@ static int	hdoc_process_line(char *line, int quoted, int p0, int p1)
 	return (0);
 }
 
-static int	read_one_heredoc(const char *delim, int quoted, int *out_fd)
+static int	hdoc_run_loop(const char *delim, int quoted, int pfd[2],
+		int *out_fd)
 {
-	int		pfd[2];
 	char	*line;
 
-	if (!delim || !out_fd)
-		return (-1);
-	if (hdoc_prepare(pfd) < 0)
-		return (-1);
 	while (1)
 	{
 		if (hdoc_should_abort(pfd[0], pfd[1]))
-			return (-2);
+			return (hdoc_abort_sigint(pfd[0], pfd[1], NULL));
 		if (hdoc_read_line(&line, pfd[0], pfd[1]) != 0)
 			return (-2);
 		if (!line)
@@ -49,12 +45,33 @@ static int	read_one_heredoc(const char *delim, int quoted, int *out_fd)
 		if (ft_strcmp(line, delim) == 0)
 		{
 			free(line);
-			break ;
+			return (hdoc_finish_success(pfd, out_fd));
 		}
 		if (hdoc_process_line(line, quoted, pfd[0], pfd[1]) != 0)
 			return (-2);
 	}
 	return (hdoc_finish_success(pfd, out_fd));
+}
+
+static int	read_one_heredoc(const char *delim, int quoted, int *out_fd)
+{
+	int	pfd[2];
+	int	rc;
+
+	if (!delim || !out_fd)
+		return (-1);
+	*out_fd = -1;
+	if (hdoc_prepare(pfd) < 0)
+		return (-1);
+	rc = hdoc_run_loop(delim, quoted, pfd, out_fd);
+	if (rc == 0)
+		return (0);
+	if (pfd[0] >= 0)
+		close(pfd[0]);
+	if (pfd[1] >= 0)
+		close(pfd[1]);
+	hdoc_restore_after();
+	return (-2);
 }
 
 static int	handle_one_heredoc(t_redir *r)

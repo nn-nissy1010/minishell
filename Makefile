@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/05 22:25:51 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/06 17:24:57 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,6 +99,7 @@ SRCS =src/main.c \
 	  src/exec/expand/heredoc/heredoc_build_delim.c \
 	  src/exec/expand/heredoc/heredoc_rl_expand.c \
 	  src/exec/expand/heredoc/heredoc_signal.c \
+	  src/exec/expand/heredoc/heredoc_signal_utils.c \
 	  src/exec/expand/wildcards/wildcards_sort.c \
   	  src/exec/expand/wildcards/wildcards_utils.c \
 	  src/exec/expand/wildcards/wildcards.c \

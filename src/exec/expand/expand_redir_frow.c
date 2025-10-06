@@ -6,30 +6,11 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 15:10:23 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 18:00:26 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static void	argbuf_release(t_argbuf *ab)
-// {
-// 	size_t	i;
-
-// 	if (!ab)
-// 		return ;
-// 	i = 0;
-// 	while (i < ab->n)
-// 	{
-// 		if (ab->v && ab->v[i])
-// 			free(ab->v[i]);
-// 		i++;
-// 	}
-// 	free(ab->v);
-// 	ab->v = NULL;
-// 	ab->n = 0;
-// 	ab->cap = 0;
-// }
 
 int	make_word_buf(t_token *word, t_buf *w)
 {
@@ -67,13 +48,13 @@ int	take_single_field_and_dup(t_argbuf *ab, char **out)
 	if (ab->n == 1 && ab->v && ab->v[0] && ab->v[0][0] != '\0')
 	{
 		dup = ft_strdup(ab->v[0]);
-		argbuf_free(ab); 
+		argbuf_free(ab);
 		if (!dup)
 			return (2);
 		*out = dup;
 		return (0);
 	}
-	argbuf_free(ab); 
+	argbuf_free(ab);
 	return (1);
 }
 

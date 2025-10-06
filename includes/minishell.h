@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 15:37:07 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:28:05 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ int								hdoc_should_abort(int p0, int p1);
 int								hdoc_prepare(int pfd[2]);
 int								hdoc_finish_success(int pfd[2], int *out_fd);
 int								heredoc_build_delim_inplace(t_redir *r);
+void							hdoc_reset_signal_state(void);
+void							hdoc_restore_after(void);
 
 int								hdoc_read_line(char **out_line, int p0, int p1);
 char							*hdoc_maybe_expand(const char *line,
