@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 23:46:05 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:09:52 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,26 @@ static char	*read_command(void)
 {
 	char	*line;
 	char	*full;
+	char	*empty;
 
 	sanitize_before_prompt();
 	line = readline("myshell> ");
 	if (!line)
 		return (NULL);
 	if (is_blank_line(line))
-		return (ft_strdup(""));
+	{
+		empty = ft_strdup("");
+		free(line);
+		return (empty);
+	}
 	full = read_full_command_line(line);
-	free(line);
 	if (!full)
+	{
+		free(line);
 		return (NULL);
+	}
+	if (full != line)
+		free(line);
 	return (full);
 }
 
@@ -72,12 +81,12 @@ int	repl(void)
 		{
 			if (isatty(0))
 				printf("bye! exitcode : %d\n", get_exit_status());
-			break;
+			break ;
 		}
 		if (*full == '\0')
 		{
 			free(full);
-			continue;
+			continue ;
 		}
 		if (!process_command(full))
 			continue ;
