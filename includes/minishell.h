@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 17:28:05 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:40:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINI_SHELL
 
 # include <ctype.h>
+#include <termios.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -161,6 +162,8 @@ void							pre_backup_cleanup(int *saved_in, int *saved_out);
 void							restore_stdio(int saved_in, int saved_out);
 int								pre_backup(const t_redir *r, size_t n, int *saved_in, int *saved_out);
 
+int	end_with_error(t_cmd *c, int status_set);
+
 /*exec_cmd_child*/
 pid_t							spawn_child(t_cmd *c);
 void							child_main_after_fork(t_cmd *c);
@@ -206,5 +209,17 @@ int								status_to_exitcode(int st);
 
 void							free_strarray_nullterm(char **v);
 void							destroy_token(t_token *t);
+
+
+void	rebind_tty_if_needed(void);
+void	close_extra_fds(void);
+void	sanitize_before_prompt(void);
+void	tty_force_canonical_echo_isig(void);
+void	ms_drain_tty_input(void);
+void	bind_child_readline_to_tty(void);
+
+/*exec_destroy*/
+void	destroy_cmd_argv(t_cmd *cmd);
+void	destroy_cmd_redirs(t_cmd *cmd);
 
 #endif

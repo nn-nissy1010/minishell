@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/06 17:24:57 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/06 22:55:14 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_backup_fd.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_one.c \
+	  src/exec/exec_cmd/redirect/exec_cmd_redir_tty.c \
 	  src/exec/exec_pipe/exec_pipe_call_child.c \
 	  src/exec/exec_pipe/exec_pipe_destroy.c \
 	  src/exec/exec_pipe/exec_pipe_flow_child.c \

@@ -6,11 +6,21 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:57:40 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/05 22:22:53 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 21:12:18 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	destroy_branch_min(t_node *n)
+{
+	if (!n)
+		return ;
+	if (n->fn && n->fn->destroy)
+		n->fn->destroy(n);
+	else
+		free(n);
+}
 
 void	destroy_pipe_min(t_node *node)
 {
@@ -25,21 +35,9 @@ void	destroy_pipe_min(t_node *node)
 		right = p->as.bin.right;
 		p->as.bin.left = NULL;
 		p->as.bin.right = NULL;
-		if (right)
-		{
-			if (right->fn && right->fn->destroy)
-				right->fn->destroy(right);
-			else
-				free(right);
-		}
+		destroy_branch_min(right);
 		free(p);
 		p = left;
 	}
-	if (p)
-	{
-		if (p->fn && p->fn->destroy)
-			p->fn->destroy(p);
-		else
-			free(p);
-	}
+	destroy_branch_min(p);
 }

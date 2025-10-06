@@ -6,36 +6,16 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 22:56:52 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:39:39 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	close_heredoc_fds(t_cmd *c)
+static void	rl_quiet_clear(void)
 {
-	size_t	i;
-
-	if (!c || !c->redirs)
-		return ;
-	i = 0;
-	while (i < c->n_redirs)
-	{
-		if (c->redirs[i].kind == TOK_HEREDOC && c->redirs[i].fd >= 0)
-		{
-			close(c->redirs[i].fd);
-			c->redirs[i].fd = -1;
-		}
-		i++;
-	}
-}
-
-static int	end_with_error(t_cmd *c, int status_set)
-{
-	if (status_set >= 0)
-		set_exit_status(status_set);
-	close_heredoc_fds(c);
-	return (-1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 }
 
 int	prepare_cmd_for_exec(t_cmd *c)
@@ -48,8 +28,10 @@ int	prepare_cmd_for_exec(t_cmd *c)
 		return (-1);
 	}
 	rc = collect_heredocs(c);
+	rl_quiet_clear();
 	if (rc != 0)
 	{
+		rl_quiet_clear();
 		if (rc == -2)
 			return (end_with_error(c, 130));
 		return (end_with_error(c, 1));

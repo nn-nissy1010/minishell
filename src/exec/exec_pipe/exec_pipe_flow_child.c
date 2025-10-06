@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/05 22:23:48 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 21:08:43 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	child_setup_right_io(int fds[2])
 	safe_close(fds[0]);
 }
 
-
 pid_t	spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2],
 		t_pipe_role role)
 {
@@ -70,4 +69,3 @@ pid_t	spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2],
 		perror("minishell: fork");
 	return (pid);
 }
-

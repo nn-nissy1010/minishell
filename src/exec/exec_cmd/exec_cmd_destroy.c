@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 15:55:20 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:53:00 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	destroy_arg_parts(t_arg_part *p)
 		p = next;
 	}
 }
+
 void	destroy_token(t_token *t)
 {
 	size_t	k;
@@ -68,58 +69,42 @@ void	destroy_token(t_token *t)
 	free(t);
 }
 
-void	destroy_cmd_tokens(t_cmd *cmd)
+int	token_in_list(t_token *head, t_token *t)
 {
-	if (!cmd || !cmd->argv_tokens)
-		return ;
-	free(cmd->argv_tokens);
-	cmd->argv_tokens = NULL;
-	cmd->n_argv_tokens = 0;
-}
-
-static int	token_in_list(t_token *head, t_token *t)
-{
-	for (t_token *p = head; p; p = p->next)
-		if (p == t)
+	while (head)
+	{
+		if (head == t)
 			return (1);
+		head = head->next;
+	}
 	return (0);
 }
 
 void	destroy_cmd_redirs(t_cmd *cmd)
 {
-	size_t	i;
 	t_token	*all;
+	t_redir	*r;
+	t_redir	*end;
 
 	if (!cmd || !cmd->redirs)
 		return ;
-	all = get_tokens(); // この行のトークン連結リストの先頭
-	i = 0;
-	while (i < cmd->n_redirs)
+	all = get_tokens();
+	r = cmd->redirs;
+	end = r + cmd->n_redirs;
+	while (r < end)
 	{
-		if (cmd->redirs[i].hdoc_fd >= 0)
+		if (r->hdoc_fd >= 0)
 		{
-			close(cmd->redirs[i].hdoc_fd);
-			cmd->redirs[i].hdoc_fd = -1;
+			close(r->hdoc_fd);
+			r->hdoc_fd = -1;
 		}
-		free(cmd->redirs[i].path);
-		if (cmd->redirs[i].word)
-		{
-			if (!token_in_list(all, cmd->redirs[i].word))
-				destroy_token(cmd->redirs[i].word);
-			cmd->redirs[i].word = NULL;
-		}
-		i++;
+		free(r->path);
+		if (r->word && !token_in_list(all, r->word))
+			destroy_token(r->word);
+		r->word = NULL;
+		r++;
 	}
 	free(cmd->redirs);
 	cmd->redirs = NULL;
 	cmd->n_redirs = 0;
-}
-
-void	destroy_cmd_min_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return ;
-	destroy_cmd_argv(cmd);
-	destroy_cmd_tokens(cmd);
-	destroy_cmd_redirs(cmd);
 }

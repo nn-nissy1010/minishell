@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 15:38:45 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 21:59:02 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static char	*read_command(void)
 	char	*line;
 	char	*full;
 
+	sanitize_before_prompt();
 	line = readline("myshell> ");
 	if (!line)
 		return (NULL);
@@ -31,7 +32,7 @@ static char	*read_command(void)
 	return (full);
 }
 
-static int process_command(char *full)
+static int	process_command(char *full)
 {
 	set_tokens(lexer(full));
 	set_ast(parse(get_tokens()));
