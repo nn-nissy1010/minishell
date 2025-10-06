@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 22:06:32 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/06 20:06:41 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,14 @@ static char	*read_command(void)
 	if (!line)
 		return (NULL);
 	if (is_blank_line(line))
-	{
-		free(line);
-		return (NULL);
-	}
+		return (ft_strdup(""));
 	full = read_full_command_line(line);
+	free(line);
 	if (!full)
 		return (NULL);
 	return (full);
 }
+
 
 static int process_command(char *full)
 {
@@ -71,10 +70,14 @@ int	repl(void)
 		full = read_command();
 		if (!full)
 		{
-			if (!isatty(0))
-				break ;
-			printf("bye! exitcode : %d\n", get_exit_status());
-			break ;
+			if (isatty(0))
+				printf("bye! exitcode : %d\n", get_exit_status());
+			break;
+		}
+		if (*full == '\0')
+		{
+			free(full);
+			continue;
 		}
 		if (!process_command(full))
 			continue ;
