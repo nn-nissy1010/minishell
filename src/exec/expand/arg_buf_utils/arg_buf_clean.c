@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:32:51 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:16:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:46:40 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,4 @@ void	argbuf_free(t_argbuf *b)
 	b->n = 0;
 	b->cap = 0;
 }
+

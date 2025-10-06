@@ -6,25 +6,30 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:06:27 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 20:54:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:23:56 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	push_literal_word(t_argbuf *out, const char *word)
+int	push_literal_word(t_argbuf *dst, const char *s)
 {
-	char	*lit;
+	char	*owned;
 
-	lit = ft_strdup(word);
-	if (!lit)
+	if (!dst)
 		return (-1);
-	unmask_globs(lit);
-	if (argbuf_push(out, lit) != 0)
+	if (s != NULL)
+		owned = ft_strdup(s);
+	else
+		owned = ft_strdup("");
+	if (!owned)
+		return (-1);
+	if (argbuf_grow(dst, dst->n + 1) != 0)
 	{
-		free(lit);
+		free(owned);
 		return (-1);
 	}
+	dst->v[dst->n++] = owned;
 	return (0);
 }
 

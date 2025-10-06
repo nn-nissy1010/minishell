@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:36:39 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/04 22:06:36 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:40:20 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,12 @@ void tok_push(t_token **head, t_token **tail, t_token *node)
 
 void free_tokens(t_token *t)
 {
-    t_token     *n;
-    t_arg_part  *p;
-    t_arg_part  *next;
+    t_token     *n; 
 
-    while (t)
+      while (t)
     {
         n = t->next;
-        if (t->type == TOK_ARG)
-        {
-            free(t->u.arg.raw);
-            p = t->u.arg.parts;
-            while (p) {
-                next = p->next;
-                free(p->text);
-                free(p);
-                p = next;
-            }
-        }
-        free(t);
+        destroy_token(t);  
         t = n;
     }
 }

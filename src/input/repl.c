@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 22:27:52 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:38:45 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static int	execute_command(t_exec_ctx *ctx)
 
 static void	cleanup_command(char *full)
 {
-	free_tokens(get_tokens());
 	destroy_ast(get_ast());
+	free_tokens(get_tokens());
 	free(full);
 }
 
