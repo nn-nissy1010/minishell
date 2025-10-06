@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 22:53:00 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:58:51 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,31 +80,29 @@ int	token_in_list(t_token *head, t_token *t)
 	return (0);
 }
 
-void	destroy_cmd_redirs(t_cmd *cmd)
+void    destroy_cmd_redirs(t_cmd *cmd)
 {
-	t_token	*all;
-	t_redir	*r;
-	t_redir	*end;
+    t_redir *r;
+    t_redir *end;
 
-	if (!cmd || !cmd->redirs)
-		return ;
-	all = get_tokens();
-	r = cmd->redirs;
-	end = r + cmd->n_redirs;
-	while (r < end)
-	{
-		if (r->hdoc_fd >= 0)
-		{
-			close(r->hdoc_fd);
-			r->hdoc_fd = -1;
-		}
-		free(r->path);
-		if (r->word && !token_in_list(all, r->word))
-			destroy_token(r->word);
-		r->word = NULL;
-		r++;
-	}
-	free(cmd->redirs);
-	cmd->redirs = NULL;
-	cmd->n_redirs = 0;
+    if (!cmd || !cmd->redirs)
+        return;
+    r = cmd->redirs;
+    end = r + cmd->n_redirs;
+    while (r < end)
+    {
+        if (r->hdoc_fd >= 0)
+        {
+            close(r->hdoc_fd);
+            r->hdoc_fd = -1;
+        }
+        free(r->path);      
+        r->path = NULL;
+        r->word = NULL;     
+        r++;
+    }
+    free(cmd->redirs);
+    cmd->redirs = NULL;
+    cmd->n_redirs = 0;
 }
+
