@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 23:40:44 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:43:57 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,6 @@ void	bind_child_readline_to_tty(void);
 /*exec_destroy*/
 void	destroy_cmd_argv(t_cmd *cmd);
 void	destroy_cmd_redirs(t_cmd *cmd);
+void destroy_bin_node(struct s_node *node);
 
 #endif

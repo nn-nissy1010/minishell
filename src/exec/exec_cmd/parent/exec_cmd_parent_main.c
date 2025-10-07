@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 21:13:42 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:09:31 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,24 @@ int	wait_and_status(pid_t pid)
 
 int	parent_finalize_simple(pid_t pid)
 {
-	int	status;
+	int	st;
 
-	status = wait_and_status(pid);
-	set_exit_status(status);
+	while (1)
+	{
+		if (waitpid(pid, &st, 0) >= 0)
+			break ;
+		if (errno == EINTR)
+			continue ;
+		perror("waitpid");
+		set_exit_status(1);
+		return (-1);
+	}
+	if (WIFEXITED(st))
+		set_exit_status(WEXITSTATUS(st));
+	else if (WIFSIGNALED(st))
+		set_exit_status(128 + WTERMSIG(st));
+	else
+		set_exit_status(1);
 	return (0);
 }
 
