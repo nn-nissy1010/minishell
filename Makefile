@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/07 00:57:27 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/07 09:42:37 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,8 @@ SRCS =src/main.c \
 	  src/exec/exec_pipe/exec_pipe_flow_child.c \
 	  src/exec/exec_pipe/exec_pipe_main.c \
 	  src/exec/exec_pipe/exec_pipe_signal_manage.c \
+	  src/exec/exec_subshell/exec_subshell_destroy.c \
+	  src/exec/exec_subshell/exec_subshell_main.c \
  	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \
 	  src/exec/expand/expand_redir_frow.c \

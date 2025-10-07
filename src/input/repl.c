@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/07 00:09:52 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:01:52 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int	execute_command(t_exec_ctx *ctx)
 	int	rc;
 
 	rc = ast_exec(get_ast(), ctx);
-	printf("rc=%d\n", rc);
 	return (rc);
 }
 
