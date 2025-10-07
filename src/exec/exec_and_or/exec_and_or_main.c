@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 00:39:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 01:02:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:09:42 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ static int	exec_conditional(struct s_node *left, struct s_node *right,
 
 	if (!left)
 		return (set_exit_status(2), -1);
-	(void)ast_exec(left, ctx);
+	ast_exec(left, ctx);
 	st = get_exit_status();
 	if ((is_and && st == 0) || (!is_and && st != 0))
 	{
-		if (!right)
-			return (0);
-		(void)ast_exec(right, ctx);
-		st = get_exit_status();
+		if (right)
+		{
+			ast_exec(right, ctx);
+			st = get_exit_status();
+		}
 	}
 	set_exit_status(st);
 	return (0);
