@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 20:06:41 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:01:52 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,30 @@ static char	*read_command(void)
 {
 	char	*line;
 	char	*full;
+	char	*empty;
 
+	sanitize_before_prompt();
 	line = readline("myshell> ");
 	if (!line)
 		return (NULL);
 	if (is_blank_line(line))
-		return (ft_strdup(""));
+	{
+		empty = ft_strdup("");
+		free(line);
+		return (empty);
+	}
 	full = read_full_command_line(line);
-	free(line);
 	if (!full)
+	{
+		free(line);
 		return (NULL);
+	}
+	if (full != line)
+		free(line);
 	return (full);
 }
 
-
-static int process_command(char *full)
+static int	process_command(char *full)
 {
 	set_tokens(lexer(full));
 	set_ast(parse(get_tokens()));
@@ -48,14 +57,13 @@ static int	execute_command(t_exec_ctx *ctx)
 	int	rc;
 
 	rc = ast_exec(get_ast(), ctx);
-	printf("rc=%d\n", rc);
 	return (rc);
 }
 
 static void	cleanup_command(char *full)
 {
-	free_tokens(get_tokens());
 	destroy_ast(get_ast());
+	free_tokens(get_tokens());
 	free(full);
 }
 
@@ -72,12 +80,12 @@ int	repl(void)
 		{
 			if (isatty(0))
 				printf("bye! exitcode : %d\n", get_exit_status());
-			break;
+			break ;
 		}
 		if (*full == '\0')
 		{
 			free(full);
-			continue;
+			continue ;
 		}
 		if (!process_command(full))
 			continue ;

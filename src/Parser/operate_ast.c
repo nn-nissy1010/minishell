@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operate_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:46:09 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 21:44:25 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/05 22:25:21 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,10 @@
 
 void destroy_ast(t_node *n)
 {
-    size_t i;
-
     if (!n)
         return;
     if (n->type == ND_COMMAND)
-    {
-        free(n->as.cmd.redirs);
-        free(n->as.cmd.argv_tokens);
-        if (n->as.cmd.argv) 
-        {
-            i = 0;
-            while (i < n->as.cmd.argc) 
-                free(n->as.cmd.argv[i++]);
-            free(n->as.cmd.argv);
-        }
-    }
+        destroy_cmd_min_cmd(&n->as.cmd);  
     else if (n->type == ND_PIPE || n->type == ND_AND_IF || n->type == ND_OR_IF)
     {
         destroy_ast(n->as.bin.left);

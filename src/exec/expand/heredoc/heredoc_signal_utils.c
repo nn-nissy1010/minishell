@@ -1,58 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   heredoc_signal_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 15:52:18 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 18:56:10 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/09/28 22:19:39 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/10/06 17:53:44 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal = 0;
-
-void	signal_handler(int signo)
+void	hdoc_reset_signal_state(void)
 {
-	g_signal = signo;
+	g_signal = 0;
 }
 
-static int	on_readline_event(void)
+void	hdoc_restore_after(void)
 {
-	if (g_signal == SIGINT)
-	{
-		g_signal = 0;
-		set_exit_status(130);
-		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	return (0);
+	install_signal_handlers();
 }
 
-void	x_sigaction(int signo, struct sigaction *sa)
-{
-	if (sigaction(signo, sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(1);
-	}
-}
-
-void	install_signal_handlers(void)
+void	hdoc_set_signals(void)
 {
 	struct sigaction	sa;
 
+	rl_event_hook = NULL;
 	rl_catch_signals = 0;
 	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = signal_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
+	sa.sa_handler = signal_handler;
 	x_sigaction(SIGINT, &sa);
 	sa.sa_handler = SIG_IGN;
 	x_sigaction(SIGQUIT, &sa);
-	rl_event_hook = on_readline_event;
+}
+
+int	hdoc_abort_sigint(int p0, int p1, char *line)
+{
+	if (line)
+		free(line);
+	write(STDOUT_FILENO, "\n", 1);
+	set_exit_status(130);
+	if (p0 >= 0)
+		close(p0);
+	if (p1 >= 0)
+		close(p1);
+	hdoc_reset_signal_state();
+	return (-2);
 }

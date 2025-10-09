@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_signal.c                                   :+:      :+:    :+:   */
+/*   exec_cmd_destroy_main.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 22:19:39 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 17:21:53 by tkuwahat         ###   ########.fr       */
+/*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
+/*   Updated: 2025/10/06 22:25:29 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	hdoc_should_abort(int p0, int p1)
+void	destroy_cmd_tokens(t_cmd *cmd)
 {
-	(void)p0;
-	(void)p1;
-	return (g_signal == SIGINT);
+	if (!cmd || !cmd->argv_tokens)
+		return ;
+	free(cmd->argv_tokens);
+	cmd->argv_tokens = NULL;
+	cmd->n_argv_tokens = 0;
 }
 
-int	hdoc_prepare(int pfd[2])
+void	destroy_cmd_min_cmd(t_cmd *cmd)
 {
-	if (hdoc_open_pipe(pfd) < 0)
-		return (-1);
-	hdoc_set_signals();
-	hdoc_reset_signal_state();
-	return (0);
+	if (!cmd)
+		return ;
+	destroy_cmd_argv(cmd);
+	destroy_cmd_tokens(cmd);
+	destroy_cmd_redirs(cmd);
 }
 
-int	hdoc_finish_success(int pfd[2], int *out_fd)
+void	destroy_cmd_min(t_node *node)
 {
-	close(pfd[1]);
-	*out_fd = pfd[0];
-	hdoc_restore_after();
-	return (0);
+	if (!node)
+		return ;
+	destroy_cmd_min_cmd(&node->as.cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:13:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 20:35:34 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 19:17:33 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ static int	redir_prepare_src(t_redir *r, int *out_src)
 	{
 		if (r->hdoc_fd < 0)
 			return (-1);
-		*out_src = r->hdoc_fd;
+		fd = dup(r->hdoc_fd);
+		if (fd < 0)
+			return (-1);
+		close(r->hdoc_fd);
+		r->hdoc_fd = -1;
+		*out_src = fd;
 		return (0);
 	}
 	fd = open_for_redir(r);
@@ -62,10 +67,7 @@ int	apply_one_redir(t_redir *r)
 			close(src);
 			return (-1);
 		}
-		if (close(src) < 0)
-			return (-1);
+		close(src);
 	}
-	if (r->kind == TOK_HEREDOC)
-		r->hdoc_fd = -1;
 	return (0);
 }

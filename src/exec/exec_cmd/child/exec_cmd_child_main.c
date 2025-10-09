@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:04:49 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 19:28:11 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:01:02 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,22 @@ void	child_main_after_fork(t_cmd *c)
 {
 	int	saved_in;
 	int	saved_out;
-	int	st;
+	int	status;
 
 	saved_in = -1;
 	saved_out = -1;
-	set_child_signals_default();
+	reset_child_signals();
 	if (apply_redirs(c->redirs, c->n_redirs, &saved_in, &saved_out) < 0)
 		exit(1);
 	if (saved_in >= 0)
 		close(saved_in);
 	if (saved_out >= 0)
 		close(saved_out);
+	close_extra_fds();
 	if (is_builtin_any(c))
 	{
-		st = run_builtin_child(c);
-		exit(st);
+		status = run_builtin_child(c);
+		exit(status);
 	}
 	run_external_in_child(c);
 	exit(127);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/05 22:09:08 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/10/07 09:42:37 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,10 +49,13 @@ SRCS =src/main.c \
 	  src/parser/parse_redir.c \
 	  src/parser/operate_ast.c \
 	  src/exec/exec_ast.c \
+	  src/exec/exec_and_or/exec_and_or_main.c \
+	  src/exec/exec_and_or/exec_and_or_destroy.c \
 	  src/exec/exec_cmd/exec_cmd_check_fd.c \
 	  src/exec/exec_cmd/exec_cmd_single.c \
 	  src/exec/exec_cmd/exec_cmd.c \
 	  src/exec/exec_cmd/exec_cmd_destroy.c \
+	  src/exec/exec_cmd/exec_cmd_destroy_main.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_cd.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_echo.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_env.c \
@@ -72,11 +75,14 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_backup_fd.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_main.c \
 	  src/exec/exec_cmd/redirect/exec_cmd_redir_one.c \
+	  src/exec/exec_cmd/redirect/exec_cmd_redir_tty.c \
 	  src/exec/exec_pipe/exec_pipe_call_child.c \
 	  src/exec/exec_pipe/exec_pipe_destroy.c \
 	  src/exec/exec_pipe/exec_pipe_flow_child.c \
 	  src/exec/exec_pipe/exec_pipe_main.c \
 	  src/exec/exec_pipe/exec_pipe_signal_manage.c \
+	  src/exec/exec_subshell/exec_subshell_destroy.c \
+	  src/exec/exec_subshell/exec_subshell_main.c \
  	  src/exec/expand/expand.c \
 	  src/exec/expand/expand_arg.c \
 	  src/exec/expand/expand_redir_frow.c \
@@ -98,6 +104,7 @@ SRCS =src/main.c \
 	  src/exec/expand/heredoc/heredoc_build_delim.c \
 	  src/exec/expand/heredoc/heredoc_rl_expand.c \
 	  src/exec/expand/heredoc/heredoc_signal.c \
+	  src/exec/expand/heredoc/heredoc_signal_utils.c \
 	  src/exec/expand/wildcards/wildcards_sort.c \
   	  src/exec/expand/wildcards/wildcards_utils.c \
 	  src/exec/expand/wildcards/wildcards.c \

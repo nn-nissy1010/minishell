@@ -6,80 +6,102 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 22:57:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 01:02:03 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_strarray_n(char **v, size_t n)
+void	destroy_cmd_argv(t_cmd *cmd)
 {
 	size_t	i;
 
-	if (!v)
+	if (!cmd || !cmd->argv)
 		return ;
 	i = 0;
-	while (i < n)
-	{
-		if (v[i])
-			free(v[i]);
-		i++;
-	}
-	free(v);
+	while (cmd->argv[i])
+		free(cmd->argv[i++]);
+	free(cmd->argv);
+	cmd->argv = NULL;
+	cmd->argc = 0;
 }
 
-void	destroy_cmd_argv(t_cmd *cmd)
+static void	destroy_arg_parts(t_arg_part *p)
 {
-	if (!cmd)
-		return ;
-	if (cmd->argv)
+	t_arg_part	*next;
+
+	while (p)
 	{
-		free_strarray_n(cmd->argv, cmd->argc);
-		cmd->argv = NULL;
-		cmd->argc = 0;
+		next = p->next;
+		if (p->text)
+			free(p->text);
+		free(p);
+		p = next;
 	}
 }
 
-void	destroy_cmd_tokens(t_cmd *cmd)
+void	destroy_token(t_token *t)
 {
-	if (!cmd)
+	size_t	k;
+
+	if (!t)
 		return ;
-	if (cmd->argv_tokens)
+	if (t->type == TOK_ARG)
 	{
-		free(cmd->argv_tokens);
-		cmd->argv_tokens = NULL;
-		cmd->n_argv_tokens = 0;
+		if (t->u.arg.raw)
+			free(t->u.arg.raw);
+		destroy_arg_parts(t->u.arg.parts);
+		if (t->u.arg.items)
+		{
+			k = 0;
+			while (k < t->u.arg.n_items)
+			{
+				free(t->u.arg.items[k]);
+				k++;
+			}
+			free(t->u.arg.items);
+		}
+		t->u.arg.raw = NULL;
+		t->u.arg.parts = NULL;
+		t->u.arg.items = NULL;
+		t->u.arg.n_items = 0;
 	}
+	free(t);
+}
+
+int	token_in_list(t_token *head, t_token *t)
+{
+	while (head)
+	{
+		if (head == t)
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
 
 void	destroy_cmd_redirs(t_cmd *cmd)
 {
-	size_t	i;
+	t_redir	*r;
+	t_redir	*end;
 
-	if (!cmd)
+	if (!cmd || !cmd->redirs)
 		return ;
-	if (!cmd->redirs)
-		return ;
-	i = 0;
-	while (i < cmd->n_redirs)
+	r = cmd->redirs;
+	end = r + cmd->n_redirs;
+	while (r < end)
 	{
-		if (cmd->redirs[i].path)
-			free(cmd->redirs[i].path);
-		i++;
+		if (r->hdoc_fd >= 0)
+		{
+			close(r->hdoc_fd);
+			r->hdoc_fd = -1;
+		}
+		free(r->path);
+		r->path = NULL;
+		r->word = NULL;
+		r++;
 	}
 	free(cmd->redirs);
 	cmd->redirs = NULL;
 	cmd->n_redirs = 0;
-}
-
-void	destroy_cmd_min(t_node *node)
-{
-	t_cmd	*c;
-
-	if (!node)
-		return ;
-	c = &node->as.cmd;
-	destroy_cmd_argv(c);
-	destroy_cmd_tokens(c);
-	destroy_cmd_redirs(c);
 }

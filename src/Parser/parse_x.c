@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_x.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 16:50:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/02 11:26:01 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:01:47 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@ t_node *parse_and_or(t_parser *p)
         if (!right) 
             return (destroy_ast(left), NULL);
         if (op == TOK_AND_IF)
+        {
             node = new_node(ND_AND_IF);
+            node->fn = (t_func *)v_and_if();
+        }
         else
+        {
             node = new_node(ND_OR_IF);
+            node->fn = (t_func *)v_or_if();
+        }
         if (!node)
             return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
         node->as.bin.left = left;
@@ -66,6 +72,7 @@ t_node *parse_pipeline(t_parser *p)
         node = new_node(ND_PIPE);
         if (!node)
             return (perror("malloc"), destroy_ast(left), destroy_ast(right), NULL);
+        node->fn = v_pipe();      
         node->as.bin.left = left;
         node->as.bin.right = right;
         left = node;
@@ -111,5 +118,6 @@ t_node *parse_subshell(t_parser *p)
         return (destroy_ast(body), NULL);
     }
     node->as.subshell.body = body;
+    node->fn = (t_func *)v_subshell();
     return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/04 23:23:59 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:43:57 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINI_SHELL
 
 # include <ctype.h>
+#include <termios.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -114,6 +115,8 @@ int								hdoc_should_abort(int p0, int p1);
 int								hdoc_prepare(int pfd[2]);
 int								hdoc_finish_success(int pfd[2], int *out_fd);
 int								heredoc_build_delim_inplace(t_redir *r);
+void							hdoc_reset_signal_state(void);
+void							hdoc_restore_after(void);
 
 int								hdoc_read_line(char **out_line, int p0, int p1);
 char							*hdoc_maybe_expand(const char *line,
@@ -140,7 +143,7 @@ int								prepare_cmd_for_exec(t_cmd *c);
 int								exec_single(t_cmd *c, t_exec_ctx *ctx);
 
 int								exec_cmd(t_node *node, t_exec_ctx *ctx);
-void							destroy_cmd_min(t_node *node);
+
 
 /*exec_cmd_parent*/
 int								run_parent_builtin_flow(t_cmd *c);
@@ -158,6 +161,8 @@ void							rollback_and_invalidate(int *saved_in, int *saved_out);
 void							pre_backup_cleanup(int *saved_in, int *saved_out);
 void							restore_stdio(int saved_in, int saved_out);
 int								pre_backup(const t_redir *r, size_t n, int *saved_in, int *saved_out);
+
+int	end_with_error(t_cmd *c, int status_set);
 
 /*exec_cmd_child*/
 pid_t							spawn_child(t_cmd *c);
@@ -193,12 +198,29 @@ int								is_valid_ident(const char *s);
 /*exec_pipe*/
 int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
 int 							call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2], int *st_right);
-pid_t							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], int is_left);
-void							parent_mask_sigint(struct sigaction *old);
+
+pid_t 							spawn_pipe_child(t_node *n, t_exec_ctx *parent_ctx, int fds[2], t_pipe_role role);
+int								parent_mask_sigint(struct sigaction *old);
 void 							destroy_pipe_min(t_node *node);
 void							safe_close(int fd);
 void							parent_unmask_sigint(const struct sigaction *old);
 void							reset_child_signals(void);
 int								status_to_exitcode(int st);
+
+void							free_strarray_nullterm(char **v);
+void							destroy_token(t_token *t);
+
+
+void	rebind_tty_if_needed(void);
+void	close_extra_fds(void);
+void	sanitize_before_prompt(void);
+void	tty_force_canonical_echo_isig(void);
+void	ms_drain_tty_input(void);
+void	bind_child_readline_to_tty(void);
+
+/*exec_destroy*/
+void	destroy_cmd_argv(t_cmd *cmd);
+void	destroy_cmd_redirs(t_cmd *cmd);
+void destroy_bin_node(struct s_node *node);
 
 #endif

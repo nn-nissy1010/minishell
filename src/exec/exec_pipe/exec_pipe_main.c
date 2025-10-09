@@ -6,16 +6,15 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 17:49:13 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/05 22:24:08 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 void	parent_unmask_sigint(const struct sigaction *old)
 {
-	x_sigaction(SIGINT, (struct sigaction *)old);
+	(void)sigaction(SIGINT, old, NULL);
 }
 
 int	exec_pipe(t_node *node, t_exec_ctx *parent_ctx)

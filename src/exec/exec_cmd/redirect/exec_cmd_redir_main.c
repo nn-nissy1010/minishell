@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:57:16 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 20:25:20 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:05:50 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	apply_redirs(t_redir *r, size_t n, int *saved_in, int *saved_out)
 {
 	size_t	i;
 
+	if (!saved_in || !saved_out)
+		return (-1);
 	*saved_in = -1;
 	*saved_out = -1;
 	if (pre_backup(r, n, saved_in, saved_out) < 0)
@@ -43,5 +45,17 @@ int	redirect_only_flow(t_cmd *c)
 	if (apply_redirs(c->redirs, c->n_redirs, &saved_in, &saved_out) < 0)
 		return (set_exit_status(1), -1);
 	restore_stdio(saved_in, saved_out);
+	rebind_tty_if_needed();
+	rl_instream = stdin;
+	rl_outstream = stdout;
 	return (set_exit_status(0), 0);
+}
+
+void	sanitize_before_prompt(void)
+{
+	rebind_tty_if_needed();
+	tty_force_canonical_echo_isig();
+	ms_drain_tty_input();
+	rl_instream = stdin;
+	rl_outstream = stderr;
 }
