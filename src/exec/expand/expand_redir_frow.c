@@ -6,11 +6,33 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 18:00:26 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:39:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	resolve_from_matches(const char *cand, t_argbuf *m, char **out)
+{
+	if (m->n == 0)
+	{
+		*out = ft_strdup(cand);
+		argbuf_free(m);
+		if (!*out)
+			return (2);
+		unmask_globs(*out);
+		return (0);
+	}
+	if (m->n == 1)
+	{
+		*out = m->v[0];
+		m->v[0] = NULL;
+		argbuf_free(m);
+		return (0);
+	}
+	argbuf_free(m);
+	return (1);
+}
 
 int	make_word_buf(t_token *word, t_buf *w)
 {
@@ -68,8 +90,12 @@ int	expand_word_to_single_field(t_token *word, char **out)
 	if (rc != 0)
 		return (2);
 	rc = buf_to_argbuf(&w, &ab);
-	buf_free(&w);
 	if (rc != 0)
+	{
+		buf_free(&w);
 		return (rc);
-	return (take_single_field_and_dup(&ab, out));
+	}
+	rc = take_single_field_and_dup(&ab, out);
+	buf_free(&w);
+	return (rc);
 }

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/07 00:43:57 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:33:28 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,8 @@ void							rollback_and_invalidate(int *saved_in, int *saved_out);
 void							pre_backup_cleanup(int *saved_in, int *saved_out);
 void							restore_stdio(int saved_in, int saved_out);
 int								pre_backup(const t_redir *r, size_t n, int *saved_in, int *saved_out);
+int								resolve_from_matches(const char *cand, t_argbuf *m, char **out);
+int								read_one_heredoc(const char *delim, int quoted, int *out_fd);
 
 int	end_with_error(t_cmd *c, int status_set);
 

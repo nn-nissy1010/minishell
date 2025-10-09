@@ -6,22 +6,51 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 22:30:36 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:39:28 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	glob_resolve_for_redir(const char *cand, char **out)
+{
+	t_argbuf	m;
+	int			rc;
+
+	if (!cand || !out)
+		return (2);
+	if (!should_glob_expand(cand))
+	{
+		*out = ft_strdup(cand);
+		if (!*out)
+			return (2);
+		unmask_globs(*out);
+		return (0);
+	}
+	argbuf_init(&m);
+	rc = expand_glob_pattern(cand, &m);
+	if (rc < 0)
+	{
+		argbuf_free(&m);
+		return (2);
+	}
+	return (resolve_from_matches(cand, &m, out));
+}
+
 int	redir_expand_word_to_path(t_token *word, char **out_path)
 {
-	int	rc;
+	char	*cand;
+	int		rc;
 
-	rc = expand_word_to_single_field(word, out_path);
-	if (rc == 0)
-		return (0);
+	cand = NULL;
+	rc = expand_word_to_single_field(word, &cand);
 	if (rc == 1)
 		return (1);
-	return (2);
+	if (rc != 0)
+		return (2);
+	rc = glob_resolve_for_redir(cand, out_path);
+	free(cand);
+	return (rc);
 }
 
 int	expand_redirs(t_redir *rs, size_t n)
@@ -36,12 +65,15 @@ int	expand_redirs(t_redir *rs, size_t n)
 		r = &rs[i];
 		if (!r->word || r->word->type != TOK_ARG)
 			return (2);
-		if (r->path)
-		{
-			free(r->path);
-			r->path = NULL;
-		}
+		free(r->path);
+		r->path = NULL;
 		rc = redir_expand_word_to_path(r->word, &r->path);
+		if (rc == 1)
+		{
+			err3("minishell: ", "ambiguous redirect", "\n");
+			set_exit_status(1);
+			return (1);
+		}
 		if (rc != 0)
 			return (rc);
 		i++;

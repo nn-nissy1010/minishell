@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 00:33:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 20:49:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:38:25 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,8 @@ int	pat_match(const char *p, const char *s)
 
 static int	push_match_name(const char *name, t_argbuf *out)
 {
-	char	*dup;
-
-	dup = ft_strdup(name);
-	if (!dup)
-		return (-1);
-	if (argbuf_push(out, dup) != 0)
+	if (argbuf_push(out, name) != 0)
 	{
-		free(dup);
 		return (-1);
 	}
 	return (0);
