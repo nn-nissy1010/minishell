@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+static void	rl_quiet_clear(void)
+{
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
+
 int	prepare_cmd_for_exec(t_cmd *c)
 {
 	int	rc;
@@ -22,8 +28,10 @@ int	prepare_cmd_for_exec(t_cmd *c)
 		return (-1);
 	}
 	rc = collect_heredocs(c);
+	rl_quiet_clear();
 	if (rc != 0)
 	{
+		rl_quiet_clear();
 		if (rc == -2)
 		{
 			(void)write(STDOUT_FILENO, "\n", 1);

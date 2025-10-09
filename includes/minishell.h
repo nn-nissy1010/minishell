@@ -166,6 +166,8 @@ int								read_one_heredoc(const char *delim, int quoted, int *out_fd);
 
 int	end_with_error(t_cmd *c, int status_set);
 
+int	end_with_error(t_cmd *c, int status_set);
+
 /*exec_cmd_child*/
 pid_t							spawn_child(t_cmd *c);
 void							child_main_after_fork(t_cmd *c);
