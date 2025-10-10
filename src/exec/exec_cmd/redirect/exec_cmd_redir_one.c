@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:13:34 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 19:17:33 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/10 10:37:06 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,25 @@ static int	redir_prepare_src(t_redir *r, int *out_src)
 		return (-1);
 	if (r->kind == TOK_HEREDOC)
 	{
-		if (r->hdoc_fd < 0)
-			return (-1);
 		fd = dup(r->hdoc_fd);
 		if (fd < 0)
-			return (-1);
+		{
+			err3("minishell: ", "dup", ": ");
+			err3("", strerror(errno), "\n");
+			return (set_exit_status(1), -1);
+		}
 		close(r->hdoc_fd);
 		r->hdoc_fd = -1;
-		*out_src = fd;
-		return (0);
+		return (*out_src = fd, 0);
 	}
 	fd = open_for_redir(r);
 	if (fd < 0)
-		return (-1);
-	*out_src = fd;
-	return (0);
+	{
+		err3("minishell: ", r->path, ": ");
+		err3("", strerror(errno), "\n");
+		return (set_exit_status(1), -1);
+	}
+	return (*out_src = fd, 0);
 }
 
 int	apply_one_redir(t_redir *r)

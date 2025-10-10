@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 11:09:31 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/10 10:36:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ int	wait_and_status(pid_t pid)
 	return (1);
 }
 
-int	parent_finalize_simple(pid_t pid)
+int	wait_child_status(pid_t pid, int *out_st)
 {
 	int	st;
 
+	if (!out_st)
+		return (-1);
 	while (1)
 	{
 		if (waitpid(pid, &st, 0) >= 0)
@@ -62,16 +64,37 @@ int	parent_finalize_simple(pid_t pid)
 		if (errno == EINTR)
 			continue ;
 		perror("waitpid");
-		set_exit_status(1);
 		return (-1);
 	}
-	if (WIFEXITED(st))
-		set_exit_status(WEXITSTATUS(st));
-	else if (WIFSIGNALED(st))
-		set_exit_status(128 + WTERMSIG(st));
-	else
-		set_exit_status(1);
+	*out_st = st;
 	return (0);
+}
+
+int	parent_finalize_simple(pid_t pid)
+{
+	int	st;
+	int	sig;
+
+	if (wait_child_status(pid, &st) < 0)
+		return (set_exit_status(1), -1);
+	if (WIFEXITED(st))
+		return (set_exit_status(WEXITSTATUS(st)), 0);
+	if (WIFSIGNALED(st))
+	{
+		sig = WTERMSIG(st);
+		if (sig == SIGINT)
+		{
+			write(STDERR_FILENO, "\n", 1);
+			signal_handler(0);
+		}
+		else if (sig == SIGQUIT)
+		{
+			write(STDERR_FILENO, "Quit: 3\n", 8);
+			signal_handler(0);
+		}
+		return (set_exit_status(128 + sig), 0);
+	}
+	return (set_exit_status(1), 0);
 }
 
 int	run_parent_builtin_flow(t_cmd *c)

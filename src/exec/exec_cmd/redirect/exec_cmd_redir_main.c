@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:57:16 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 23:05:50 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/10 09:44:09 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	redirect_only_flow(t_cmd *c)
 	restore_stdio(saved_in, saved_out);
 	rebind_tty_if_needed();
 	rl_instream = stdin;
-	rl_outstream = stdout;
+	rl_outstream = stderr;
 	return (set_exit_status(0), 0);
 }
 

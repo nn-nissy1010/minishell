@@ -6,7 +6,7 @@
 #    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/07 09:42:37 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/09 13:34:19 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,7 @@ SRCS =src/main.c \
 	  src/exec/expand/word_split/expand_word_split_utils.c \
 	  src/exec/expand/word_split/expand_word_split.c \
 	  src/exec/expand/heredoc/heredoc_main.c \
+	  src/exec/expand/heredoc/heredoc_read_heredoc.c\
 	  src/exec/expand/heredoc/heredoc_build_delim.c \
 	  src/exec/expand/heredoc/heredoc_rl_expand.c \
 	  src/exec/expand/heredoc/heredoc_signal.c \
