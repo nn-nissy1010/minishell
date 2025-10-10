@@ -6,17 +6,11 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/09 13:36:15 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/10 09:38:24 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	rl_quiet_clear(void)
-{
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
 
 int	prepare_cmd_for_exec(t_cmd *c)
 {
@@ -28,10 +22,8 @@ int	prepare_cmd_for_exec(t_cmd *c)
 		return (-1);
 	}
 	rc = collect_heredocs(c);
-	rl_quiet_clear();
 	if (rc != 0)
 	{
-		rl_quiet_clear();
 		if (rc == -2)
 		{
 			(void)write(STDOUT_FILENO, "\n", 1);

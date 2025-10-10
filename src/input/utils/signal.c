@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:52:18 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/06 18:56:10 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/10 10:05:22 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	on_readline_event(void)
 	{
 		g_signal = 0;
 		set_exit_status(130);
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDERR_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
