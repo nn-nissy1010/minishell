@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_destroy.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:57:40 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 21:12:18 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:45:17 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	destroy_pipe_min(t_node *node)
 	p = node;
 	while (p && p->type == ND_PIPE)
 	{
-		left = p->as.bin.left;
-		right = p->as.bin.right;
-		p->as.bin.left = NULL;
-		p->as.bin.right = NULL;
+		left = p->u_as.s_bin.left;
+		right = p->u_as.s_bin.right;
+		p->u_as.s_bin.left = NULL;
+		p->u_as.s_bin.right = NULL;
 		destroy_branch_min(right);
 		free(p);
 		p = left;

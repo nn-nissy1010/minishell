@@ -6,34 +6,35 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:14:05 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/19 15:33:29 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:38:10 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int *exit_status_ref(void)
+static int	*exit_status_ref(void)
 {
-    static int exit_status = 0;
-    return &exit_status;
+	static int	exit_status = 0;
+
+	return (&exit_status);
 }
 
-int get_exit_status(void)
+int	get_exit_status(void)
 {
-    return *exit_status_ref();
+	return (*exit_status_ref());
 }
 
-void set_exit_status(int status)
+void	set_exit_status(int status)
 {
-    *exit_status_ref() = status;
+	*exit_status_ref() = status;
 }
 
-void reset_exit_status(void)
+void	reset_exit_status(void)
 {
-    *exit_status_ref() = 0;
+	*exit_status_ref() = 0;
 }
 
-void inc_exit_status(int delta)
+void	inc_exit_status(int delta)
 {
-    *exit_status_ref() += delta;
+	*exit_status_ref() += delta;
 }

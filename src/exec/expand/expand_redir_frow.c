@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_redir_frow.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:28:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/09 12:39:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:07:29 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	make_word_buf(t_token *word, t_buf *w)
 	if (!word || !w || word->type != TOK_ARG)
 		return (2);
 	buf_init(w);
-	if (parts_to_buf(word->u.arg.parts, w) < 0)
+	if (parts_to_buf(word->u_u.arg.parts, w) < 0)
 	{
 		buf_free(w);
 		return (2);

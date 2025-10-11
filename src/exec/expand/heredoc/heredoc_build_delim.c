@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_build_delim.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 17:05:11 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 17:13:34 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:08:10 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	heredoc_build_delim_inplace(t_redir *r)
 {
 	size_t	need;
 
-	if (!r || !r->word || !r->word->u.arg.parts)
+	if (!r || !r->word || !r->word->u_u.arg.parts)
 		return (-1);
-	need = hdoc_calc_need_and_quote(r->word->u.arg.parts, &r->quoted_heredoc);
+	need = hdoc_calc_need_and_quote(r->word->u_u.arg.parts, &r->quoted_heredoc);
 	r->path = (char *)malloc(need + 1);
 	if (!r->path)
 		return (-1);
-	hdoc_copy_parts_to(r->path, r->word->u.arg.parts);
+	hdoc_copy_parts_to(r->path, r->word->u_u.arg.parts);
 	return (0);
 }

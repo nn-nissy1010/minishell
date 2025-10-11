@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:42:00 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/20 16:04:20 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:35:35 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_quote_type	get_quote_type(char q)
 
 static void	handle_char(const char **p, t_buf *b, t_arg_part *proto)
 {
-	if (proto->quote == Q_DOUBLE && **p == '\\'
-		&& (*(*p + 1) == '"' || *(*p + 1) == '\\' || *(*p + 1) == '$'))
+	if (proto->quote == Q_DOUBLE && **p == '\\' && (*(*p + 1) == '"' || *(*p
+				+ 1) == '\\' || *(*p + 1) == '$'))
 	{
 		(*p)++;
 		b->data = append_char(b->data, &b->cap, &b->len, *(*p)++);
@@ -52,10 +52,10 @@ t_arg_part	*scan_quoted_part(const char **pp)
 	while (*p && *p != q)
 		handle_char(&p, &b, &proto);
 	if (!*p)
-    {
-        write(STDERR_FILENO, "minishell: unmatched quote\n", 27);
-        return (free(b.data), NULL);
-    }
+	{
+		write(STDERR_FILENO, "minishell: unmatched quote\n", 27);
+		return (free(b.data), NULL);
+	}
 	p++;
 	b.data = append_char(b.data, &b.cap, &b.len, '\0');
 	*pp = p;

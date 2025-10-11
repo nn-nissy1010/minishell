@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_rl_expand.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 22:17:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/29 14:14:19 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:55:58 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,4 @@ char	*hdoc_maybe_expand(const char *line, int quoted)
 		return (ft_strdup(line));
 	out = expand_params_part(line);
 	return (out);
-}
-
-int	hdoc_read_line(char **out_line, int p0, int p1)
-{
-	char	*line;
-
-	line = readline("> ");
-	if (g_signal == SIGINT)
-	{
-		hdoc_abort_sigint(p0, p1, line);
-		return (1);
-	}
-	*out_line = line;
-	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:09:18 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/10 09:38:24 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:43:03 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	prepare_cmd_for_exec(t_cmd *c)
 
 int	exec_cmd(t_node *node, t_exec_ctx *ctx)
 {
-	if (prepare_cmd_for_exec(&node->as.cmd) != 0)
+	if (prepare_cmd_for_exec(&node->u_as.cmd) != 0)
 		return (-1);
-	return (exec_single(&node->as.cmd, ctx));
+	return (exec_single(&node->u_as.cmd, ctx));
 }
 
 t_func	*v_cmd(void)

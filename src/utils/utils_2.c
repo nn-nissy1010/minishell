@@ -1,38 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd_destroy_main.c                            :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/11 10:43:42 by nnishiya         ###   ########.fr       */
+/*   Created: 2025/09/13 15:53:19 by nnishiya          #+#    #+#             */
+/*   Updated: 2025/10/11 10:16:06 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	destroy_cmd_tokens(t_cmd *cmd)
+char	*ft_strndup(const char *s, size_t n)
 {
-	if (!cmd || !cmd->argv_tokens)
-		return ;
-	free(cmd->argv_tokens);
-	cmd->argv_tokens = NULL;
-	cmd->n_argv_tokens = 0;
+	return (ft_substr(s, 0, n));
 }
 
-void	destroy_cmd_min_cmd(t_cmd *cmd)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	if (!cmd)
-		return ;
-	destroy_cmd_argv(cmd);
-	destroy_cmd_tokens(cmd);
-	destroy_cmd_redirs(cmd);
-}
+	void	*new_ptr;
 
-void	destroy_cmd_min(t_node *node)
-{
-	if (!node)
-		return ;
-	destroy_cmd_min_cmd(&node->u_as.cmd);
+	if (new_size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	new_ptr = malloc(new_size);
+	if (!new_ptr)
+		return (NULL);
+	if (ptr)
+	{
+		if (old_size > new_size)
+			old_size = new_size;
+		ft_memcpy(new_ptr, ptr, old_size);
+		free(ptr);
+	}
+	return (new_ptr);
 }

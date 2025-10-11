@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/09 13:34:19 by tkuwahat         ###   ########.fr        #
+#    Updated: 2025/10/11 10:54:36 by nnishiya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = minishell
 SRCS =src/main.c \
       src/exit_status.c \
 	  src/utils/utils.c \
+	  src/utils/utils_2.c \
       src/input/repl.c \
 	  src/input/utils/read_command.c \
 	  src/input/utils/read_command_utils.c \
@@ -46,6 +47,7 @@ SRCS =src/main.c \
 	  src/parser/parser.c \
 	  src/parser/parser_utils.c \
 	  src/parser/parse_x.c \
+	  src/parser/parse_x_2.c \
 	  src/parser/parse_redir.c \
 	  src/parser/operate_ast.c \
 	  src/exec/exec_ast.c \
@@ -104,8 +106,6 @@ SRCS =src/main.c \
 	  src/exec/expand/heredoc/heredoc_read_heredoc.c\
 	  src/exec/expand/heredoc/heredoc_build_delim.c \
 	  src/exec/expand/heredoc/heredoc_rl_expand.c \
-	  src/exec/expand/heredoc/heredoc_signal.c \
-	  src/exec/expand/heredoc/heredoc_signal_utils.c \
 	  src/exec/expand/wildcards/wildcards_sort.c \
   	  src/exec/expand/wildcards/wildcards_utils.c \
 	  src/exec/expand/wildcards/wildcards.c \

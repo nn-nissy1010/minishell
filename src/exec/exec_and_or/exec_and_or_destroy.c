@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_and_or_destroy.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 00:39:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 01:02:13 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:42:36 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	destroy_bin_node(struct s_node *node)
 {
 	if (!node)
 		return ;
-	if (node->as.bin.left)
-		node->as.bin.left->fn->destroy(node->as.bin.left);
-	if (node->as.bin.right)
-		node->as.bin.right->fn->destroy(node->as.bin.right);
+	if (node->u_as.s_bin.left)
+		node->u_as.s_bin.left->fn->destroy(node->u_as.s_bin.left);
+	if (node->u_as.s_bin.right)
+		node->u_as.s_bin.right->fn->destroy(node->u_as.s_bin.right);
 	free(node);
 }

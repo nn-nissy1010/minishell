@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_and_or_main.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 00:39:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 11:09:42 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:49:21 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@ static int	exec_and_if_node(struct s_node *node, t_exec_ctx *ctx)
 {
 	if (!node)
 		return (set_exit_status(2), -1);
-	return (exec_conditional(node->as.bin.left, node->as.bin.right, ctx, 1));
+	return (exec_conditional(node->u_as.s_bin.left, node->u_as.s_bin.right, ctx,
+			1));
 }
 
 static int	exec_or_if_node(struct s_node *node, t_exec_ctx *ctx)
 {
 	if (!node)
 		return (set_exit_status(2), -1);
-	return (exec_conditional(node->as.bin.left, node->as.bin.right, ctx, 0));
+	return (exec_conditional(node->u_as.s_bin.left, node->u_as.s_bin.right, ctx,
+			0));
 }
 
 t_func	*v_and_if(void)

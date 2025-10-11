@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/05 22:24:08 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:46:31 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parent_unmask_sigint(const struct sigaction *old)
+void	parent_unmask_sigint(struct sigaction *old)
 {
 	(void)sigaction(SIGINT, old, NULL);
 }
@@ -22,7 +22,7 @@ int	exec_pipe(t_node *node, t_exec_ctx *parent_ctx)
 	int	fds[2];
 	int	st_right;
 
-	if (!node || !node->as.bin.left || !node->as.bin.right)
+	if (!node || !node->u_as.s_bin.left || !node->u_as.s_bin.right)
 		return (set_exit_status(2), -1);
 	if (pipe(fds) < 0)
 		return (perror("minishell: pipe"), set_exit_status(1), -1);

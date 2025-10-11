@@ -6,53 +6,52 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:36:29 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 16:49:24 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:33:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_entry(t_env_pair *p)
+void	free_entry(t_env_pair *p)
 {
-    free(p->key);
-    free(p->val);
-    p->key = NULL;
-    p->val = NULL;
+	free(p->key);
+	free(p->val);
+	p->key = NULL;
+	p->val = NULL;
 }
 
-static int delete_entry(t_env_table *t, t_env_pair *p)
+static int	delete_entry(t_env_table *t, t_env_pair *p)
 {
-    free_entry(p);
-    p->tomb = 1;
-    t->size--;
-    return (1);
+	free_entry(p);
+	p->tomb = 1;
+	t->size--;
+	return (1);
 }
 
-int env_table_unset(t_env_table *t, const char *key)
+int	env_table_unset(t_env_table *t, const char *key)
 {
-    t_env_pair *p;
-    size_t dummy;
+	t_env_pair	*p;
+	size_t		dummy;
 
-    p = env_table_find(t, key, &dummy);
-    if (!p || !p->key || p->tomb)
-        return (0);
-
-    delete_entry(t, p);
-    return (1);
+	p = env_table_find(t, key, &dummy);
+	if (!p || !p->key || p->tomb)
+		return (0);
+	delete_entry(t, p);
+	return (1);
 }
 
-int is_valid_env_key(const char *key)
+int	is_valid_env_key(const char *key)
 {
-    if (!key || !*key)
-        return (0);
-    if (!(ft_isalpha((unsigned char)*key) || *key == '_'))
-        return (0);
-    key++;
-    while (*key)
-    {
-        if (!(ft_isalnum((unsigned char)*key) || *key == '_'))
-            return (0);
-        key++;
-    }
-    return (1);
+	if (!key || !*key)
+		return (0);
+	if (!(ft_isalpha((unsigned char)*key) || *key == '_'))
+		return (0);
+	key++;
+	while (*key)
+	{
+		if (!(ft_isalnum((unsigned char)*key) || *key == '_'))
+			return (0);
+		key++;
+	}
+	return (1);
 }

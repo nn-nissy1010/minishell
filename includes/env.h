@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_table.h                                        :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:19:26 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/04 22:54:21 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:02:08 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_TABLE
-# define ENV_TABLE
+#ifndef ENV_H
+# define ENV_H
 # include <stddef.h>
+
 typedef struct s_env_pair
 {
 	char		*key;
@@ -44,10 +45,10 @@ typedef struct s_find_result
 
 typedef struct s_envp_builder
 {
-    char  **envp;
-    size_t  n;
-    size_t  cap;
-}   t_envp_builder;
+	char		**envp;
+	size_t		n;
+	size_t		cap;
+}				t_envp_builder;
 
 typedef void	(*t_env_iter_cb)(const char *k, const char *v, void *ud);
 
@@ -69,16 +70,15 @@ int				env_table_put_entry(t_env_table *t, const char *entry);
 t_env_pair		*env_table_find(t_env_table *t, const char *key,
 					size_t *first_tomb);
 int				parse_entry(const char *entry, t_env_pair *out);
-int 			is_valid_env_key(const char *key);
-void 			count_cb(const char *k, const char *v, void *ud);
-void 			fill_cb(const char *k, const char *v, void *ud);
-
+int				is_valid_env_key(const char *key);
+void			count_cb(const char *k, const char *v, void *ud);
+void			fill_cb(const char *k, const char *v, void *ud);
 
 int				get_env_table(void);
 int				update_env_table(const char *key, const char *value);
 int				unset_env_table(const char *arg);
 void			destroy_env_table(void);
 const char		*search_env_table(const char *key);
-char **env_table_to_envp(void);
+char			**env_table_to_envp(void);
 
 #endif

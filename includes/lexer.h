@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:13:01 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/05 22:19:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:04:02 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LAXER
-# define LAXER
+#ifndef LEXER_H
+# define LEXER_H
 
 typedef enum e_tokentype
 {
@@ -65,7 +65,7 @@ typedef struct s_token
 	{
 		t_arg			arg;
 		t_heredoc		heredoc;
-	} u;
+	} u_u;
 	struct s_token		*next;
 }						t_token;
 
@@ -114,8 +114,8 @@ char					*append_char(char *buf, size_t *cap, size_t *len,
 
 t_token					*lexer(const char *input);
 
-t_token **tokens_ref(void);
-void set_tokens(t_token *new_tokens);
-t_token *get_tokens(void);
+t_token					**tokens_ref(void);
+void					set_tokens(t_token *new_tokens);
+t_token					*get_tokens(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_arg.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:18:17 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/04 23:12:36 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:07:12 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	process_token_to_argbuf(t_token *t, t_argbuf *b)
 	if (!t || t->type != TOK_ARG)
 		return (2);
 	buf_init(&w);
-	if (parts_to_buf(t->u.arg.parts, &w) < 0)
+	if (parts_to_buf(t->u_u.arg.parts, &w) < 0)
 	{
 		buf_free(&w);
 		return (2);

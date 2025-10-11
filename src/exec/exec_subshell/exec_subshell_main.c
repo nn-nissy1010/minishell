@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell_main.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 09:17:16 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 11:10:04 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:48:21 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static pid_t	spawn_subshell_child(struct s_node *node,
 	t_exec_ctx	ctx;
 	pid_t		pid;
 
-	if (!node || !node->as.subshell.body)
+	if (!node || !node->u_as.s_subshell.body)
 		return (-1);
 	pid = fork();
 	if (pid < 0)
@@ -34,7 +34,7 @@ static pid_t	spawn_subshell_child(struct s_node *node,
 			ctx = *parent_ctx;
 		ctx.xflag |= XF_SUBSHELL;
 		set_child_signals_default();
-		ast_exec(node->as.subshell.body, &ctx);
+		ast_exec(node->u_as.s_subshell.body, &ctx);
 		exit(get_exit_status());
 	}
 	return (pid);
@@ -67,7 +67,7 @@ int	exec_subshell_node(struct s_node *node, t_exec_ctx *parent_ctx)
 {
 	pid_t	pid;
 
-	if (!node || !node->as.subshell.body)
+	if (!node || !node->u_as.s_subshell.body)
 		return (set_exit_status(2), -1);
 	pid = spawn_subshell_child(node, parent_ctx);
 	if (pid < 0)

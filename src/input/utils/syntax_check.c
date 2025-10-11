@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:57:45 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/28 19:33:24 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:34:54 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static t_more	scan_double_quote(const char *s, size_t *i)
 	(*i)++;
 	while (s[*i] && s[*i] != '"')
 	{
-		if (s[*i] == '\\' && (s[*i + 1] == '"' || s[*i + 1] == '\\' || s[*i
-				+ 1] == '$'))
+		if (s[*i] == '\\' && (s[*i + 1] == '"' || s[*i + 1] == '\\'
+				|| s[*i + 1] == '$'))
 			(*i)++;
 		(*i)++;
 	}

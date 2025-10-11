@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 16:43:49 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/09/30 16:44:07 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:35:24 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ t_arg_part	*scan_param_part(const char **pp)
 	else if (ft_isdigit((unsigned char)*p))
 		p++;
 	else if (ft_isalpha((unsigned char)*p) || *p == '_')
-    {
+	{
 		p++;
 		while (ft_isalnum((unsigned char)*p) || *p == '_')
 			p++;
 	}
-    init_proto(&proto, Q_NONE);
+	init_proto(&proto, Q_NONE);
 	proto.has_param = 1;
 	part = new_part_copy(start, p - start, &proto);
 	if (!part)

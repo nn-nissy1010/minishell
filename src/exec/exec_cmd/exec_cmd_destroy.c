@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_destroy.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:08:43 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/07 01:02:03 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/11 10:06:54 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,23 @@ void	destroy_token(t_token *t)
 		return ;
 	if (t->type == TOK_ARG)
 	{
-		if (t->u.arg.raw)
-			free(t->u.arg.raw);
-		destroy_arg_parts(t->u.arg.parts);
-		if (t->u.arg.items)
+		if (t->u_u.arg.raw)
+			free(t->u_u.arg.raw);
+		destroy_arg_parts(t->u_u.arg.parts);
+		if (t->u_u.arg.items)
 		{
 			k = 0;
-			while (k < t->u.arg.n_items)
+			while (k < t->u_u.arg.n_items)
 			{
-				free(t->u.arg.items[k]);
+				free(t->u_u.arg.items[k]);
 				k++;
 			}
-			free(t->u.arg.items);
+			free(t->u_u.arg.items);
 		}
-		t->u.arg.raw = NULL;
-		t->u.arg.parts = NULL;
-		t->u.arg.items = NULL;
-		t->u.arg.n_items = 0;
+		t->u_u.arg.raw = NULL;
+		t->u_u.arg.parts = NULL;
+		t->u_u.arg.items = NULL;
+		t->u_u.arg.n_items = 0;
 	}
 	free(t);
 }
