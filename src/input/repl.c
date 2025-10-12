@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 09:35:04 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/12 14:59:01 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	execute_command(t_exec_ctx *ctx)
 {
 	int	rc;
 
-	rc = ast_exec(get_ast(), ctx);
+	rc = ast_execute_root(get_ast(), ctx);
 	return (rc);
 }
 
