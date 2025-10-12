@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 10:55:06 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/12 12:29:25 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void							fail_exec(const char *path, int err);
 
 /*exec_cmd_builtin*/
 int								bi_cd(char **av);
+int								exit_validate(char *str);
 int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
