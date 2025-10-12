@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 15:12:48 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 23:00:41 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	collect_heredocs_for_tree(t_node *n)
 		return (0);
 	if (n->type == ND_COMMAND)
 		return (collect_heredocs(&n->u_as.cmd));
-	if (n->type == ND_PIPE)
+	if (n->type == ND_PIPE || n->type == ND_AND_IF || n->type == ND_OR_IF)
 	{
 		rc = collect_heredocs_for_tree(n->u_as.s_bin.left);
 		if (rc != 0)
