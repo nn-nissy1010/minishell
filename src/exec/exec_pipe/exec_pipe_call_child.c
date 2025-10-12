@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_call_child.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/11 10:44:29 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/12 15:12:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,25 @@ static int	handle_right_spawn_fail(int fds[2], pid_t lp,
 	return (-1);
 }
 
-static void	wait_both_and_take_right(pid_t lp, pid_t rp, int *st_right)
+static int	wait_both_and_take_right(pid_t lp, pid_t rp, int *st_right)
 {
-	int	st;
+	int	stl;
+	int	str;
+	int	sigint_seen;
 
-	st = 0;
-	(void)waitpid_retry(lp, NULL);
-	if (waitpid_retry(rp, &st) < 0)
-		st = 0;
+	stl = 0;
+	str = 0;
+	sigint_seen = 0;
+	if (waitpid_retry(lp, &stl) < 0)
+		return (-1);
+	if (waitpid_retry(rp, &str) < 0)
+		return (-1);
+	if ((WIFSIGNALED(stl) && WTERMSIG(stl) == SIGINT) || (WIFSIGNALED(str)
+			&& WTERMSIG(str) == SIGINT))
+		sigint_seen = 1;
 	if (st_right)
-		*st_right = st;
+		*st_right = str;
+	return (sigint_seen);
 }
 
 int	call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2],
@@ -58,6 +67,7 @@ int	call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2],
 	struct sigaction	oldint;
 	pid_t				lp;
 	pid_t				rp;
+	int					sigint_seen;
 
 	parent_mask_sigint(&oldint);
 	lp = spawn_pipe_child(node->u_as.s_bin.left, parent_ctx, fds, PIPE_LEFT);
@@ -67,7 +77,9 @@ int	call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2],
 	if (rp < 0)
 		return (handle_right_spawn_fail(fds, lp, &oldint));
 	close_pipe_pair(fds);
-	wait_both_and_take_right(lp, rp, st_right);
+	sigint_seen = wait_both_and_take_right(lp, rp, st_right);
+	if (sigint_seen == 1)
+		(void)!write(STDERR_FILENO, "\n", 1);
 	parent_unmask_sigint(&oldint);
-	return (0);
+	return (sigint_seen);
 }
