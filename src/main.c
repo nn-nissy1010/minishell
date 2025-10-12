@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 09:38:16 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/12 12:26:19 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,5 @@ int	main(int argc, char **argv, char **envp)
 		update_env_table("TEST", "test");
 	repl();
 	destroy_env_table();
-	return (0);
+	return (get_exit_status());
 }
