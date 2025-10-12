@@ -3,31 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_parent_main.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/10 10:36:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 12:30:42 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_builtin_parent(t_cmd *c)
+int    run_builtin_parent(t_cmd *c)
 {
-	char	**av;
+    char    **av;
 
-	if (!c || !c->argv || !c->argv[0])
-		return (0);
-	av = c->argv;
-	if (ft_strcmp(av[0], "cd") == 0)
-		return (bi_cd(av));
-	if (ft_strcmp(av[0], "export") == 0)
-		return (bi_export(av));
-	if (ft_strcmp(av[0], "unset") == 0)
-		return (bi_unset(av));
-	if (ft_strcmp(av[0], "exit") == 0)
-		return (bi_exit(av));
-	return (-1);
+    if (!c || !c->argv || !c->argv[0])
+        return (0);
+    av = c->argv;
+    if (ft_strcmp(av[0], "cd") == 0)
+        return (bi_cd(av));
+    if (ft_strcmp(av[0], "export") == 0)
+        return (bi_export(av));
+    if (ft_strcmp(av[0], "unset") == 0)
+        return (bi_unset(av));
+    if (ft_strcmp(av[0], "exit") == 0)
+    {
+        if(c->argc == 1 || c->argc == 2)
+            return (bi_exit(av));
+        else if(exit_validate(av[1]) == 0)
+            return (bi_exit(av));
+        else
+        {
+            write(STDOUT_FILENO, "exit: too many arguments\n", 25);
+            return (1);
+        }
+    }
+    return (-1);
 }
 
 int	wait_and_status(pid_t pid)
