@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/12 12:29:25 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/12 13:31:09 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ int								exec_cmd(t_node *node, t_exec_ctx *ctx);
 
 /*exec_cmd_parent*/
 int								run_parent_builtin_flow(t_cmd *c);
-int								wait_and_status(pid_t pid);
 int								parent_finalize_simple(pid_t pid);
 int								waitpid_retry(pid_t pid, int *st);
 void							buf_cat(char *buf, size_t *pn, size_t cap,
@@ -194,11 +193,11 @@ void							fail_exec(const char *path, int err);
 
 /*exec_cmd_builtin*/
 int								bi_cd(char **av);
-int								exit_validate(char *str);
 int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
 int								bi_exit(char **av);
+int								exit_validate(char *str);
 int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);
