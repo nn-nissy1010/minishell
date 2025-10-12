@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/10 10:36:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 12:25:14 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,6 @@ int	run_builtin_parent(t_cmd *c)
 	return (-1);
 }
 
-int	wait_and_status(pid_t pid)
-{
-	int	st;
-	int	sig;
-
-	if (waitpid_retry(pid, &st) < 0)
-		return (-1);
-	if (WIFEXITED(st))
-		return (WEXITSTATUS(st));
-	if (WIFSIGNALED(st))
-	{
-		sig = WTERMSIG(st);
-		if (sig == SIGINT)
-			write(1, "\n", 1);
-		else if (sig == SIGQUIT)
-			write(1, "Quit: 3\n", 8);
-		return (128 + sig);
-	}
-	return (1);
-}
 
 int	wait_child_status(pid_t pid, int *out_st)
 {
@@ -89,7 +69,7 @@ int	parent_finalize_simple(pid_t pid)
 		}
 		else if (sig == SIGQUIT)
 		{
-			write(STDERR_FILENO, "Quit: 3\n", 8);
+			write(STDERR_FILENO, "Quit(core dumped)\n", 18);
 			signal_handler(0);
 		}
 		return (set_exit_status(128 + sig), 0);
