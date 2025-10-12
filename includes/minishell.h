@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/12 13:31:09 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 15:00:30 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int								hdoc_write_line(int fd, const char *s);
 int								hdoc_open_pipe(int pfd[2]);
 
 int								collect_heredocs(t_cmd *c);
+int								collect_heredocs_for_tree(t_node *n);
 
 /*glob*/
 int								glob_expand_argv(t_cmd *c);

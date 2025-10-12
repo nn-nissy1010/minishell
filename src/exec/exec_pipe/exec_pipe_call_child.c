@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 13:21:57 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 15:12:36 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int	handle_right_spawn_fail(int fds[2], pid_t lp,
 static int	wait_both_and_take_right(pid_t lp, pid_t rp, int *st_right)
 {
 	int	stl;
-	int str;
-	int sigint_seen;
+	int	str;
+	int	sigint_seen;
 
 	stl = 0;
 	str = 0;
@@ -53,11 +53,12 @@ static int	wait_both_and_take_right(pid_t lp, pid_t rp, int *st_right)
 		return (-1);
 	if (waitpid_retry(rp, &str) < 0)
 		return (-1);
-	if ((WIFSIGNALED(stl) && WTERMSIG(stl) == SIGINT)|| (WIFSIGNALED(str) && WTERMSIG(str) == SIGINT))
+	if ((WIFSIGNALED(stl) && WTERMSIG(stl) == SIGINT) || (WIFSIGNALED(str)
+			&& WTERMSIG(str) == SIGINT))
 		sigint_seen = 1;
 	if (st_right)
 		*st_right = str;
-	return sigint_seen;
+	return (sigint_seen);
 }
 
 int	call_pipe_children(t_node *node, t_exec_ctx *parent_ctx, int fds[2],

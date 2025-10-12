@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/12 15:13:06 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	run_builtin_parent(t_cmd *c)
 	}
 	return (-1);
 }
-
 
 int	wait_child_status(pid_t pid, int *out_st)
 {
