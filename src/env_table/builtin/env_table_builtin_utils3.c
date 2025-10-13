@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 10:12:36 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 13:49:28 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 20:20:58 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	fill_cb(const char *k, const char *v, void *ud)
 {
 	t_envp_builder	*b;
 	size_t			key_len;
-	size_t			val_len;
-	size_t			len;
 	char			*entry;
 
 	b = (t_envp_builder *)ud;
@@ -41,8 +39,6 @@ void	fill_cb(const char *k, const char *v, void *ud)
 	}
 	else
 	{
-		val_len = ft_strlen(v);
-		len = key_len + 1 + val_len;
 		entry = ft_strjoin_3word(ft_strdup(k), "=", v);
 		if (!entry)
 			return ;

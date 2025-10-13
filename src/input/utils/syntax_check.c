@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:57:45 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 09:34:54 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 21:46:04 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,23 @@ static t_more	check_line_end_operator(const char *s)
 	if (i < 0)
 		return (MORE_NONE);
 	if (s[i] == '|' || s[i] == '<' || s[i] == '>')
+	{
+		if (i > 1 && s[i - 1] == s[i] && s[i - 2] == s[i])
+			return (MORE_NONE);
+		if (i > 0 && s[i - 1] == s[i])
+			return (MORE_OP);
 		return (MORE_OP);
+	}
+	if (s[i] == '&')
+	{
+		if (i > 1 && s[i - 1] == '&' && s[i - 2] == '&')
+			return (MORE_NONE);
+		if (i > 0 && s[i - 1] == '&')
+			return (MORE_OP);
+	}
 	return (MORE_NONE);
 }
+
 
 t_more	need_more_input(const char *s)
 {
