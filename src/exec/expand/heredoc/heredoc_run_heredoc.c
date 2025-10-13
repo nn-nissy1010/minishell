@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 17:49:05 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 12:22:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 18:48:16 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,26 @@ static int	heredoc_process_line(const char *delim, int quoted, int write_fd,
 	return (0);
 }
 
+void	reset_heredoc_child_signals(void)
+{
+	struct sigaction	dfl;
+
+	ft_memset(&dfl, 0, sizeof(dfl));
+	dfl.sa_handler = SIG_DFL;
+	sigemptyset(&dfl.sa_mask);
+	dfl.sa_flags = 0;
+	x_sigaction(SIGINT, &dfl);
+	dfl.sa_handler = SIG_IGN;
+	x_sigaction(SIGQUIT, &dfl);
+}
+
 void	run_heredoc_child(const char *delim, int quoted, int write_fd)
 {
 	char	*line;
 	int		ln;
 	int		rc;
 
-	reset_child_signals();
+	reset_heredoc_child_signals();
 	bind_child_readline_to_tty();
 	ln = 0;
 	while (1)

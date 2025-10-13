@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell_main.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 09:17:16 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/11 10:48:21 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 19:23:47 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ static int	wait_and_set_status(pid_t pid)
 	if (WIFEXITED(st))
 		set_exit_status(WEXITSTATUS(st));
 	else if (WIFSIGNALED(st))
+	{
+		if (WTERMSIG(st) == SIGQUIT)
+			write(STDERR_FILENO, "Quit(core dumped)\n", 18);
 		set_exit_status(128 + WTERMSIG(st));
+	}
 	else
 		set_exit_status(1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 18:15:43 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 19:13:50 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int	status_to_exitcode(int st)
 	if (WIFEXITED(st))
 		return (WEXITSTATUS(st));
 	if (WIFSIGNALED(st))
+	{
+		write(STDERR_FILENO, "Quit(core dumped)\n", 18);
 		return (128 + WTERMSIG(st));
+	}
 	return (1);
 }
 
@@ -49,7 +52,6 @@ void	reset_child_signals(void)
 	sigemptyset(&dfl.sa_mask);
 	dfl.sa_flags = 0;
 	x_sigaction(SIGINT, &dfl);
-	dfl.sa_handler = SIG_IGN;
 	x_sigaction(SIGQUIT, &dfl);
 }
 

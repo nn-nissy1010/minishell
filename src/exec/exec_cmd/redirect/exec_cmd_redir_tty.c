@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:57:16 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 23:40:29 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 18:41:51 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	tty_force_canonical_echo_isig(void)
 		return ;
 	if (tcgetattr(STDIN_FILENO, &t) < 0)
 		return ;
+	t.c_iflag |= ICRNL;
 	t.c_lflag |= (ICANON | ECHO | ISIG);
 	t.c_cc[VMIN] = 1;
 	t.c_cc[VTIME] = 0;
