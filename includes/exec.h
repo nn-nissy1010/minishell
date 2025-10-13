@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:20:02 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 14:58:57 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:27:50 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef enum e_pipe_role
 }							t_pipe_role;
 
 /* ast_exec / ast_destroy */
-int 						ast_execute_root(t_node *root, t_exec_ctx *ctx);
+int							ast_execute_root(t_node *root, t_exec_ctx *ctx);
 int							ast_exec(t_node *node, t_exec_ctx *ctx);
 void						ast_destroy(t_node *node);
 /* exec / destroy */
