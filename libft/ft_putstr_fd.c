@@ -6,13 +6,13 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 20:28:57 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/07/30 12:09:04 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:05:41 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	int	i;
 

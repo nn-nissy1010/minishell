@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_rl_expand.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 22:17:53 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/11 10:55:58 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:10:51 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
