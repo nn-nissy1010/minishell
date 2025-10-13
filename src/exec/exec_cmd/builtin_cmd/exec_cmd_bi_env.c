@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 01:44:26 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 11:46:03 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 13:51:14 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@ static void	putline_fd(const char *s, int fd)
 	write(fd, "\n", 1);
 }
 
-int	bi_env(char **av)
+static int	env_invalid_arg(char **av)
 {
-	char	**envp;
-	char	**p;
-	char	*eq;
-
 	if (av && av[1])
 	{
 		write(STDERR_FILENO, "minishell: env: ", 16);
@@ -34,6 +30,19 @@ int	bi_env(char **av)
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		return (127);
 	}
+	return (0);
+}
+
+int	bi_env(char **av)
+{
+	char	**envp;
+	char	**p;
+	char	*eq;
+	int		rc;
+
+	rc = env_invalid_arg(av);
+	if (rc)
+		return (rc);
 	envp = env_table_to_envp();
 	if (!envp)
 	{

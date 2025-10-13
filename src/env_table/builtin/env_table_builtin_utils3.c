@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 10:12:36 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 11:45:51 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 13:49:28 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,9 @@ void	fill_cb(const char *k, const char *v, void *ud)
 	{
 		val_len = ft_strlen(v);
 		len = key_len + 1 + val_len;
-		entry = malloc(len + 1);
+		entry = ft_strjoin_3word(ft_strdup(k), "=", v);
 		if (!entry)
 			return ;
-		ft_strlcpy(entry, k, len + 1);
-		ft_strlcat(entry, "=", len + 1);
-		ft_strlcat(entry, v, len + 1);
 	}
 	b->envp[b->n++] = entry;
 }

@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 10:44:29 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:00:11 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);
 int								is_valid_ident(const char *s);
+void							bi_export_display(void);
 
 /*exec_pipe*/
 int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);
