@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:30 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 10:02:15 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 20:48:43 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef enum e_more
 int			repl(void);
 
 void		install_signal_handlers(void);
+void		install_signal_handlers_more_input(void);
 
 const char	*get_ps2_prompt(t_more need);
 int			handle_unexpected_eof(t_more need);
