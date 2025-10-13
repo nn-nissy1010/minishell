@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:30:08 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 23:39:29 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:03:47 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	reset_child_signals(void)
 	sigemptyset(&dfl.sa_mask);
 	dfl.sa_flags = 0;
 	x_sigaction(SIGINT, &dfl);
+	dfl.sa_handler = SIG_IGN;
 	x_sigaction(SIGQUIT, &dfl);
 }
 
