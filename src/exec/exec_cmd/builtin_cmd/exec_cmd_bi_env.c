@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_bi_env.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 01:44:26 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/02 11:19:37 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:46:03 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	bi_env(char **av)
 {
 	char	**envp;
 	char	**p;
+	char	*eq;
 
 	if (av && av[1])
 	{
@@ -42,7 +43,9 @@ int	bi_env(char **av)
 	p = envp;
 	while (*p)
 	{
-		putline_fd(*p, STDOUT_FILENO);
+		eq = ft_strchr(*p, '=');
+		if (eq)
+			putline_fd(*p, STDOUT_FILENO);
 		p++;
 	}
 	free_env_array(envp);

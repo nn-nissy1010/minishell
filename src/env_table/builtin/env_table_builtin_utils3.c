@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 10:12:36 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/11 09:33:06 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:45:51 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,23 @@ void	fill_cb(const char *k, const char *v, void *ud)
 
 	b = (t_envp_builder *)ud;
 	key_len = ft_strlen(k);
-	val_len = 0;
-	if (v != NULL)
+	if (v == NULL)
+	{
+		entry = malloc(key_len + 1);
+		if (!entry)
+			return ;
+		ft_strlcpy(entry, k, key_len + 1);
+	}
+	else
+	{
 		val_len = ft_strlen(v);
-	len = key_len + 1 + val_len;
-	entry = malloc(len + 1);
-	if (entry == NULL)
-		return ;
-	ft_strlcpy(entry, k, len + 1);
-	ft_strlcat(entry, "=", len + 1);
-	if (v != NULL)
+		len = key_len + 1 + val_len;
+		entry = malloc(len + 1);
+		if (!entry)
+			return ;
+		ft_strlcpy(entry, k, len + 1);
+		ft_strlcat(entry, "=", len + 1);
 		ft_strlcat(entry, v, len + 1);
-	b->envp[b->n] = entry;
-	b->n++;
+	}
+	b->envp[b->n++] = entry;
 }
