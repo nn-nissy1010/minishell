@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 14:00:11 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:03:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int								heredoc_build_delim_inplace(t_redir *r);
 
 char							*hdoc_maybe_expand(const char *line,
 									int quoted);
+void							run_heredoc_child(const char *delim, int quoted,
+									int write_fd);
 int								hdoc_write_line(int fd, const char *s);
 int								hdoc_open_pipe(int pfd[2]);
 
