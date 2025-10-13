@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 11:26:55 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:03:01 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void							fail_exec(const char *path, int err);
 
 /*exec_cmd_builtin*/
 int								bi_cd(char **av);
+int								exit_validate(char *str);
 int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
@@ -205,6 +206,7 @@ int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);
 int								is_valid_ident(const char *s);
+void							bi_export_display(void);
 
 /*exec_pipe*/
 int								exec_pipe(t_node *node, t_exec_ctx *parent_ctx);

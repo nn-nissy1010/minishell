@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_bi_exit.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 21:03:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 13:15:52 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 10:40:03 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

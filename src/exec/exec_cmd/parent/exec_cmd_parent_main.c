@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_parent_main.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/12 15:13:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 10:43:33 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

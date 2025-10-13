@@ -1,0 +1,9 @@
+{
+	"files.associations": {
+		"history.h": "c",
+		"env_table.h": "c",
+		"stdbool.h": "c",
+		"readline.h": "c",
+		"exec.h": "c"
+	}
+}

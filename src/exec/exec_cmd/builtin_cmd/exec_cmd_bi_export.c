@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_bi_export.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 21:02:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/01 21:30:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:00:43 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,26 @@ static int	export_handle_arg(char *arg)
 
 int	bi_export(char **av)
 {
-	int	i;
-	int	rc;
+	int		i;
+	int		rc;
+	char	*eq;
 
+	rc = 0;
 	if (!av)
 		return (0);
 	if (!av[1])
-		return (get_env_table());
+		return (bi_export_display(), 0);
 	i = 1;
-	rc = 0;
 	while (av[i])
 	{
-		if (export_handle_arg(av[i]) != 0)
-			rc = 1;
+		eq = ft_strchr(av[i], '=');
+		if (eq)
+		{
+			if (export_handle_arg(av[i]) != 0)
+				rc = 1;
+		}
+		else if (!search_env_table(av[i]))
+			update_env_table(av[i], NULL);
 		i++;
 	}
 	return (rc);
