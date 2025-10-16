@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 21:46:13 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/16 16:19:10 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 01:05:12 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ unsigned char	quote_to_mask_and_mask_globs(char *s, t_quote_type q)
 	return (quote_to_mask(q));
 }
 
+char	*expand_params(int has_param, t_quote_type quote, const char *base)
+{
+	char	*u;
+
+	if (has_param && quote != Q_SINGLE)
+		u = expand_params_part(base);
+	else
+	{
+		if (base[0] == '\0')
+			u = ft_strdup("");
+		else
+			u = ft_strdup(base);
+	}
+	return (u);
+}
+
 int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
 {
 	t_buf			tmp;
@@ -53,15 +69,7 @@ int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
 		base = tmp.data;
 	else
 		base = "";
-	if (p->has_param && p->quote != Q_SINGLE)
-		u = expand_params_part(base);
-	else
-	{
-		if(base[0] == '\0')
-			u = ft_strdup("");
-		else
-			u = ft_strdup(base);
-	}
+	u = expand_params(p->has_param, p->quote, base);
 	buf_free(&tmp);
 	if (!u)
 		return (-1);

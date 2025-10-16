@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 01:44:26 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/16 18:58:40 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:36:52 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	bi_env(char **av)
 	char	*eq;
 	int		rc;
 
-
-	
 	rc = env_invalid_arg(av);
 	if (rc)
 		return (rc);

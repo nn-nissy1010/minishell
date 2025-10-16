@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/16 16:31:51 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:46:55 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int								exec_single(t_cmd *c, t_exec_ctx *ctx);
 int								exec_cmd(t_node *node, t_exec_ctx *ctx);
 
 /*exec_cmd_parent*/
-int								run_parent_builtin_flow(t_cmd *c);
+int								run_parent_flow(t_cmd *c, t_exec_ctx *ctx);
 int								parent_finalize_simple(pid_t pid);
 int								waitpid_retry(pid_t pid, int *st);
 void							buf_cat(char *buf, size_t *pn, size_t cap,
@@ -202,7 +202,6 @@ int								bi_echo(char **av);
 int								bi_env(char **av);
 int								bi_exit(char **av);
 int								child_bi_exit(char **av);
-int								exit_validate(char *str);
 int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);
