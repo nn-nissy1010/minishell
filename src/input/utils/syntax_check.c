@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:57:45 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 21:46:04 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:41:24 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static t_more	check_line_end_operator(const char *s)
 	}
 	return (MORE_NONE);
 }
-
 
 t_more	need_more_input(const char *s)
 {

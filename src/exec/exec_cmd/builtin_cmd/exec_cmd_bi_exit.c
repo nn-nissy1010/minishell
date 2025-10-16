@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_bi_exit.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 21:03:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 16:44:35 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:35:42 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ static void	read_ws_and_sign(const char **ps, int *neg)
 	*ps = s;
 }
 
-static int	scan_u10_limited(const char **ps, unsigned long lim, unsigned long *acc)
+static int	scan_u10_limited(const char **ps, unsigned long lim,
+		unsigned long *acc)
 {
-	const char	*s;
+	const char		*s;
 	unsigned long	cut;
-	int			d;
-	int			any;
+	int				d;
+	int				any;
 
 	s = *ps;
 	*acc = 0;
@@ -59,14 +60,17 @@ int	is_long(const char *s)
 {
 	const unsigned long	lpos = (unsigned long)LONG_MAX;
 	const unsigned long	lneg = (unsigned long)LONG_MAX + 1UL;
-	unsigned long	lim;
-	unsigned long	acc;
-	int				neg;
+	unsigned long		lim;
+	unsigned long		acc;
+	int					neg;
 
 	if (!s)
 		return (0);
 	read_ws_and_sign(&s, &neg);
-	lim = neg ? lneg : lpos;
+	if (neg)
+		lim = lneg;
+	else
+		lim = lpos;
 	if (!scan_u10_limited(&s, lim, &acc))
 		return (0);
 	while (*s && isspace((unsigned char)*s))

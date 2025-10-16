@@ -6,7 +6,7 @@
 /*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 15:55:33 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 21:50:42 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:33:54 by nnishiya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,19 @@ void	print_unexpected_eof_error(t_more need)
 	if (need == MORE_QUOTE_D)
 	{
 		write(STDERR_FILENO,
-			"minishell: unexpected EOF while looking for matching `\"`\n",
-			57);
+			"minishell: unexpected EOF while looking for matching `\"`\n", 57);
 		set_exit_status(2);
 	}
 	else if (need == MORE_QUOTE_S)
 	{
 		write(STDERR_FILENO,
-			"minishell: unexpected EOF while looking for matching `'`\n",
-			57);
+			"minishell: unexpected EOF while looking for matching `'`\n", 57);
 		set_exit_status(2);
 	}
 	else if (need == MORE_OP)
 	{
 		write(STDERR_FILENO,
-			"minishell: syntax error: unexpected end of file\n",
-			48);
+			"minishell: syntax error: unexpected end of file\n", 48);
 		set_exit_status(2);
 	}
 }
@@ -73,16 +70,10 @@ static char	*append_next_line(char *acc, t_more need)
 	install_signal_handlers_more_input();
 	ps2 = get_ps2_prompt(need);
 	next = readline(ps2);
-
-	/* EOF（Ctrl+D） */
 	if (!next)
 		return (handle_more_input_exit(acc, need, 1));
-
-	/* Ctrl+C（SIGINT） */
 	if (g_signal == SIGINT)
 		return (handle_more_input_exit(acc, need, 0));
-
-	/* 通常入力 */
 	tmp = append_line(acc, next);
 	free(next);
 	install_signal_handlers();
