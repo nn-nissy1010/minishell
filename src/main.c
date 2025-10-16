@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:11:46 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/12 12:26:19 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:09:35 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	update_shlvl(void)
 	if (val >= 1000)
 	{
 		write(2, "minishell: warning: shell level (", 33);
-		ft_putnbr_fd(val, 2);
+		// ft_putnbr_fd(val, 2);
 		write(2, ") too high, resetting to 1\n", 27);
 		val = 1;
 	}

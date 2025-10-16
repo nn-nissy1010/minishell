@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:15:50 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 16:50:46 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:33:18 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	run_builtin_child(t_cmd *c)
 	if (ft_strcmp(av[0], "exit") == 0)
 	{
 		if (c->argc == 1 || c->argc == 2 || exit_validate(av[1]) == 0)
-			return (bi_exit(av));
+			return (child_bi_exit(av));
 		else
 			return (write(STDOUT_FILENO, "exit: too many arguments\n", 25), 1);
 	}

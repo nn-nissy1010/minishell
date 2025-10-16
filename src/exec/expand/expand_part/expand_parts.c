@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 21:46:13 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/09/30 18:06:22 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:19:10 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
 	char			*u;
 	unsigned char	q;
 
+	u = 0;
+	base = 0;
 	if (!b || !p)
 		return (-1);
 	buf_init(&tmp);
@@ -54,7 +56,12 @@ int	expand_one_part_buf(t_buf *b, t_arg_part *p, int is_head)
 	if (p->has_param && p->quote != Q_SINGLE)
 		u = expand_params_part(base);
 	else
-		u = ft_strdup(base);
+	{
+		if(base[0] == '\0')
+			u = ft_strdup("");
+		else
+			u = ft_strdup(base);
+	}
 	buf_free(&tmp);
 	if (!u)
 		return (-1);
@@ -81,9 +88,7 @@ int	parts_to_buf(t_arg_part *parts, t_buf *out)
 	}
 	if (!out->data)
 	{
-		out->data = ft_strdup("");
-		if (!out->data)
-			return (-1);
+		return (-1);
 	}
 	return (0);
 }
