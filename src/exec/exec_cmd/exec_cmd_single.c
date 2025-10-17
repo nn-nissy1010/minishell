@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 20:33:07 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/06 15:19:06 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:42:49 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	in_sub_or_pipe_ctx(const t_exec_ctx *ctx)
 {
 	if (!ctx)
 		return (0);
-	if (ctx->xflag & (XF_PIPEIN | XF_PIPEOUT | XF_SUBSHELL))
+	if (ctx->xflag & (XF_PIPEIN | XF_PIPEOUT))
 		return (1);
 	return (0);
 }
@@ -58,7 +58,7 @@ int	exec_single(t_cmd *c, t_exec_ctx *ctx)
 	if (!c)
 		return (set_exit_status(2), -1);
 	if (!in_sub_or_pipe_ctx(ctx) && is_builtin_parent(c))
-		return (run_parent_builtin_flow(c));
+		return (run_parent_flow(c, ctx));
 	if (is_no_argv_but_has_redirs(c))
 		return (redirect_only_flow(c));
 	if (is_noop_cmd(c))

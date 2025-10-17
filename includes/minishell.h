@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 17:12:13 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/13 14:03:01 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:46:55 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int								emit_status(t_buf *b);
 int								buf_qreserve(t_buf *b, size_t add);
 int								buf_puts_q(t_buf *b, const char *s,
 									unsigned char q);
-int								buf_putn_q(t_buf *b, const void *p, size_t n,
+int								buf_putn_q(t_buf *b, const char *p, size_t n,
 									unsigned char q);
 int								buf_putc_q(t_buf *b, char c, unsigned char q);
 
@@ -144,7 +144,7 @@ int								exec_single(t_cmd *c, t_exec_ctx *ctx);
 int								exec_cmd(t_node *node, t_exec_ctx *ctx);
 
 /*exec_cmd_parent*/
-int								run_parent_builtin_flow(t_cmd *c);
+int								run_parent_flow(t_cmd *c, t_exec_ctx *ctx);
 int								parent_finalize_simple(pid_t pid);
 int								waitpid_retry(pid_t pid, int *st);
 void							buf_cat(char *buf, size_t *pn, size_t cap,
@@ -201,7 +201,7 @@ int								print_line(int fd, const char *s);
 int								bi_echo(char **av);
 int								bi_env(char **av);
 int								bi_exit(char **av);
-int								exit_validate(char *str);
+int								child_bi_exit(char **av);
 int								bi_export(char **av);
 int								bi_pwd(char **av);
 int								bi_unset(char **av);

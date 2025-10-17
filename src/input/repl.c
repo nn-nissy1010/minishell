@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 15:40:21 by nnishiya          #+#    #+#             */
-/*   Updated: 2025/10/12 14:59:01 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:38:32 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,15 @@ static int	process_command(char *full)
 
 static int	execute_command(t_exec_ctx *ctx)
 {
-	int	rc;
+	int			rc;
+	t_exec_ctx	local;
 
+	if (!ctx)
+	{
+		ft_memset(&local, 0, sizeof(local));
+		local.xflag = XF_NONE;
+		ctx = &local;
+	}
 	rc = ast_execute_root(get_ast(), ctx);
 	return (rc);
 }

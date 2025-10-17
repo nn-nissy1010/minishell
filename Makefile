@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/12 17:10:51 by nnishiya          #+#    #+#              #
-#    Updated: 2025/10/16 10:42:31 by nnishiya         ###   ########.fr        #
+#    Updated: 2025/10/17 00:44:47 by tkuwahat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS =src/main.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_echo.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_env.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_exit.c \
+	  src/exec/exec_cmd/builtin_cmd/exec_cmd_child_bi_exit.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_export.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_pwd.c \
 	  src/exec/exec_cmd/builtin_cmd/exec_cmd_bi_unset.c \
