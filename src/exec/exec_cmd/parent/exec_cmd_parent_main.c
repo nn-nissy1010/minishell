@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_parent_main.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnishiya <nnishiya@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 22:31:24 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/13 10:43:33 by nnishiya         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:42:46 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_builtin_parent(t_cmd *c)
+int	run_builtin_parent(t_cmd *c, t_exec_ctx *ctx)
 {
 	char	**av;
 
@@ -27,15 +27,14 @@ int	run_builtin_parent(t_cmd *c)
 		return (bi_unset(av));
 	if (ft_strcmp(av[0], "exit") == 0)
 	{
-		if (c->argc == 1 || c->argc == 2)
+		if (ctx->xflag == XF_SUBSHELL)
+			return (child_bi_exit(av));
+		else if (c->argc == 1 || c->argc == 2)
 			return (bi_exit(av));
 		else if (exit_validate(av[1]) == 0)
 			return (bi_exit(av));
 		else
-		{
-			write(STDOUT_FILENO, "exit: too many arguments\n", 25);
-			return (1);
-		}
+			return (write(STDOUT_FILENO, "exit: too many arguments\n", 25), 1);
 	}
 	return (-1);
 }
@@ -86,7 +85,7 @@ int	parent_finalize_simple(pid_t pid)
 	return (set_exit_status(1), 0);
 }
 
-int	run_parent_builtin_flow(t_cmd *c)
+int	run_parent_flow(t_cmd *c, t_exec_ctx *ctx)
 {
 	int	saved_in;
 	int	saved_out;
@@ -96,7 +95,7 @@ int	run_parent_builtin_flow(t_cmd *c)
 	saved_out = -1;
 	if (apply_redirs(c->redirs, c->n_redirs, &saved_in, &saved_out) < 0)
 		return (set_exit_status(1), -1);
-	status = run_builtin_parent(c);
+	status = run_builtin_parent(c, ctx);
 	restore_stdio(saved_in, saved_out);
 	rebind_tty_if_needed();
 	rl_instream = stdin;

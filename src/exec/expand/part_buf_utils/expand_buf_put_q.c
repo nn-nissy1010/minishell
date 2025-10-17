@@ -6,7 +6,7 @@
 /*   By: tkuwahat <tkuwahat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:54:33 by tkuwahat          #+#    #+#             */
-/*   Updated: 2025/10/16 16:28:27 by tkuwahat         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:38:13 by tkuwahat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	buf_putc_q(t_buf *b, char c, unsigned char q)
 
 int	buf_putn_q(t_buf *b, const char *p, size_t n, unsigned char q)
 {
-
-	if(p[0] == '\0')
+	if (p[0] == '\0')
 	{
 		buf_qreserve(b, 1);
 		b->qmask = 0;
